@@ -1,0 +1,22 @@
+{
+  "name": "streaker",
+  "version": "0.1.0",
+  "description": "GitHub commit streak tracking menubar app",
+  "author": "Jamie Straw <me@jamiestraw.com>",
+  "license": "ISC",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jamiestraw/streaker.git"
+  },
+  "scripts": {
+    "start": "electron .",
+    "test": "standard"
+  },
+  "devDependencies": {
+    "electron": "^1.6.7",
+    "standard": "^10.0.2"
+  },
+  "dependencies": {
+    "menubar": "^5.2.3"
+  }
+}
