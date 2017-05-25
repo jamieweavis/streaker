@@ -1,3 +1,3 @@
 # streaker
 
-> 🐙 GitHub commit streak tracking menubar app
+> 🐙 GitHub contribution streak tracking menubar app
