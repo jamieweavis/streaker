@@ -1,12 +1,16 @@
 {
   "name": "streaker",
   "version": "0.1.0",
-  "description": "GitHub commit streak tracking menubar app",
+  "description": "GitHub contribution streak tracking menubar app",
   "author": "Jamie Straw <me@jamiestraw.com>",
   "license": "ISC",
+  "homepage": "https://github.com/jamiestraw/streaker",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/jamiestraw/streaker.git"
+  },
+  "bugs": {
+    "url": "https://github.com/jamiestraw/streaker/issues"
   },
   "scripts": {
     "start": "electron .",
@@ -18,6 +22,9 @@
   },
   "dependencies": {
     "auto-launch": "^5.0.1",
-    "electron-config": "^1.0.0"
+    "dom-parser": "^0.1.5",
+    "electron-config": "^1.0.0",
+    "request": "^2.81.0",
+    "request-promise-native": "^1.0.4"
   }
 }
