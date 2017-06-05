@@ -100,6 +100,8 @@ app.on('ready', () => {
   app.dock.hide()
   app.on('window-all-closed', () => {})
 
+  tray.on('right-click', requestContributionData)
+
   ipcMain.on('setUsername', (event, username) => {
     usernameWindow.close()
     if (username && username !== config.get('githubUsername')) {
