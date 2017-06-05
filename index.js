@@ -5,7 +5,7 @@ const pjson = require('./package.json')
 const config = require('./app/config')
 const request = require('request-promise-native')
 const DOMParser = require('dom-parser')
-const parser = new DOMParser()
+const AutoLaunch = require('auto-launch')
 
 const electron = require('electron')
 const { app, BrowserWindow, Tray, Menu, shell, ipcMain } = electron
@@ -16,6 +16,12 @@ let iconWarning = path.join(__dirname, 'app', 'todoTemplate.png') // @TODO: Crea
 let iconLoading = path.join(__dirname, 'app', 'todoTemplate.png') // @TODO: Create loading icon
 
 app.on('ready', () => {
+  const parser = new DOMParser()
+  const streakerAutoLauncher = new AutoLaunch({
+    name: app.getName(),
+    path: `/Applications/${pjson.name}.app`
+  })
+
   let tray = new Tray(iconDone)
   let usernameWindow = null
 
@@ -52,26 +58,18 @@ app.on('ready', () => {
       { type: 'separator' },
       { label: 'Refresh...', click: requestContributionData },
       { label: 'Set GitHub Username...', click: createUsernameWindow },
-      // {
-      //   label: 'Preferences',
-      //   submenu: [{
-      //     label: 'Done Icon',
-      //     submenu: [
-      //       { label: 'None', type: 'radio', checked: true, icon: iconDone },
-      //       { label: 'Monochrome Circle', type: 'radio', icon: iconTodo }
-      //     ]
-      //   }, {
-      //     label: 'Todo Icon',
-      //     submenu: [
-      //       { label: 'None', type: 'radio', icon: iconDone },
-      //       { label: 'Monochrome Circle', type: 'radio', checked: true, icon: iconTodo }
-      //     ]
-      //   }, {
-      //     label: 'Launch at login',
-      //     type: 'checkbox',
-      //     checked: true
-      //   }]
-      // },
+      {
+        label: 'Preferences',
+        submenu: [{
+          label: `Launch ${pjson.name} at login`,
+          type: 'checkbox',
+          checked: config.get('autoLaunch'),
+          click: (checkbox) => {
+            config.set('autoLaunch', checkbox.checked)
+            checkbox.checked ? streakerAutoLauncher.enable() : streakerAutoLauncher.disable()
+          }
+        }]
+      },
       { type: 'separator' },
       { label: `About ${pjson.name}`, click: () => { shell.openExternal(pjson.homepage) } },
       { label: 'Feedback && Support...', click: () => { shell.openExternal(pjson.bugs.url) } },
