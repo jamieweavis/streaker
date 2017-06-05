@@ -109,5 +109,5 @@ app.on('ready', () => {
   })
 
   requestContributionData()
-  setInterval(requestContributionData, config.get('refreshInterval'))
+  setInterval(requestContributionData, config.get('requestInterval'))
 })

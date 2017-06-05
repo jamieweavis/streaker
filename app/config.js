@@ -6,6 +6,6 @@ module.exports = new Config({
   defaults: {
     githubUsername: '',
     autoLaunch: false,
-    refreshInterval: 900000 // 15 Minutes
+    requestInterval: 1000 * 60 * 10 // 10 Minutes
   }
 })
