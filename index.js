@@ -56,7 +56,7 @@ app.on('ready', () => {
     let menuTemplate = [
       { label: displayLabel, enabled: false },
       { type: 'separator' },
-      { label: 'Refresh...', click: requestContributionData },
+      { label: 'Refresh', accelerator: 'Cmd+R', click: requestContributionData },
       { label: 'Set GitHub Username...', click: createUsernameWindow },
       {
         label: 'Preferences',
