@@ -93,14 +93,8 @@ app.on('ready', () => {
       show: false
     })
     usernameWindow.loadURL(`file://${__dirname}/app/username.html`)
-    usernameWindow.once('ready-to-show', () => {
-      usernameWindow.show()
-      app.dock.show()
-    })
-    usernameWindow.on('closed', () => {
-      usernameWindow = null
-      app.dock.hide()
-    })
+    usernameWindow.once('ready-to-show', () => { usernameWindow.show() })
+    usernameWindow.on('closed', () => { usernameWindow = null })
   }
 
   app.dock.hide()
