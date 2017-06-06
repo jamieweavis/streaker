@@ -30,7 +30,7 @@
       const config = require('./config')
       const input = document.querySelector('input')
 
-      input.value = config.get('githubUsername')
+      input.value = config.get('username')
       input.focus()
       input.addEventListener('keyup', (event) => {
         if (event.keyCode === 13) ipcRenderer.send('setUsername', input.value)

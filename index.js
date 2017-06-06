@@ -29,7 +29,7 @@ app.on('ready', () => {
     tray.setImage(iconLoading)
     tray.setContextMenu(createTrayMenu('Loading...'))
 
-    let contributionUrl = `https://github.com/users/${config.get('githubUsername')}/contributions`
+    let contributionUrl = `https://github.com/users/${config.get('username')}/contributions`
     let contributionStreak = 0
     let contributedToday = false
 
@@ -53,7 +53,7 @@ app.on('ready', () => {
   }
 
   function createTrayMenu (displayLabel) {
-    let username = config.get('githubUsername') || 'username not set'
+    let username = config.get('username') || 'username not set'
     let menuTemplate = [
       { label: `${displayLabel} (${username})`, enabled: false },
       { type: 'separator' },
@@ -103,8 +103,8 @@ app.on('ready', () => {
 
   ipcMain.on('setUsername', (event, username) => {
     usernameWindow.close()
-    if (username && username !== config.get('githubUsername')) {
-      config.set('githubUsername', username)
+    if (username && username !== config.get('username')) {
+      config.set('username', username)
       requestContributionData()
     }
   })
