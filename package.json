@@ -14,10 +14,13 @@
   },
   "scripts": {
     "start": "electron .",
-    "test": "standard"
+    "test": "standard",
+    "pack": "build --dir",
+    "dist": "build"
   },
   "devDependencies": {
     "electron": "^1.6.7",
+    "electron-builder": "^18.5.1",
     "standard": "^10.0.2"
   },
   "dependencies": {

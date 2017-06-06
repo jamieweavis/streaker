@@ -5,6 +5,6 @@
 ### TODO
 
 - [ ] Tray icons for Loading & Warning states
-- [ ] Build and deployment process
+- [x] Build and deployment process
 - [ ] Add logging
 - [ ] README
