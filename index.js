@@ -53,8 +53,9 @@ app.on('ready', () => {
   }
 
   function createTrayMenu (displayLabel) {
+    let username = config.get('githubUsername') || 'username not set'
     let menuTemplate = [
-      { label: displayLabel, enabled: false },
+      { label: `${displayLabel} (${username})`, enabled: false },
       { type: 'separator' },
       { label: 'Refresh', accelerator: 'Cmd+R', click: requestContributionData },
       { label: 'Set GitHub Username...', click: createUsernameWindow },
