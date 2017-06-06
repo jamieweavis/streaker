@@ -27,6 +27,7 @@
     "auto-launch": "^5.0.1",
     "dom-parser": "^0.1.5",
     "electron-config": "^1.0.0",
+    "electron-log": "^2.2.6",
     "request": "^2.81.0",
     "request-promise-native": "^1.0.4"
   }

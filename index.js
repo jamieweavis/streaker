@@ -1,5 +1,6 @@
 'use strict'
 
+const log = require('electron-log')
 const path = require('path')
 const pjson = require('./package.json')
 const config = require('./app/config')
@@ -15,6 +16,8 @@ let iconTodo = path.join(__dirname, 'app', 'todoTemplate.png')
 let iconWarning = path.join(__dirname, 'app', 'todoTemplate.png') // @TODO: Create warning icon
 let iconLoading = path.join(__dirname, 'app', 'todoTemplate.png') // @TODO: Create loading icon
 
+log.transports.file.level = 'info'
+
 app.on('ready', () => {
   const parser = new DOMParser()
   const streakerAutoLauncher = new AutoLaunch({
@@ -29,7 +32,8 @@ app.on('ready', () => {
     tray.setImage(iconLoading)
     tray.setContextMenu(createTrayMenu('Loading...'))
 
-    let contributionUrl = `https://github.com/users/${config.get('username')}/contributions`
+    let username = config.get('username')
+    let contributionUrl = `https://github.com/users/${username}/contributions`
     let contributionStreak = 0
     let contributedToday = false
 
@@ -46,9 +50,11 @@ app.on('ready', () => {
       })
       tray.setContextMenu(createTrayMenu(`Streak: ${contributionStreak}`))
       tray.setImage(contributedToday ? iconDone : iconTodo)
+      log.info(`Request success (${username}) Streak=${contributionStreak} Today=${contributedToday}`)
     }).catch((error) => {
       tray.setContextMenu(createTrayMenu('Failed to get streak'))
       tray.setImage(iconWarning)
+      log.error(`Request failure (${username}) StatusCode=${error.statusCode}`)
     })
   }
 
@@ -66,6 +72,7 @@ app.on('ready', () => {
           type: 'checkbox',
           checked: config.get('autoLaunch'),
           click: (checkbox) => {
+            log.info(`Autolaunch changed from "${config.get('autoLaunch')}" to "${checkbox.checked}"`)
             config.set('autoLaunch', checkbox.checked)
             checkbox.checked ? streakerAutoLauncher.enable() : streakerAutoLauncher.disable()
           }
@@ -99,11 +106,15 @@ app.on('ready', () => {
   app.dock.hide()
   app.on('window-all-closed', () => {})
 
-  tray.on('right-click', requestContributionData)
+  tray.on('right-click', () => {
+    requestContributionData()
+    log.info('Tray right-clicked')
+  })
 
   ipcMain.on('setUsername', (event, username) => {
     usernameWindow.close()
     if (username && username !== config.get('username')) {
+      log.info(`Username changed from "${config.get('username')}" to "${username}"`)
       config.set('username', username)
       requestContributionData()
     }

@@ -6,5 +6,5 @@
 
 - [ ] Tray icons for Loading & Warning states
 - [x] Build and deployment process
-- [ ] Add logging
+- [x] Add logging
 - [ ] README
