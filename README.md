@@ -12,7 +12,9 @@ Download the latest version of Streaker from the the **[GitHub releases](https:/
 
 ## 🖥 Screenshot
 
-![Streaker Screenshot](https://github.com/jamiestraw/streaker/raw/master/screenshot.png)
+<img src="https://github.com/jamiestraw/streaker/raw/master/screenshot.png" width="285">
+
+## 🐙 Menu Bar Icons
 
 Streaker's menu bar icon is updated depending on it's current state:
 
