@@ -1,5 +1,5 @@
 # Streaker
-> 🐙 GitHub contribution streak tracking menubar app
+> 🐙 GitHub contribution streak tracking menu bar app
 
 [![Downloads](https://img.shields.io/github/downloads/jamiestraw/streaker/total.svg)](https://github.com/feross/standard)
 [![Javascript Standard](https://img.shields.io/badge/code%20style-standard-brightgreen.svg)](https://github.com/feross/standard)
@@ -12,9 +12,7 @@ Download the latest version of Streaker from the the **[GitHub releases](https:/
 
 ## 🖥 Screenshot
 
-Coming soon.
-
-## 🐙 Menu Bar Icon
+![Streaker Screenshot](https://github.com/jamiestraw/streaker/raw/master/screenshot.png)
 
 Streaker's menu bar icon is updated depending on it's current state:
 
@@ -23,7 +21,7 @@ Streaker's menu bar icon is updated depending on it's current state:
 | Contributed Today | ![Contributed Done](https://github.com/jamiestraw/streaker/raw/master/app/doneTemplate@2x.png) | You've contributed today, your contribution streak lives on! |
 | Contribution Todo | ![Contributed Todo](https://github.com/jamiestraw/streaker/raw/master/app/todoTemplate@2x.png) | You haven't contributed today, don't forget to keep up that streak! |
 | Requesting Data | ![Contributed Done](https://github.com/jamiestraw/streaker/raw/master/app/todoTemplate@2x.png) | Your contribution data is being loaded from GitHub, hold tight! |
-| Request Failed | ![Contributed Done](https://github.com/jamiestraw/streaker/raw/master/app/todoTemplate@2x.png) | Your data request failed, did you spell your username correctly? or GitHub could be down. |
+| Request Failed | ![Contributed Done](https://github.com/jamiestraw/streaker/raw/master/app/todoTemplate@2x.png) | Your data request failed, did you spell your username correctly? If so, GitHub *or* the internet could be down! |
 
 ## ☑️ TODO
 
@@ -31,7 +29,7 @@ Streaker's menu bar icon is updated depending on it's current state:
 - [x] Add logging
 - [x] Add README.md
 - [x] Add LICENSE.md
-- [ ] Add screenshot
+- [x] Add screenshot
 - [ ] Add tray icons for Loading & Warning states
 - [ ] Create app icon
 
