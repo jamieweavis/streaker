@@ -16,8 +16,6 @@ let iconTodo = path.join(__dirname, 'app', 'todoTemplate.png')
 let iconWarning = path.join(__dirname, 'app', 'todoTemplate.png') // @TODO: Create warning icon
 let iconLoading = path.join(__dirname, 'app', 'todoTemplate.png') // @TODO: Create loading icon
 
-log.transports.file.level = 'info'
-
 app.on('ready', () => {
   const parser = new DOMParser()
   const streakerAutoLauncher = new AutoLaunch({
@@ -50,11 +48,11 @@ app.on('ready', () => {
       })
       tray.setContextMenu(createTrayMenu(`Streak: ${contributionStreak}`))
       tray.setImage(contributedToday ? iconDone : iconTodo)
-      log.info(`Request success (${username}) Streak=${contributionStreak} Today=${contributedToday}`)
+      log.info(`Request successful - username=${username} streak=${contributionStreak} today=${contributedToday}`)
     }).catch((error) => {
       tray.setContextMenu(createTrayMenu('Failed to get streak'))
       tray.setImage(iconWarning)
-      log.error(`Request failure (${username}) StatusCode=${error.statusCode}`)
+      log.error(`Request failed - username=${username}) statusCode=${error.statusCode}`)
     })
   }
 
@@ -72,9 +70,9 @@ app.on('ready', () => {
           type: 'checkbox',
           checked: config.get('autoLaunch'),
           click: (checkbox) => {
-            log.info(`Autolaunch changed from "${config.get('autoLaunch')}" to "${checkbox.checked}"`)
             config.set('autoLaunch', checkbox.checked)
             checkbox.checked ? streakerAutoLauncher.enable() : streakerAutoLauncher.disable()
+            log.info(`Config updated - autoLaunch=${checkbox.checked}`)
           }
         }]
       },
@@ -105,18 +103,15 @@ app.on('ready', () => {
 
   app.dock.hide()
   app.on('window-all-closed', () => {})
-
-  tray.on('right-click', () => {
-    requestContributionData()
-    log.info('Tray right-clicked')
-  })
+  tray.on('right-click', requestContributionData)
+  log.transports.file.level = 'info'
 
   ipcMain.on('setUsername', (event, username) => {
     usernameWindow.close()
     if (username && username !== config.get('username')) {
-      log.info(`Username changed from "${config.get('username')}" to "${username}"`)
       config.set('username', username)
       requestContributionData()
+      log.info(`Config updated - username=${username}`)
     }
   })
 
