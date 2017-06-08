@@ -12,7 +12,7 @@ Download the latest version of Streaker from the the **[GitHub releases](https:/
 
 ## 🖥 Screenshot
 
-<img src="https://github.com/jamiestraw/streaker/raw/master/screenshot.png" width="285">
+<img src="https://github.com/jamiestraw/streaker/raw/master/screenshots/screenshot.png" width="285">
 
 ## 🐙 Menu Bar Icons
 
@@ -20,10 +20,10 @@ Streaker's menu bar icon is updated depending on it's current state:
 
 | Status | Icon | Description |
 | ------ | ---- | ----------- |
-| Contributed Today | ![Contributed Done](https://github.com/jamiestraw/streaker/raw/master/app/doneTemplate@2x.png) | You've contributed today, your contribution streak lives on! |
-| Contribution Todo | ![Contributed Todo](https://github.com/jamiestraw/streaker/raw/master/app/todoTemplate@2x.png) | You haven't contributed today, don't forget to keep up that streak! |
-| Requesting Data | ![Contributed Done](https://github.com/jamiestraw/streaker/raw/master/app/loadTemplate@2x.png) | Your contribution data is being loaded from GitHub, hold tight! |
-| Request Failed | ![Contributed Done](https://github.com/jamiestraw/streaker/raw/master/app/failTemplate@2x.png) | Your data request failed, did you spell your username correctly? If so, GitHub *or* the internet could be down! |
+| Contributed Today | <img src="https://github.com/jamiestraw/streaker/raw/master/screenshots/done.png" width="32"> | You've contributed today, your contribution streak lives on! |
+| Contribution Todo | <img src="https://github.com/jamiestraw/streaker/raw/master/screenshots/todo.png" width="32"> | You haven't contributed today, don't forget to keep up that streak! |
+| Requesting Data | <img src="https://github.com/jamiestraw/streaker/raw/master/screenshots/load.png" width="32"> | Your contribution data is being loaded from GitHub, hold tight! |
+| Request Failed | <img src="https://github.com/jamiestraw/streaker/raw/master/screenshots/fail.png" width="32"> | Your contribution data request failed, did you spell your username correctly? If so, GitHub *or* the internet could be down! |
 
 ## 📄 License
 
