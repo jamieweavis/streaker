@@ -25,16 +25,6 @@ Streaker's menu bar icon is updated depending on it's current state:
 | Requesting Data | ![Contributed Done](https://github.com/jamiestraw/streaker/raw/master/app/todoTemplate@2x.png) | Your contribution data is being loaded from GitHub, hold tight! |
 | Request Failed | ![Contributed Done](https://github.com/jamiestraw/streaker/raw/master/app/todoTemplate@2x.png) | Your data request failed, did you spell your username correctly? If so, GitHub *or* the internet could be down! |
 
-## ☑️ TODO
-
-- [x] Add build and deployment process
-- [x] Add logging
-- [x] Add README.md
-- [x] Add LICENSE.md
-- [x] Add screenshot
-- [ ] Add tray icons for Loading & Warning states
-- [ ] Create app icon
-
 ## 📄 License
 
 This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md) file for details.
