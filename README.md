@@ -8,7 +8,7 @@
 
 ## 📦 Install
 
-Download the latest version of Streaker from the the **[GitHub releases](https://github.com/jamiestraw/afk/releases)** page.
+Download the latest version of Streaker from the the **[GitHub releases](https://github.com/jamiestraw/streaker/releases)** page.
 
 ## 🖥 Screenshot
 
