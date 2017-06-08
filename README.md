@@ -8,7 +8,7 @@
 
 ## 📦 Install
 
-Download the latest version of Streaker from the the **[GitHub releases](https://github.com/jamiestraw/streaker/releases)** page.
+Download the latest version of Streaker from the the **[GitHub releases](https://github.com/jamiestraw/streaker/releases)** page. (currently macOS only)
 
 ## 🖥 Screenshot
 
