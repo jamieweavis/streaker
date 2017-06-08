@@ -11,23 +11,24 @@ const AutoLaunch = require('auto-launch')
 const electron = require('electron')
 const { app, BrowserWindow, Tray, Menu, shell, ipcMain } = electron
 
-let iconDone = path.join(__dirname, 'app', 'doneTemplate.png')
-let iconTodo = path.join(__dirname, 'app', 'todoTemplate.png')
-let iconWarning = path.join(__dirname, 'app', 'todoTemplate.png') // @TODO: Create warning icon
-let iconLoading = path.join(__dirname, 'app', 'todoTemplate.png') // @TODO: Create loading icon
-
 app.on('ready', () => {
   const parser = new DOMParser()
   const streakerAutoLauncher = new AutoLaunch({
     name: app.getName(),
     path: `/Applications/${pjson.name}.app`
   })
+  const icon = {
+    done: path.join(__dirname, 'app', 'doneTemplate.png'),
+    todo: path.join(__dirname, 'app', 'todoTemplate.png'),
+    load: path.join(__dirname, 'app', 'loadTemplate.png'),
+    fail: path.join(__dirname, 'app', 'failTemplate.png')
+  }
 
-  let tray = new Tray(iconDone)
+  let tray = new Tray(icon.done)
   let usernameWindow = null
 
   function requestContributionData () {
-    tray.setImage(iconLoading)
+    tray.setImage(icon.load)
     tray.setContextMenu(createTrayMenu('Loading...'))
 
     let username = config.get('username')
@@ -47,11 +48,11 @@ app.on('ready', () => {
         }
       })
       tray.setContextMenu(createTrayMenu(`Streak: ${contributionStreak}`))
-      tray.setImage(contributedToday ? iconDone : iconTodo)
+      tray.setImage(contributedToday ? icon.done : icon.todo)
       log.info(`Request successful - username=${username} streak=${contributionStreak} today=${contributedToday}`)
     }).catch((error) => {
       tray.setContextMenu(createTrayMenu('Failed to get streak'))
-      tray.setImage(iconWarning)
+      tray.setImage(icon.fail)
       log.error(`Request failed - username=${username}) statusCode=${error.statusCode}`)
     })
   }
