@@ -1,10 +1,10 @@
 {
   "name": "Streaker",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "GitHub contribution streak tracking menu bar app",
   "author": "Jamie Straw <me@jamiestraw.com>",
   "license": "ISC",
-  "homepage": "https://github.com/jamiestraw/streaker",
+  "homepage": "https://github.com/jamiestraw/streaker#readme",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/jamiestraw/streaker.git"
