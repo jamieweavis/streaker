@@ -1,6 +1,6 @@
 'use strict'
 
-const log = require('electron-log')
+const log = require('./app/logger')
 const path = require('path')
 const pjson = require('./package.json')
 const config = require('./app/config')
@@ -116,8 +116,6 @@ app.on('ready', () => {
   app.on('window-all-closed', () => {})
   tray.on('right-click', requestContributionData)
   ipcMain.on('setUsername', setUsername)
-
-  log.transports.file.level = 'info'
 
   requestContributionData()
   setInterval(requestContributionData, 1000 * 60 * 15) // 15 Minutes
