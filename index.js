@@ -100,21 +100,24 @@ app.on('ready', () => {
     usernameWindow.loadURL(`file://${__dirname}/app/username.html`)
     usernameWindow.once('ready-to-show', () => { usernameWindow.show() })
     usernameWindow.on('closed', () => { usernameWindow = null })
+    usernameWindow.on('blur', () => { usernameWindow.close() })
   }
 
-  app.dock.hide()
-  app.on('window-all-closed', () => {})
-  tray.on('right-click', requestContributionData)
-  log.transports.file.level = 'info'
-
-  ipcMain.on('setUsername', (event, username) => {
+  function setUsername (event, username) {
     usernameWindow.close()
     if (username && username !== config.get('username')) {
       config.set('username', username)
       requestContributionData()
       log.info(`Config updated - username=${username}`)
     }
-  })
+  }
+
+  app.dock.hide()
+  app.on('window-all-closed', () => {})
+  tray.on('right-click', requestContributionData)
+  ipcMain.on('setUsername', setUsername)
+
+  log.transports.file.level = 'info'
 
   requestContributionData()
   setInterval(requestContributionData, config.get('requestInterval'))
