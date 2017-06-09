@@ -91,7 +91,7 @@ app.on('ready', () => {
     usernameWindow = new BrowserWindow({
       title: `${pjson.name} - Set GitHub Username`,
       frame: false,
-      width: 265,
+      width: 270,
       height: 60,
       resizable: false,
       maximizable: false,

@@ -3,35 +3,29 @@
   <head>
     <style>
       ::-webkit-input-placeholder { color: #bbb; }
-      html, body {
-        width: 100%;
-        height: 100%;
-        margin: 0;
-      }
+      html, body { width: 100%; height: 100%; margin: 0; }
       input {
         width: 100%;
         height: 100%;
-        padding: 20px 20px 20px 50px;
+        padding: 20px 20px 20px 55px;
         border: none;
         outline: none;
         box-sizing: border-box;
         font: 18px -apple-system, BlinkMacSystemFont, sans-serif;
         color: #24292e;
-        background: url(data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0idXRmLTgiPz48IURPQ1RZUEUgc3ZnIFBVQkxJQyAiLS8vVzNDLy9EVEQgU1ZHIDEuMS8vRU4iICJodHRwOi8vd3d3LnczLm9yZy9HcmFwaGljcy9TVkcvMS4xL0RURC9zdmcxMS5kdGQiPjxzdmcgdmVyc2lvbj0iMS4xIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHhtbG5zOnhsaW5rPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5L3hsaW5rIiB3aWR0aD0iMzIiIGhlaWdodD0iMzIiIHZpZXdCb3g9IjAgMCAzMiAzMiI+PHBhdGggZmlsbD0iIzI0MjkyZSIgZD0iTTE5LjkwNiAxNy44NDdjMC40MjkgMCAwLjc5IDAuMjEgMS4xMDIgMC42MzYgMC4zMSAwLjQyMiAwLjQ2OCAwLjk0NCAwLjQ2OCAxLjU2IDAgMC42MTktMC4xNTYgMS4xNDEtMC40NjggMS41NjNzLTAuNjc4IDAuNjM0LTEuMTAyIDAuNjM0Yy0wLjQ1MSAwLTAuODM5LTAuMjEtMS4xNTEtMC42MzQtMC4zMDctMC40MjItMC40NjUtMC45NDQtMC40NjUtMS41NjNzMC4xNTMtMS4xMzkgMC40NjUtMS41NmMwLjMxMi0wLjQyNyAwLjcwMi0wLjYzNiAxLjE1MS0wLjYzNnpNMjUuNDI1IDEyLjEzMmMxLjIwMiAxLjMwMyAxLjgwOSAyLjg4NCAxLjgwOSA0LjczOCAwIDEuMjAzLTAuMTQyIDIuMjg2LTAuNDE1IDMuMjQ5LTAuMjc4IDAuOTU4LTAuNjI5IDEuNzQzLTEuMDQ4IDIuMzQzLTAuNDI3IDAuNjA1LTAuOTQzIDEuMTM2LTEuNTY1IDEuNTg1LTAuNjIyIDAuNDYxLTEuMTk1IDAuNzktMS43MTIgMS4wMDJzLTEuMTEyIDAuMzc2LTEuNzg1IDAuNDljLTAuNjY1IDAuMTE3LTEuMTY4IDAuMTgtMS41MTcgMC4xOTgtMC4zMzYgMC4wMTUtMC43MDIgMC4wMjItMS4wOTcgMC4wMjItMC4wODggMC0wLjM4NSAwLjAxMC0wLjg3OSAwLjAyNC0wLjQ4MiAwLjAyMC0wLjg5NiAwLjAyOS0xLjIxOCAwLjAyOXMtMC43MzYtMC4wMTAtMS4yMTgtMC4wMjljLTAuNDktMC4wMTUtMC43OS0wLjAyNC0wLjg3OS0wLjAyNC0wLjM5NSAwLTAuNzY0LTAuMDA1LTEuMDk4LTAuMDIyLTAuMzUtMC4wMTctMC44NTItMC4wODAtMS41MTQtMC4xOTgtMC42NzYtMC4xMTItMS4yNjgtMC4yNzMtMS43ODctMC40OS0wLjUxNy0wLjIxLTEuMDg5LTAuNTQxLTEuNzA4LTEuMDAyLTAuNjI0LTAuNDU0LTEuMTQxLTAuOTgzLTEuNTY4LTEuNTg1LTAuNDE5LTAuNi0wLjc3Mi0xLjM4NS0xLjA0OC0yLjM0My0wLjI3Mi0wLjk2My0wLjQxNC0yLjA0Ni0wLjQxNC0zLjI0OSAwLTEuODU0IDAuNjA1LTMuNDM1IDEuODEtNC43MzgtMC4xMzMtMC4wNjUtMC4xNC0wLjcxNC0wLjAyMS0xLjk1MiAwLjEwNy0xLjIzOSAwLjM3LTIuMzggMC43OTctMy40MjEgMS41MDMgMC4xNiAzLjM1MiAxLjAwOCA1LjU2NyAyLjUzOSAwLjc0OC0wLjE5NSAxLjc3Mi0wLjI5NSAzLjA3OC0wLjI5NSAxLjM3IDAgMi4zOTQgMC4xIDMuMDc5IDAuMjk1IDEuMDA5LTAuNjgxIDEuOTc1LTEuMjM5IDIuODk2LTEuNjYzIDAuOTM2LTAuNDE5IDEuNjA5LTAuNjY3IDIuMDMzLTAuNzMxbDAuNjM0LTAuMTQ1YzAuNDI5IDEuMDQxIDAuNjkyIDIuMTg1IDAuOCAzLjQyMSAwLjEyNCAxLjIzNyAwLjExNyAxLjg4Ny0wLjAxNSAxLjk1MnpNMTYuMDUyIDI0LjY4M2MyLjcwMyAwIDQuNzQxLTAuMzI0IDYuMTI1LTAuOTczIDEuMzgtMC42NTEgMi4wODItMS45OSAyLjA4Mi00LjAwOCAwLTEuMTctMC40NDEtMi4xNS0xLjMyMi0yLjkzMi0wLjQ1NC0wLjQyNC0wLjk4NS0wLjY4MS0xLjU5NS0wLjc4MS0wLjU5NS0wLjA5OC0xLjUxNC0wLjA5OC0yLjc1NSAwLTEuMjM2IDAuMS0yLjA4MiAwLjE0NS0yLjUzNyAwLjE0NS0wLjYxOSAwLTEuMjkxLTAuMDMzLTIuMTI1LTAuMDk4LTAuODM0LTAuMDYyLTEuNDg3LTAuMTAyLTEuOTU0LTAuMTIyLTAuNDc4LTAuMDE1LTAuOTg2IDAuMDQ1LTEuNTM4IDAuMTcyLTAuNTU3IDAuMTMzLTEuMDA4IDAuMzU3LTEuMzczIDAuNjgxLTAuODQgMC43NS0xLjI2NiAxLjcyNS0xLjI2NiAyLjkzMiAwIDIuMDE5IDAuNjg0IDMuMzU3IDIuMDUwIDQuMDA2IDEuMzY1IDAuNjUzIDMuMzk3IDAuOTc1IDYuMTAxIDAuOTc1ek0xMi4xNDMgMTcuODQ3YzAuNDI0IDAgMC43ODkgMC4yMSAxLjA5OCAwLjYzNiAwLjMxIDAuNDIyIDAuNDY3IDAuOTQ0IDAuNDY3IDEuNTYgMCAwLjYxOS0wLjE1NSAxLjE0MS0wLjQ2NyAxLjU2My0wLjMwOSAwLjQyMi0wLjY3NyAwLjYzNC0xLjA5OCAwLjYzNC0wLjQ1NSAwLTAuODQxLTAuMjEtMS4xNTMtMC42MzQtMC4zMDktMC40MjItMC40NjctMC45NDQtMC40NjctMS41NjNzMC4xNTUtMS4xMzkgMC40NjctMS41NmMwLjMxMi0wLjQyNyAwLjY5OS0wLjYzNiAxLjE1My0wLjYzNnoiPjwvcGF0aD48L3N2Zz4=) 10px center/35px no-repeat #f6f8fa;
+        background: url('github.svg') 12px center/32px no-repeat #f6f8fa;
         -webkit-appearance: none;
       }
     </style>
   </head>
   <body>
     <input id="username-input" type="text" placeholder="Your GitHub Username" />
-
     <script>
       const ipcRenderer = require('electron').ipcRenderer
       const config = require('./config')
       const input = document.querySelector('input')
-
       input.value = config.get('username')
-      input.focus()
+      input.select()
       input.addEventListener('keyup', (event) => {
         if (event.keyCode === 13) ipcRenderer.send('setUsername', input.value)
         if (event.keyCode === 27) ipcRenderer.send('setUsername', '')
