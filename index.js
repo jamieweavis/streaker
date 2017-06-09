@@ -120,5 +120,5 @@ app.on('ready', () => {
   log.transports.file.level = 'info'
 
   requestContributionData()
-  setInterval(requestContributionData, config.get('requestInterval'))
+  setInterval(requestContributionData, 1000 * 60 * 15) // 15 Minutes
 })
