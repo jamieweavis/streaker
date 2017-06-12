@@ -18,10 +18,10 @@ app.on('ready', () => {
     path: `/Applications/${pjson.name}.app`
   })
   const icon = {
-    done: path.join(__dirname, 'app', 'doneTemplate.png'),
-    todo: path.join(__dirname, 'app', 'todoTemplate.png'),
-    load: path.join(__dirname, 'app', 'loadTemplate.png'),
-    fail: path.join(__dirname, 'app', 'failTemplate.png')
+    done: path.join(__dirname, 'app/icons/doneTemplate.png'),
+    todo: path.join(__dirname, 'app/icons/todoTemplate.png'),
+    load: path.join(__dirname, 'app/icons/loadTemplate.png'),
+    fail: path.join(__dirname, 'app/icons/failTemplate.png')
   }
 
   let tray = new Tray(icon.done)
