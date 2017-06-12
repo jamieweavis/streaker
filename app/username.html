@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html>
   <head>
+    <meta charset="utf-8">
     <style>
       ::-webkit-input-placeholder { color: #bbb; }
       html, body { width: 100%; height: 100%; margin: 0; }
@@ -19,9 +20,9 @@
     </style>
   </head>
   <body>
-    <input id="username-input" type="text" placeholder="Your GitHub Username" />
+    <input type="text" placeholder="Your GitHub Username">
     <script>
-      const ipcRenderer = require('electron').ipcRenderer
+      const { ipcRenderer } = require('electron')
       const config = require('./config')
       const input = document.querySelector('input')
       input.value = config.get('username')
