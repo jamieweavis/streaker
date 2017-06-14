@@ -10,9 +10,9 @@
 
 Download the latest version of Streaker from the the **[GitHub releases](https://github.com/jamiestraw/streaker/releases)** page. (currently macOS only)
 
-## 🖥 Screenshot
+## 🖥 Screenshots
 
-<img src="https://github.com/jamiestraw/streaker/raw/master/screenshots/screenshot.png" width="285">
+<img src="https://github.com/jamiestraw/streaker/raw/master/screenshots/screenshot-light.png" width="285"><img src="https://github.com/jamiestraw/streaker/raw/master/screenshots/screenshot-dark.png" width="285">
 
 ## 🐙 Menu Bar Icons
 
