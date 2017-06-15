@@ -14,7 +14,7 @@ const { app, BrowserWindow, Tray, Menu, shell, ipcMain } = electron
 app.on('ready', () => {
   const parser = new DOMParser()
   const streakerAutoLauncher = new AutoLaunch({
-    name: app.getName(),
+    name: pjson.name,
     path: `/Applications/${pjson.name}.app`
   })
 
