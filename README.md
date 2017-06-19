@@ -18,12 +18,12 @@ Download the latest version of Streaker from the the **[GitHub releases](https:/
 
 Streaker's menu bar icon is updated depending on it's current state:
 
-| Status | Icon | Description |
+| | Status | Description |
 | ------ | ---- | ----------- |
-| Contributed Today | <img src="https://github.com/jamiestraw/streaker/raw/master/screenshots/done.png" width="32"> | You've contributed today, your contribution streak lives on! |
-| Contribution Todo | <img src="https://github.com/jamiestraw/streaker/raw/master/screenshots/todo.png" width="32"> | You haven't contributed today, don't forget to keep up that streak! |
-| Requesting Data | <img src="https://github.com/jamiestraw/streaker/raw/master/screenshots/load.png" width="32"> | Your contribution data is being loaded from GitHub, hold tight! |
-| Request Failed | <img src="https://github.com/jamiestraw/streaker/raw/master/screenshots/fail.png" width="32"> | Your contribution data request failed, did you spell your username correctly? If so, GitHub *or* the internet could be down! |
+| <img src="https://github.com/jamiestraw/streaker/raw/master/app/icons/macos/doneTemplate@2x.png" width="16"> | Done | You've contributed today, nice work. |
+| <img src="https://github.com/jamiestraw/streaker/raw/master/app/icons/macos/todoTemplate@2x.png" width="16"> | Todo | You haven't contributed today, don't forget! |
+| <img src="https://github.com/jamiestraw/streaker/raw/master/app/icons/macos/loadTemplate@2x.png" width="16"> | Loading | Your contribution data is being loaded from GitHub. |
+| <img src="https://github.com/jamiestraw/streaker/raw/master/app/icons/macos/failTemplate@2x.png" width="16"> | Failed | Your contribution data request failed. |
 
 ## 📄 License
 
