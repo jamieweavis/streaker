@@ -1,5 +1,5 @@
 # Streaker
-> :octocat: GitHub contribution streak tracking menu bar app
+> :octocat: GitHub contribution streak tracking menubar app
 
 [![Downloads](https://img.shields.io/github/downloads/jamiestraw/streaker/total.svg)](https://github.com/feross/standard)
 [![Javascript Standard](https://img.shields.io/badge/code%20style-standard-brightgreen.svg)](https://github.com/feross/standard)
