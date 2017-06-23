@@ -53,8 +53,11 @@ app.on('ready', () => {
 
   function createTrayMenu (displayLabel) {
     let username = config.get('username') || 'username not set'
+    let githubProfileUrl = `https://github.com/${username}`
     let menuTemplate = [
       { label: `${displayLabel} (${username})`, enabled: false },
+      { type: 'separator' },
+      { label: 'Open GitHub Profile...', accelerator: 'Cmd+O', click: () => { shell.openExternal(githubProfileUrl) } },
       { type: 'separator' },
       { label: 'Refresh', accelerator: 'Cmd+R', click: requestContributionData },
       { label: 'Set GitHub Username...', click: createUsernameWindow },
