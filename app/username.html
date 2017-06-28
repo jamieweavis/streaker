@@ -23,9 +23,9 @@
     <input type="text" placeholder="Your GitHub Username">
     <script>
       const { ipcRenderer } = require('electron')
-      const config = require('./config')
+      const store = require('./store')
       const input = document.querySelector('input')
-      input.value = config.get('username')
+      input.value = store.get('username')
       input.select()
       input.addEventListener('keyup', (event) => {
         if (event.keyCode === 13) ipcRenderer.send('setUsername', input.value)

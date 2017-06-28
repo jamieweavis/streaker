@@ -3,7 +3,7 @@
 const log = require('./app/logger')
 const icon = require('./app/icons')
 const pjson = require('./package.json')
-const config = require('./app/config')
+const store = require('./app/store')
 const request = require('request-promise-native')
 const DOMParser = require('dom-parser')
 const AutoLaunch = require('auto-launch')
@@ -25,7 +25,7 @@ app.on('ready', () => {
     tray.setImage(icon.load)
     tray.setContextMenu(createTrayMenu('Loading...'))
 
-    let username = config.get('username')
+    let username = store.get('username')
     let contributionUrl = `https://github.com/users/${username}/contributions`
     let contributionStreak = 0
     let contributedToday = false
@@ -52,7 +52,7 @@ app.on('ready', () => {
   }
 
   function createTrayMenu (displayLabel) {
-    let username = config.get('username') || 'username not set'
+    let username = store.get('username') || 'username not set'
     let githubProfileUrl = `https://github.com/${username}`
     let menuTemplate = [
       { label: `${displayLabel} (${username})`, enabled: false },
@@ -66,11 +66,11 @@ app.on('ready', () => {
         submenu: [{
           label: `Launch ${pjson.name} at login`,
           type: 'checkbox',
-          checked: config.get('autoLaunch'),
+          checked: store.get('autoLaunch'),
           click: (checkbox) => {
-            config.set('autoLaunch', checkbox.checked)
+            store.set('autoLaunch', checkbox.checked)
             checkbox.checked ? streakerAutoLauncher.enable() : streakerAutoLauncher.disable()
-            log.info(`Config updated - autoLaunch=${checkbox.checked}`)
+            log.info(`Store updated - autoLaunch=${checkbox.checked}`)
           }
         }]
       },
@@ -102,10 +102,10 @@ app.on('ready', () => {
 
   function setUsername (event, username) {
     usernameWindow.close()
-    if (username && username !== config.get('username')) {
-      config.set('username', username)
+    if (username && username !== store.get('username')) {
+      store.set('username', username)
       requestContributionData()
-      log.info(`Config updated - username=${username}`)
+      log.info(`Store updated - username=${username}`)
     }
   }
 
