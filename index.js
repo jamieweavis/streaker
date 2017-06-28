@@ -1,7 +1,7 @@
 'use strict'
 
 const log = require('./app/logger')
-const icon = require('./app/icons')
+const icon = require('./app/icon')
 const pjson = require('./package.json')
 const store = require('./app/store')
 const request = require('request-promise-native')
