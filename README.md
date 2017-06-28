@@ -12,7 +12,7 @@ Download the latest version of Streaker from the the **[GitHub releases](https:/
 
 ## 🖥 Screenshots
 
-<img src="https://github.com/jamiestraw/streaker/raw/master/screenshots/screenshot-light.png" width="285"><img src="https://github.com/jamiestraw/streaker/raw/master/screenshots/screenshot-dark.png" width="285">
+<img src="https://github.com/jamiestraw/streaker/raw/master/screenshots/light.png" width="250"><img src="https://github.com/jamiestraw/streaker/raw/master/screenshots/dark.png" width="250">
 
 ## 🐙 Menu Bar Icons
 
