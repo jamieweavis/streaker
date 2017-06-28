@@ -57,9 +57,9 @@ app.on('ready', () => {
     let menuTemplate = [
       { label: `${displayLabel} (${username})`, enabled: false },
       { type: 'separator' },
+      { label: 'Refresh', accelerator: 'Cmd+R', click: requestContributionData },
       { label: 'Open GitHub Profile...', accelerator: 'Cmd+O', click: () => { shell.openExternal(githubProfileUrl) } },
       { type: 'separator' },
-      { label: 'Refresh', accelerator: 'Cmd+R', click: requestContributionData },
       { label: 'Set GitHub Username...', click: createUsernameWindow },
       {
         label: 'Preferences',
@@ -75,7 +75,7 @@ app.on('ready', () => {
         }]
       },
       { type: 'separator' },
-      { label: `About ${pjson.name}`, click: () => { shell.openExternal(pjson.homepage) } },
+      { label: `About ${pjson.name}...`, click: () => { shell.openExternal(pjson.homepage) } },
       { label: 'Feedback && Support...', click: () => { shell.openExternal(pjson.bugs.url) } },
       { type: 'separator' },
       { label: `Quit ${pjson.name}`, accelerator: 'Cmd+Q', click: () => { app.quit() } }
