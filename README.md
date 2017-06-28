@@ -1,5 +1,5 @@
 # Streaker
-> :octopus: GitHub contribution streak tracking menubar app
+> 🐙 GitHub contribution streak tracking menubar app
 
 [![Downloads](https://img.shields.io/github/downloads/jamiestraw/streaker/total.svg)](https://github.com/feross/standard)
 [![Javascript Standard](https://img.shields.io/badge/code%20style-standard-brightgreen.svg)](https://github.com/feross/standard)
@@ -14,7 +14,7 @@ Download the latest version of Streaker from the the **[GitHub releases](https:/
 
 <img src="https://github.com/jamiestraw/streaker/raw/master/screenshots/screenshot-light.png" width="285"><img src="https://github.com/jamiestraw/streaker/raw/master/screenshots/screenshot-dark.png" width="285">
 
-## :octopus: Menu Bar Icons
+## 🐙 Menu Bar Icons
 
 Streaker's menu bar icon is updated depending on it's current state:
 
