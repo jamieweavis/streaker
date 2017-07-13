@@ -1,10 +1,9 @@
-# Streaker
-> 🐙 GitHub contribution streak tracking menubar app
-
-[![Downloads](https://img.shields.io/github/downloads/jamiestraw/streaker/total.svg)](https://github.com/feross/standard)
-[![Javascript Standard](https://img.shields.io/badge/code%20style-standard-brightgreen.svg)](https://github.com/feross/standard)
-[![Release](https://img.shields.io/github/release/jamiestraw/streaker.svg)](https://github.com/jamiestraw/streaker/releases)
-[![GitHub license](https://img.shields.io/badge/license-MIT-blue.svg)](https://raw.githubusercontent.com/jamiestraw/streaker/master/LICENSE.md)
+<p align="center">
+    <img src="icon@2x.png" height="64">
+    <h3 align="center">Streaker</h3>
+    <p align="center">🐙 GitHub contribution streak tracking menubar app<p>
+    <p align="center"><img src="https://img.shields.io/github/downloads/jamiestraw/streaker/total.svg" alt="Downloads"> <a href="https://github.com/feross/standard"><img src="https://img.shields.io/badge/code%20style-standard-brightgreen.svg" alt="Standard Code Style"></a> <a href="https://github.com/jamiestraw/streaker/releases"><img src="https://img.shields.io/github/release/jamiestraw/streaker.svg" alt="Release Version"></a> <a href="https://raw.githubusercontent.com/jamiestraw/streaker/master/LICENSE.md"><img src="https://img.shields.io/badge/license-MIT-blue.svg" alt="Github License"></a></p>
+</p>
 
 ## 📦 Install
 
@@ -12,7 +11,7 @@ Download the latest version of Streaker from the the **[GitHub releases](https:/
 
 ## 🖥 Screenshots
 
-<img src="https://github.com/jamiestraw/streaker/raw/master/screenshots/light.png" width="250"><img src="https://github.com/jamiestraw/streaker/raw/master/screenshots/dark.png" width="250">
+<img src="screenshots/light.png" width="250"><img src="screenshots/dark.png" width="250">
 
 ## 🐙 Menu Bar Icons
 
@@ -20,10 +19,10 @@ Streaker's menu bar icon is updated depending on it's current state:
 
 | | Status | Description |
 | ------ | ---- | ----------- |
-| <img src="https://github.com/jamiestraw/streaker/raw/master/app/icons/macos/doneTemplate@2x.png" width="16"> | Done | You've contributed today, nice work. |
-| <img src="https://github.com/jamiestraw/streaker/raw/master/app/icons/macos/todoTemplate@2x.png" width="16"> | Todo | You haven't contributed today, don't forget! |
-| <img src="https://github.com/jamiestraw/streaker/raw/master/app/icons/macos/loadTemplate@2x.png" width="16"> | Loading | Your contribution data is being loaded from GitHub. |
-| <img src="https://github.com/jamiestraw/streaker/raw/master/app/icons/macos/failTemplate@2x.png" width="16"> | Failed | Your contribution data request failed. |
+| <img src="app/icons/macos/doneTemplate@2x.png" width="16"> | Done | You've contributed today, nice work. |
+| <img src="app/icons/macos/todoTemplate@2x.png" width="16"> | Todo | You haven't contributed today, don't forget! |
+| <img src="app/icons/macos/loadTemplate@2x.png" width="16"> | Loading | Your contribution data is being loaded from GitHub. |
+| <img src="app/icons/macos/failTemplate@2x.png" width="16"> | Failed | Your contribution data request failed. |
 
 ## 📄 License
 
