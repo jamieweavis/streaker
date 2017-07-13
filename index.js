@@ -95,7 +95,14 @@ app.on('ready', () => {
       show: false
     })
     usernameWindow.loadURL(`file://${__dirname}/app/username.html`)
-    usernameWindow.once('ready-to-show', () => { usernameWindow.show() })
+    usernameWindow.once('ready-to-show', () => {
+      let screen = electron.screen.getDisplayNearestPoint(electron.screen.getCursorScreenPoint())
+      usernameWindow.setPosition(
+        Math.floor(screen.bounds.x + (screen.size.width / 2) - (usernameWindow.getSize()[0] / 2)),
+        Math.floor(screen.bounds.y + (screen.size.height / 2) - (usernameWindow.getSize()[1] / 2))
+      )
+      usernameWindow.show()
+    })
     usernameWindow.on('closed', () => { usernameWindow = null })
     usernameWindow.on('blur', () => { usernameWindow.close() })
   }
