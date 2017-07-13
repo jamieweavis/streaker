@@ -1,6 +1,7 @@
 {
   "name": "Streaker",
   "version": "1.0.3",
+  "main": "app/main.js",
   "description": "GitHub contribution streak tracking menubar app",
   "author": "Jamie Straw <me@jamiestraw.com>",
   "license": "ISC",
@@ -13,7 +14,7 @@
     "url": "https://github.com/jamiestraw/streaker/issues"
   },
   "scripts": {
-    "start": "electron .",
+    "start": "electron app/main.js",
     "test": "standard",
     "pack": "build --dir",
     "dist": "build"

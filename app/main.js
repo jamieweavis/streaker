@@ -1,9 +1,9 @@
 'use strict'
 
-const log = require('./app/logger')
-const icon = require('./app/icon')
-const pjson = require('./package.json')
-const store = require('./app/store')
+const log = require('./logger')
+const icon = require('./icon')
+const pjson = require('../package.json')
+const store = require('./store')
 const request = require('request-promise-native')
 const DOMParser = require('dom-parser')
 const AutoLaunch = require('auto-launch')
@@ -94,7 +94,7 @@ app.on('ready', () => {
       maximizable: false,
       show: false
     })
-    usernameWindow.loadURL(`file://${__dirname}/app/username.html`)
+    usernameWindow.loadURL(`file://${__dirname}/username.html`)
     usernameWindow.once('ready-to-show', () => {
       let screen = electron.screen.getDisplayNearestPoint(electron.screen.getCursorScreenPoint())
       usernameWindow.setPosition(
