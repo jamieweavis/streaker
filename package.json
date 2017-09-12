@@ -4,7 +4,7 @@
   "main": "app/main.js",
   "description": "GitHub contribution streak tracking menubar app",
   "author": "Jamie Straw <me@jamiestraw.com>",
-  "license": "ISC",
+  "license": "MIT",
   "homepage": "https://github.com/jamiestraw/streaker#readme",
   "repository": {
     "type": "git",
