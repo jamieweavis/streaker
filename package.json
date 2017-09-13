@@ -1,28 +1,10 @@
 {
   "name": "Streaker",
-  "version": "1.0.3",
-  "main": "app/main.js",
   "description": "GitHub contribution streak tracking menubar app",
+  "version": "1.0.3",
   "author": "Jamie Straw <me@jamiestraw.com>",
-  "license": "MIT",
-  "homepage": "https://github.com/jamiestraw/streaker#readme",
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/jamiestraw/streaker.git"
-  },
   "bugs": {
     "url": "https://github.com/jamiestraw/streaker/issues"
-  },
-  "scripts": {
-    "start": "electron app/main.js",
-    "test": "standard",
-    "pack": "build --dir",
-    "dist": "build"
-  },
-  "devDependencies": {
-    "electron": "^1.7.3",
-    "electron-builder": "^18.8.1",
-    "standard": "^10.0.2"
   },
   "dependencies": {
     "auto-launch": "^5.0.1",
@@ -31,5 +13,33 @@
     "electron-store": "^1.1.0",
     "request": "^2.81.0",
     "request-promise-native": "^1.0.4"
+  },
+  "devDependencies": {
+    "electron": "^1.7.3",
+    "electron-builder": "^18.8.1",
+    "standard": "^10.0.2"
+  },
+  "homepage": "https://github.com/jamiestraw/streaker#readme",
+  "keywords": [
+    "contribution",
+    "contribution-graph",
+    "electron",
+    "electron-app",
+    "github",
+    "macos",
+    "menubar",
+    "streak"
+  ],
+  "license": "MIT",
+  "main": "app/main.js",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jamiestraw/streaker.git"
+  },
+  "scripts": {
+    "dist": "build",
+    "pack": "build --dir",
+    "start": "electron app/main.js",
+    "test": "standard"
   }
 }
