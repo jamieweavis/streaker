@@ -15,8 +15,8 @@
     "request-promise-native": "^1.0.4"
   },
   "devDependencies": {
-    "electron": "^1.7.3",
-    "electron-builder": "^18.8.1",
+    "electron": "^1.7.9",
+    "electron-builder": "^19.37.2",
     "standard": "^10.0.2"
   },
   "homepage": "https://github.com/jamiestraw/streaker#readme",
