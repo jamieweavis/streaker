@@ -1,10 +1,10 @@
 {
-  "name": "Streaker",
+  "name": "streaker",
   "description": "GitHub contribution streak tracking menubar app",
   "version": "1.0.3",
-  "author": "Jamie Straw <me@jamiestraw.com>",
+  "author": "Jamie Weavis <jamie.weavis@gmail.com>",
   "bugs": {
-    "url": "https://github.com/jamiestraw/streaker/issues"
+    "url": "https://github.com/jamieweavis/streaker/issues"
   },
   "dependencies": {
     "auto-launch": "^5.0.1",
@@ -19,7 +19,7 @@
     "electron-builder": "^19.37.2",
     "standard": "^10.0.2"
   },
-  "homepage": "https://github.com/jamiestraw/streaker#readme",
+  "homepage": "https://github.com/jamieweavis/streaker#readme",
   "keywords": [
     "contribution",
     "contribution-graph",
@@ -34,7 +34,7 @@
   "main": "app/main.js",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/jamiestraw/streaker.git"
+    "url": "git+https://github.com/jamieweavis/streaker.git"
   },
   "scripts": {
     "dist": "build",
