@@ -5,15 +5,15 @@
     <p align="center"><img src="https://img.shields.io/github/downloads/jamieweavis/streaker/total.svg" alt="Downloads"> <a href="https://github.com/feross/standard"><img src="https://img.shields.io/badge/code%20style-standard-brightgreen.svg" alt="Standard Code Style"></a> <a href="https://github.com/jamieweavis/streaker/releases"><img src="https://img.shields.io/github/release/jamieweavis/streaker.svg" alt="Release Version"></a> <a href="https://raw.githubusercontent.com/jamieweavis/streaker/master/LICENSE.md"><img src="https://img.shields.io/badge/license-MIT-blue.svg" alt="Github License"></a></p>
 </p>
 
-## 📦 Install
+## Installation
 
 Download the latest version of Streaker from the the **[GitHub releases](https://github.com/jamieweavis/streaker/releases)** page. (currently macOS only)
 
-## 🖥 Screenshots
+## Screenshots
 
 <img src="screenshots/light.png" width="250"><img src="screenshots/dark.png" width="250">
 
-## 🐙 Menu Bar Icons
+## Menu Bar Icons
 
 Streaker's menu bar icon is updated depending on it's current state:
 
@@ -24,6 +24,6 @@ Streaker's menu bar icon is updated depending on it's current state:
 | <img src="app/icons/macos/loadTemplate@2x.png" width="16"> | Loading | Your contribution data is being loaded from GitHub. |
 | <img src="app/icons/macos/failTemplate@2x.png" width="16"> | Failed | Your contribution data request failed. |
 
-## 📄 License
+## License
 
 This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md) file for details.
