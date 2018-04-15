@@ -7,17 +7,17 @@
     "url": "https://github.com/jamieweavis/streaker/issues"
   },
   "dependencies": {
-    "auto-launch": "^5.0.1",
+    "auto-launch": "^5.0.5",
     "dom-parser": "^0.1.5",
-    "electron-log": "^2.2.6",
+    "electron-log": "^2.2.14",
     "electron-store": "^1.1.0",
-    "request": "^2.81.0",
+    "request": "^2.85.0",
     "request-promise-native": "^1.0.4"
   },
   "devDependencies": {
-    "electron": "^1.7.9",
-    "electron-builder": "^19.37.2",
-    "standard": "^10.0.2"
+    "electron": "^1.8.4",
+    "electron-builder": "^20.8.1",
+    "standard": "^11.0.1"
   },
   "homepage": "https://github.com/jamieweavis/streaker#readme",
   "keywords": [
