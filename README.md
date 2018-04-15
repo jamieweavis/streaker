@@ -24,6 +24,11 @@ Streaker's menu bar icon is updated depending on it's current state:
 | <img src="app/icons/macos/loadTemplate@2x.png" width="16"> | Loading | Your contribution data is being loaded from GitHub. |
 | <img src="app/icons/macos/failTemplate@2x.png" width="16"> | Failed | Your contribution data request failed. |
 
+## Related
+
+* [streaker](https://github.com/jamieweavis/streaker) - 🐙 GitHub contribution streak tracking menubar app
+* [contribution](https://github.com/jamieweavis/contribution) - 🗓 GitHub contribution count & streak fetcher with zero dependencies
+
 ## License
 
 This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md) file for details.
