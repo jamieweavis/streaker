@@ -1,10 +1,10 @@
-'use strict'
+'use strict';
 
-const Store = require('electron-store')
+const Store = require('electron-store');
 
 module.exports = new Store({
   defaults: {
     username: '',
     autoLaunch: false
   }
-})
+});

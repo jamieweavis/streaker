@@ -17,12 +17,12 @@ Download the latest version of Streaker from the the **[GitHub releases](https:/
 
 Streaker's menu bar icon is updated depending on your current contribution status:
 
-| | Status | Description |
-| ------ | ---- | ----------- |
-| <img src="app/icons/macos/doneTemplate@2x.png" width="16"> | Done | You've contributed today, nice work. |
-| <img src="app/icons/macos/todoTemplate@2x.png" width="16"> | Todo | You haven't contributed today, don't forget! |
+|                                                            | Status  | Description                                         |
+| ---------------------------------------------------------- | ------- | --------------------------------------------------- |
+| <img src="app/icons/macos/doneTemplate@2x.png" width="16"> | Done    | You've contributed today, nice work.                |
+| <img src="app/icons/macos/todoTemplate@2x.png" width="16"> | Todo    | You haven't contributed today, don't forget!        |
 | <img src="app/icons/macos/loadTemplate@2x.png" width="16"> | Loading | Your contribution data is being loaded from GitHub. |
-| <img src="app/icons/macos/failTemplate@2x.png" width="16"> | Failed | Your contribution data request failed. |
+| <img src="app/icons/macos/failTemplate@2x.png" width="16"> | Failed  | Your contribution data request failed.              |
 
 ## Related
 
