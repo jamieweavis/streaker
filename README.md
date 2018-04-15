@@ -26,7 +26,7 @@ Streaker's menu bar icon is updated depending on your current contribution statu
 
 ## Related
 
-* [streaker](https://github.com/jamieweavis/streaker) - 🐙 GitHub contribution streak tracking menubar app
+* [streaker-cli](https://github.com/jamieweavis/streaker-cli) - 🐙 GitHub contribution streak fetching CLI app
 * [contribution](https://github.com/jamieweavis/contribution) - 🗓 GitHub contribution count & streak fetcher with zero dependencies
 
 ## License
