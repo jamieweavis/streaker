@@ -15,7 +15,11 @@
   "devDependencies": {
     "electron": "^1.8.4",
     "electron-builder": "^20.8.1",
-    "standard": "^11.0.1"
+    "eslint": "^4.19.1",
+    "eslint-config-airbnb-base": "^12.1.0",
+    "eslint-config-prettier": "^2.9.0",
+    "eslint-plugin-import": "^2.11.0",
+    "prettier": "^1.12.0"
   },
   "homepage": "https://github.com/jamieweavis/streaker#readme",
   "keywords": [
@@ -29,7 +33,7 @@
     "streak"
   ],
   "license": "MIT",
-  "main": "app/main.js",
+  "main": "src/app.js",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/jamieweavis/streaker.git"
@@ -37,7 +41,7 @@
   "scripts": {
     "dist": "build",
     "pack": "build --dir",
-    "start": "electron app/main.js",
+    "start": "electron src/app.js",
     "test": "standard"
   }
 }
