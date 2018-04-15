@@ -11,7 +11,7 @@ Download the latest version of Streaker from the the **[GitHub releases](https:/
 
 ## Screenshots
 
-<img src="screenshots/light.png" width="250"><img src="screenshots/dark.png" width="250">
+<img src="screenshots/light.png" width="305"><img src="screenshots/dark.png" width="305">
 
 ## Menu Bar Icons
 
