@@ -8,11 +8,9 @@
   },
   "dependencies": {
     "auto-launch": "^5.0.5",
-    "dom-parser": "^0.1.5",
+    "contribution": "^1.0.14",
     "electron-log": "^2.2.14",
-    "electron-store": "^1.1.0",
-    "request": "^2.85.0",
-    "request-promise-native": "^1.0.4"
+    "electron-store": "^1.1.0"
   },
   "devDependencies": {
     "electron": "^1.8.4",
