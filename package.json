@@ -42,6 +42,6 @@
     "dist": "build",
     "pack": "build --dir",
     "start": "electron src/app.js",
-    "test": "standard"
+    "test": "eslint ."
   }
 }
