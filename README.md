@@ -15,7 +15,7 @@ Download the latest version of Streaker from the the **[GitHub releases](https:/
 
 ## Menu Bar Icons
 
-Streaker's menu bar icon is updated depending on it's current state:
+Streaker's menu bar icon is updated depending on your current contribution status:
 
 | | Status | Description |
 | ------ | ---- | ----------- |
