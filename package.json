@@ -8,18 +8,18 @@
   },
   "dependencies": {
     "auto-launch": "^5.0.5",
-    "contribution": "^1.0.14",
-    "electron-log": "^2.2.14",
-    "electron-store": "^1.1.0"
+    "contribution": "^1.1.0",
+    "electron-log": "^2.2.16",
+    "electron-store": "^2.0.0"
   },
   "devDependencies": {
-    "electron": "^1.8.4",
-    "electron-builder": "^20.8.1",
-    "eslint": "^4.19.1",
-    "eslint-config-airbnb-base": "^12.1.0",
+    "electron": "^2.0.4",
+    "electron-builder": "^20.19.2",
+    "eslint": "^5.1.0",
+    "eslint-config-airbnb-base": "^13.0.0",
     "eslint-config-prettier": "^2.9.0",
-    "eslint-plugin-import": "^2.11.0",
-    "prettier": "^1.12.0"
+    "eslint-plugin-import": "^2.13.0",
+    "prettier": "^1.13.7"
   },
   "homepage": "https://github.com/jamieweavis/streaker#readme",
   "keywords": [
