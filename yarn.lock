@@ -450,9 +450,9 @@ contains-path@^0.1.0:
   version "0.1.0"
   resolved "https://registry.yarnpkg.com/contains-path/-/contains-path-0.1.0.tgz#fe8cf184ff6670b6baef01a9d4861a5cbec4120a"
 
-contribution@^1.1.0:
-  version "1.1.0"
-  resolved "https://registry.yarnpkg.com/contribution/-/contribution-1.1.0.tgz#8b6733fee370111bed8cc39d86ef9f5ad1a5622b"
+contribution@^1.2.0:
+  version "1.2.0"
+  resolved "https://registry.yarnpkg.com/contribution/-/contribution-1.2.0.tgz#c4e145171609a2e735a79ecb73e81266fc5ef9de"
 
 core-util-is@1.0.2, core-util-is@~1.0.0:
   version "1.0.2"
