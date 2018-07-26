@@ -1,10 +1,11 @@
+const electron = require('electron');
+const AutoLaunch = require('auto-launch');
+const contribution = require('contribution');
+
 const log = require('./logger');
 const icon = require('./icon');
 const pjson = require('../package.json');
 const store = require('./store');
-const electron = require('electron');
-const AutoLaunch = require('auto-launch');
-const contribution = require('contribution');
 
 const { app, BrowserWindow, Tray, Menu, shell, ipcMain } = electron;
 
