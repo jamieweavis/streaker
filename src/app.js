@@ -58,11 +58,15 @@ app.on('ready', () => {
     });
   }
 
-  function createTrayMenu(displayLabel) {
+  function createTrayMenu(contributionCount, currentStreak) {
     const username = store.get('username') || 'username not set';
     const githubProfileUrl = `https://github.com/${username}`;
     const menuTemplate = [
-      { label: `${displayLabel} (${username})`, enabled: false },
+      { label: username, enabled: false },
+      { type: 'separator' },
+      { label: `Current Streak:\t${currentStreak}`, enabled: false },
+      { label: `Best Streak:\t\t${currentStreak}`, enabled: false },
+      { label: `Contributions:\t${contributionCount}`, enabled: false },
       { type: 'separator' },
       { label: 'Reload', accelerator: 'Cmd+R', click: requestContributionData },
       {
@@ -116,13 +120,13 @@ app.on('ready', () => {
 
   function requestContributionData() {
     tray.setImage(icon.load);
-    tray.setContextMenu(createTrayMenu('Loading...'));
+    tray.setContextMenu(createTrayMenu('Loading...', 'Loading...'));
 
     const username = store.get('username');
 
     contribution(username)
       .then(data => {
-        tray.setContextMenu(createTrayMenu(`Streak: ${data.streak}`));
+        tray.setContextMenu(createTrayMenu(data.contributions, data.streak));
         tray.setImage(data.streak > 0 ? icon.done : icon.todo);
         log.info(
           `Request successful - username=${username} streak=${
@@ -131,7 +135,7 @@ app.on('ready', () => {
         );
       })
       .catch(error => {
-        tray.setContextMenu(createTrayMenu('Failed to get streak'));
+        tray.setContextMenu(createTrayMenu('Error', 'Error'));
         tray.setImage(icon.fail);
         log.error(
           `Request failed - username=${username}) statusCode=${
