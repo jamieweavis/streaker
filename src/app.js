@@ -136,11 +136,11 @@ app.on('ready', () => {
             data.bestStreak
           )
         );
-        tray.setImage(data.streak > 0 ? icon.done : icon.todo);
+        tray.setImage(data.currentStreak > 0 ? icon.done : icon.todo);
         log.info(
           `Request successful - username=${username} streak=${
-            data.streak
-          } today=${data.contribution > 0}`
+            data.currentStreak
+          } today=${data.contributions > 0}`
         );
       })
       .catch(error => {
