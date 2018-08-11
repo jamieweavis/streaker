@@ -1,7 +1,7 @@
 {
   "name": "Streaker",
   "description": "GitHub contribution streak tracking menubar app",
-  "version": "1.0.5",
+  "version": "1.0.6",
   "author": "Jamie Weavis <jamie.weavis@gmail.com>",
   "bugs": {
     "url": "https://github.com/jamieweavis/streaker/issues"
