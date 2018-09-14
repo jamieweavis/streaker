@@ -163,6 +163,12 @@ app.on('ready', () => {
     }
   }
 
+  process.on('uncaughtException', (error) => {
+      tray.setContextMenu(createTrayMenu('Error', 'Error', 'Error'));
+      tray.setImage(icon.fail);
+      log.error(error);
+  })
+
   app.dock.hide();
   app.on('window-all-closed', () => {});
   tray.on('right-click', requestContributionData);
