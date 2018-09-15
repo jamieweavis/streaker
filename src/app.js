@@ -163,7 +163,9 @@ app.on('ready', () => {
     }
   }
 
-  app.dock.hide();
+  if (process.platform == 'darwin') {
+    app.dock.hide();
+  }
   app.on('window-all-closed', () => {});
   tray.on('right-click', requestContributionData);
   ipcMain.on('setUsername', setUsername);
