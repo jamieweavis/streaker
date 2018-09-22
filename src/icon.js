@@ -1,11 +1,11 @@
 const path = require('path');
 
-if (process.platform == 'win32') {
+if (process.platform === 'win32') {
   module.exports = {
-    done: path.join(__dirname, 'icons/win/doneTemplate.png'),
-    todo: path.join(__dirname, 'icons/win/todoTemplate.png'),
-    load: path.join(__dirname, 'icons/win/loadTemplate.png'),
-    fail: path.join(__dirname, 'icons/win/failTemplate.png')
+    done: path.join(__dirname, 'icons/win/done.ico'),
+    todo: path.join(__dirname, 'icons/win/todo.ico'),
+    load: path.join(__dirname, 'icons/win/load.ico'),
+    fail: path.join(__dirname, 'icons/win/fail.ico')
   }
 } else {
   module.exports = {

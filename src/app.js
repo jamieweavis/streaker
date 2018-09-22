@@ -163,7 +163,7 @@ app.on('ready', () => {
     }
   }
 
-  if (process.platform == 'darwin') {
+  if (process.platform === 'darwin') {
     app.dock.hide();
   }
   app.on('window-all-closed', () => {});
