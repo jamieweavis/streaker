@@ -162,10 +162,17 @@ app.on('ready', () => {
       log.info(`Store updated - username=${username}`);
     }
   }
-
+  
+  process.on('uncaughtException', (error) => {
+      tray.setContextMenu(createTrayMenu('Error', 'Error', 'Error'));
+      tray.setImage(icon.fail);
+      log.error(error);
+  })
+  
   if (process.platform === 'darwin') {
     app.dock.hide();
   }
+  
   app.on('window-all-closed', () => {});
   tray.on('right-click', requestContributionData);
   ipcMain.on('setUsername', setUsername);
