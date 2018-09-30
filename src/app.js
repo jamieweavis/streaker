@@ -65,9 +65,9 @@ app.on('ready', () => {
     const menuTemplate = [
       { label: username, enabled: false },
       { type: 'separator' },
-      { label: `Current Streak:\t${currentStreak}`, enabled: false },
-      { label: `Best Streak:\t\t${bestStreak}`, enabled: false },
-      { label: `Contributions:\t${contributionCount}`, enabled: false },
+      { label: `Current Streak: ${currentStreak}`, enabled: false },
+      { label: `Best Streak: ${bestStreak}`, enabled: false },
+      { label: `Contributions: ${contributionCount}`, enabled: false },
       { type: 'separator' },
       { label: 'Reload', accelerator: 'Cmd+R', click: requestContributionData },
       {
