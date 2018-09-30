@@ -126,6 +126,11 @@ app.on('ready', () => {
 
     const username = store.get('username');
 
+    if (username === '') {
+      createUsernameWindow();
+      return;
+    }
+
     contribution(username)
       .then(data => {
         tray.setContextMenu(
