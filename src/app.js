@@ -127,6 +127,7 @@ app.on('ready', () => {
     const username = store.get('username');
 
     if (username === '') {
+      tray.setImage(icon.fail);
       createUsernameWindow();
       return;
     }
