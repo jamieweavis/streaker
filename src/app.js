@@ -11,8 +11,7 @@ const { app, BrowserWindow, Tray, Menu, shell, ipcMain } = electron;
 
 app.on('ready', () => {
   const streakerAutoLauncher = new AutoLaunch({
-    name: pjson.name,
-    path: `/Applications/${pjson.name}.app`
+    name: pjson.name
   });
 
   const tray = new Tray(icon.done);
