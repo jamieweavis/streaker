@@ -119,10 +119,6 @@ app.on('ready', () => {
   }
 
   function requestContributionData() {
-    tray.setImage(icon.load);
-    tray.setContextMenu(
-      createTrayMenu('Loading...', 'Loading...', 'Loading...')
-    );
 
     const username = store.get('username');
 
@@ -131,6 +127,11 @@ app.on('ready', () => {
       createUsernameWindow();
       return;
     }
+
+    tray.setImage(icon.load);
+    tray.setContextMenu(
+      createTrayMenu('Loading...', 'Loading...', 'Loading...')
+    );
 
     contribution(username)
       .then(data => {
