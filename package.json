@@ -40,6 +40,7 @@
   },
   "scripts": {
     "dist": "build",
+    "dist-win": "build -w",
     "pack": "build --dir",
     "start": "electron src/app.js",
     "test": "eslint ."

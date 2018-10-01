@@ -11,8 +11,7 @@ const { app, BrowserWindow, Tray, Menu, shell, ipcMain } = electron;
 
 app.on('ready', () => {
   const streakerAutoLauncher = new AutoLaunch({
-    name: pjson.name,
-    path: `/Applications/${pjson.name}.app`
+    name: pjson.name
   });
 
   const tray = new Tray(icon.done);
@@ -65,9 +64,9 @@ app.on('ready', () => {
     const menuTemplate = [
       { label: username, enabled: false },
       { type: 'separator' },
-      { label: `Current Streak:\t${currentStreak}`, enabled: false },
-      { label: `Best Streak:\t\t${bestStreak}`, enabled: false },
-      { label: `Contributions:\t${contributionCount}`, enabled: false },
+      { label: `Current Streak: ${currentStreak}`, enabled: false },
+      { label: `Best Streak: ${bestStreak}`, enabled: false },
+      { label: `Contributions: ${contributionCount}`, enabled: false },
       { type: 'separator' },
       { label: 'Reload', accelerator: 'Cmd+R', click: requestContributionData },
       {
@@ -162,14 +161,17 @@ app.on('ready', () => {
       log.info(`Store updated - username=${username}`);
     }
   }
-
+  
   process.on('uncaughtException', (error) => {
       tray.setContextMenu(createTrayMenu('Error', 'Error', 'Error'));
       tray.setImage(icon.fail);
       log.error(error);
   })
-
-  app.dock.hide();
+  
+  if (process.platform === 'darwin') {
+    app.dock.hide();
+  }
+  
   app.on('window-all-closed', () => {});
   tray.on('right-click', requestContributionData);
   ipcMain.on('setUsername', setUsername);
