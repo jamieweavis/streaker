@@ -171,6 +171,15 @@ app.on('ready', () => {
   if (process.platform === 'darwin') {
     app.dock.hide();
   }
+
+  if (store.get('username') === '') {
+    tray.setImage(icon.fail);
+    createUsernameWindow();
+    tray.setContextMenu(
+      createTrayMenu('0', '0', '0')
+    );
+    return;
+  }
   
   app.on('window-all-closed', () => {});
   tray.on('right-click', requestContributionData);
