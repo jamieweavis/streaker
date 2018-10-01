@@ -125,6 +125,9 @@ app.on('ready', () => {
     if (username === '') {
       tray.setImage(icon.fail);
       createUsernameWindow();
+      tray.setContextMenu(
+        createTrayMenu('0', '0', '0')
+      );
       return;
     }
 
