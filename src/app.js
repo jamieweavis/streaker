@@ -119,22 +119,12 @@ app.on('ready', () => {
   }
 
   function requestContributionData() {
-
-    const username = store.get('username');
-
-    if (username === '') {
-      tray.setImage(icon.fail);
-      createUsernameWindow();
-      tray.setContextMenu(
-        createTrayMenu('0', '0', '0')
-      );
-      return;
-    }
-
     tray.setImage(icon.load);
     tray.setContextMenu(
       createTrayMenu('Loading...', 'Loading...', 'Loading...')
     );
+
+    const username = store.get('username');
 
     contribution(username)
       .then(data => {
@@ -181,11 +171,20 @@ app.on('ready', () => {
   if (process.platform === 'darwin') {
     app.dock.hide();
   }
+
+  if (store.get('username') === '') {
+    tray.setImage(icon.fail);
+    createUsernameWindow();
+    tray.setContextMenu(
+      createTrayMenu('0', '0', '0')
+    );
+    return;
+  }
   
   app.on('window-all-closed', () => {});
   tray.on('right-click', requestContributionData);
   ipcMain.on('setUsername', setUsername);
 
   requestContributionData();
-  setInterval(requestContributionData, 1000 * 60 * 15); // 15 Minutes
+  setInterval(requestContributionData, 10000); // 15 Minutes
 });
