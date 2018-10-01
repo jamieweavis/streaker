@@ -186,5 +186,5 @@ app.on('ready', () => {
   ipcMain.on('setUsername', setUsername);
 
   requestContributionData();
-  setInterval(requestContributionData, 10000); // 15 Minutes
+  setInterval(requestContributionData, 1000 * 60 * 15); // 15 Minutes
 });
