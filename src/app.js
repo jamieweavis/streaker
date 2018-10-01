@@ -1,6 +1,9 @@
 const electron = require('electron');
 const AutoLaunch = require('auto-launch');
 const contribution = require('contribution');
+const CronJob = require('cron').CronJob;
+const notifier = require('node-notifier');
+const path = require('path');
 
 const log = require('./logger');
 const icon = require('./icon');
@@ -96,6 +99,20 @@ app.on('ready', () => {
               }
               log.info(`Store updated - autoLaunch=${checkbox.checked}`);
             }
+          },
+          {
+            label: `Activate notifications at 8pm`,
+            type: 'checkbox',
+            checked: store.get('notification'),
+            click: checkbox => {
+              store.set('notification', checkbox.checked);
+              if (checkbox.checked) {
+                job.start();
+              } else {
+                job.stop();
+              }
+              log.info(`Store updated - notification=${checkbox.checked}`);
+            }
           }
         ]
       },
@@ -179,6 +196,21 @@ app.on('ready', () => {
       createTrayMenu('0', '0', '0')
     );
     return;
+  }
+
+  const job = new CronJob({
+    cronTime: '0 0 20 * * *',
+    onTick: function() {
+      notifier.notify({
+        title: 'Streaker',
+        message: 'You didn\'t have any activity today',
+        icon: path.join(__dirname, 'icons', 'icon.png')
+      });
+    }
+  });
+
+  if (store.get('notification')) {
+    job.start();
   }
   
   app.on('window-all-closed', () => {});
