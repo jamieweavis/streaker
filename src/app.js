@@ -119,12 +119,20 @@ app.on('ready', () => {
   }
 
   function requestContributionData() {
+    const username = store.get('username');
+    if (!username) {
+      tray.setImage(icon.fail);
+      tray.setContextMenu(createTrayMenu(0, 0, 0));
+      createUsernameWindow();
+      return;
+    }
+
     tray.setImage(icon.load);
     tray.setContextMenu(
       createTrayMenu('Loading...', 'Loading...', 'Loading...')
     );
 
-    const username = store.get('username');
+    setTimeout(requestContributionData, 1000 * 60 * 60); // 15 Minutes
 
     contribution(username)
       .then(data => {
@@ -161,30 +169,20 @@ app.on('ready', () => {
       log.info(`Store updated - username=${username}`);
     }
   }
-  
+
   process.on('uncaughtException', (error) => {
       tray.setContextMenu(createTrayMenu('Error', 'Error', 'Error'));
       tray.setImage(icon.fail);
       log.error(error);
   })
-  
+
   if (process.platform === 'darwin') {
     app.dock.hide();
   }
 
-  if (store.get('username') === '') {
-    tray.setImage(icon.fail);
-    createUsernameWindow();
-    tray.setContextMenu(
-      createTrayMenu('0', '0', '0')
-    );
-    return;
-  }
-  
   app.on('window-all-closed', () => {});
   tray.on('right-click', requestContributionData);
   ipcMain.on('setUsername', setUsername);
 
   requestContributionData();
-  setInterval(requestContributionData, 1000 * 60 * 15); // 15 Minutes
 });
