@@ -59,7 +59,7 @@ app.on('ready', () => {
   }
 
   function createTrayMenu(contributionCount, currentStreak, bestStreak) {
-    const username = store.get('username') || 'username not set';
+    const username = store.get('username') || 'Username not set';
     const githubProfileUrl = `https://github.com/${username}`;
     const menuTemplate = [
       { label: username, enabled: false },
