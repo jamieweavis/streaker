@@ -154,7 +154,6 @@ app.on('ready', () => {
         );
         tray.setImage(data.currentStreak > 0 ? icon.done : icon.todo);
         data.currentStreak > 0 ? store.set('contributedToday', true) : store.set('contributedToday', false);
-        notifier.notify('Set');
         log.info(
           `Request successful - username=${username} streak=${
             data.currentStreak
@@ -203,7 +202,6 @@ app.on('ready', () => {
   const job = new CronJob({
     cronTime: '0 0 20 * * *',
     onTick: function() {
-        icon: path.join(__dirname, 'icons', 'icon.png')
       if (!store.get('contributedToday')) {
         notifier.notify({
           title: 'Streaker',
