@@ -216,7 +216,7 @@ app.on('ready', () => {
         notifier.notify({
           title: 'Streaker',
           message: 'You didn\'t contribute today',
-          icon: path.join(__dirname, 'icons', 'icon.png')
+          icon: icon.icon
         });
       }
     }
