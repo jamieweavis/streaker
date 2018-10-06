@@ -3,7 +3,6 @@ const AutoLaunch = require('auto-launch');
 const contribution = require('contribution');
 const CronJob = require('cron').CronJob;
 const notifier = require('node-notifier');
-const path = require('path');
 
 const log = require('./logger');
 const icon = require('./icon');
