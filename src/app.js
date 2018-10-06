@@ -209,7 +209,9 @@ app.on('ready', () => {
 
   const job = new CronJob({
     cronTime: '0 0 20 * * *',
-    onTick: function() {
+    onTick: async function() {
+      const data = await contribution(store.get('username'));
+      data.currentStreak > 0 ? store.set('contributedToday', true) : store.set('contributedToday', false);
       if (!store.get('contributedToday')) {
         notifier.notify({
           title: 'Streaker',
