@@ -2,14 +2,13 @@ const electron = require('electron');
 const AutoLaunch = require('auto-launch');
 const contribution = require('contribution');
 const CronJob = require('cron').CronJob;
-const notifier = require('node-notifier');
 
 const log = require('./logger');
 const icon = require('./icon');
 const pjson = require('../package.json');
 const store = require('./store');
 
-const { app, BrowserWindow, Tray, Menu, shell, ipcMain } = electron;
+const { app, BrowserWindow, Tray, Menu, shell, ipcMain, Notification } = electron;
 
 app.on('ready', () => {
   const streakerAutoLauncher = new AutoLaunch({
@@ -212,11 +211,13 @@ app.on('ready', () => {
       const data = await contribution(store.get('username'));
       data.currentStreak > 0 ? store.set('contributedToday', true) : store.set('contributedToday', false);
       if (!store.get('contributedToday')) {
-        notifier.notify({
-          title: 'Streaker',
-          message: 'You didn\'t contribute today',
-          icon: icon.icon
-        });
+        if (Notification.isSupported()) {
+          new Notification({
+            title: 'Streaker',
+            body: 'You didn\'t contribute today',
+            icon: icon.icon
+          }).show()
+        }
       }
     }
   });

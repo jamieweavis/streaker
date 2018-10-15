@@ -11,8 +11,7 @@
     "contribution": "^1.2.0",
     "cron": "^1.4.1",
     "electron-log": "^2.2.16",
-    "electron-store": "^2.0.0",
-    "node-notifier": "^5.2.1"
+    "electron-store": "^2.0.0"
   },
   "devDependencies": {
     "electron": "^2.0.5",
