@@ -199,15 +199,12 @@ app.on('ready', () => {
     cronTime: '0 0 20 * * *',
     onTick: async function() {
       const data = await contribution(store.get('username'));
-      data.currentStreak > 0 ? store.set('contributedToday', true) : store.set('contributedToday', false);
-      if (!store.get('contributedToday')) {
-        if (Notification.isSupported()) {
-          new Notification({
-            title: 'Streaker',
-            body: 'You didn\'t contribute today',
-            icon: icon.icon
-          }).show()
-        }
+      if (data.currentStreak === 0 && Notification.isSupported()) {
+        new Notification({
+          title: 'Streaker',
+          body: 'You didn\'t contribute today',
+          icon: icon.icon
+        }).show()
       }
     }
   });

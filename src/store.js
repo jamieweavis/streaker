@@ -4,7 +4,6 @@ module.exports = new Store({
   defaults: {
     username: '',
     autoLaunch: false,
-    notification: false,
-    contributedToday: false
+    notification: false
   }
 });
