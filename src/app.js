@@ -159,7 +159,6 @@ app.on('ready', () => {
           )
         );
         tray.setImage(data.currentStreak > 0 ? icon.done : icon.todo);
-        data.currentStreak > 0 ? store.set('contributedToday', true) : store.set('contributedToday', false);
         log.info(
           `Request successful - username=${username} streak=${
             data.currentStreak
@@ -194,15 +193,6 @@ app.on('ready', () => {
 
   if (process.platform === 'darwin') {
     app.dock.hide();
-  }
-
-  if (store.get('username') === '') {
-    tray.setImage(icon.fail);
-    createUsernameWindow();
-    tray.setContextMenu(
-      createTrayMenu('0', '0', '0')
-    );
-    return;
   }
 
   const job = new CronJob({
