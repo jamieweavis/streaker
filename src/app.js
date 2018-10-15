@@ -99,7 +99,7 @@ app.on('ready', () => {
             }
           },
           {
-            label: `Activate notifications at 8pm`,
+            label: 'Activate notifications at 8pm',
             type: 'checkbox',
             checked: store.get('notification'),
             click: checkbox => {
