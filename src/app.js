@@ -1,7 +1,7 @@
 const electron = require('electron');
 const AutoLaunch = require('auto-launch');
 const contribution = require('contribution');
-const CronJob = require('cron').CronJob;
+const { CronJob, CronTime } = require('cron');
 
 const log = require('./logger');
 const icon = require('./icon');
@@ -238,7 +238,9 @@ app.on('ready', () => {
       let minutes = time.split(':')[1];
       store.set('notification.time', time);
       store.set('notification.hours', hours);
-      store.set('notification.minutes', minutes)
+      store.set('notification.minutes', minutes);
+      log.info(`Store updated - time=${time} hours=${hours} minutes=${minutes}`);
+      job.setTime(new CronTime(`0 ${minutes} ${hours} * * *`));
     }
   }
 
@@ -258,8 +260,7 @@ app.on('ready', () => {
   
   if (store.get('notification.isEnabled')) {
     job.start();
-  } else {
-    job.stop();
+    job.setTime(new CronTime(`0 ${store.get('notification.minutes')} ${store.get('notification.hours')} * * *`));
   }
 
   process.on('uncaughtException', (error) => {
