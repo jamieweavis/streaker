@@ -17,6 +17,7 @@ app.on('ready', () => {
 
   const tray = new Tray(icon.done);
   let usernameWindow = null;
+  let notificationWindow = null;
 
   function createUsernameWindow() {
     if (usernameWindow) {
@@ -56,6 +57,47 @@ app.on('ready', () => {
     });
     usernameWindow.on('blur', () => {
       usernameWindow.close();
+    });
+  }
+
+  function createNotificationWindow() {
+    if (notificationWindow) {
+      notificationWindow.focus();
+      return;
+    }
+    notificationWindow = new BrowserWindow({
+      title: `${pjson.name} - Set GitHub Username`,
+      frame: false,
+      width: 270,
+      height: 60,
+      resizable: false,
+      maximizable: false,
+      show: false
+    });
+    notificationWindow.loadURL(`file://${__dirname}/notification.html`);
+    notificationWindow.once('ready-to-show', () => {
+      const screen = electron.screen.getDisplayNearestPoint(
+        electron.screen.getCursorScreenPoint()
+      );
+      notificationWindow.setPosition(
+        Math.floor(
+          screen.bounds.x +
+            screen.size.width / 2 -
+            notificationWindow.getSize()[0] / 2
+        ),
+        Math.floor(
+          screen.bounds.y +
+            screen.size.height / 2 -
+            notificationWindow.getSize()[1] / 2
+        )
+      );
+      notificationWindow.show();
+    });
+    notificationWindow.on('closed', () => {
+      notificationWindow = null;
+    });
+    notificationWindow.on('blur', () => {
+      notificationWindow.close();
     });
   }
 
@@ -99,11 +141,11 @@ app.on('ready', () => {
             }
           },
           {
-            label: 'Activate notifications at 8pm',
+            label: 'Activate notifications',
             type: 'checkbox',
-            checked: store.get('notification'),
+            checked: store.get('notification.isEnabled'),
             click: checkbox => {
-              store.set('notification', checkbox.checked);
+              store.set('notification.isEnabled', checkbox.checked);
               if (checkbox.checked) {
                 job.start();
               } else {
@@ -111,6 +153,10 @@ app.on('ready', () => {
               }
               log.info(`Store updated - notification=${checkbox.checked}`);
             }
+          },
+          {
+            label: 'Set notification time',
+            click: createNotificationWindow
           }
         ]
       },
@@ -185,18 +231,19 @@ app.on('ready', () => {
     }
   }
 
-  process.on('uncaughtException', (error) => {
-      tray.setContextMenu(createTrayMenu('Error', 'Error', 'Error'));
-      tray.setImage(icon.fail);
-      log.error(error);
-  })
-
-  if (process.platform === 'darwin') {
-    app.dock.hide();
+  function setNotificationTime(event, time) {
+    notificationWindow.close();
+    if (time && time !== store.get('notification.time')) {
+      let hours = time.split(':')[0];
+      let minutes = time.split(':')[1];
+      store.set('notification.time', time);
+      store.set('notification.hours', hours);
+      store.set('notification.minutes', minutes)
+    }
   }
 
   const job = new CronJob({
-    cronTime: '0 0 20 * * *',
+    cronTime: `0 0 20 * * *`,
     onTick: async function() {
       const data = await contribution(store.get('username'));
       if (data.currentStreak === 0 && Notification.isSupported()) {
@@ -208,14 +255,27 @@ app.on('ready', () => {
       }
     }
   });
-
-  if (store.get('notification')) {
+  
+  if (store.get('notification.isEnabled')) {
     job.start();
+  } else {
+    job.stop();
+  }
+
+  process.on('uncaughtException', (error) => {
+      tray.setContextMenu(createTrayMenu('Error', 'Error', 'Error'));
+      tray.setImage(icon.fail);
+      log.error(error);
+  })
+
+  if (process.platform === 'darwin') {
+    app.dock.hide();
   }
 
   app.on('window-all-closed', () => {});
   tray.on('right-click', requestContributionData);
   ipcMain.on('setUsername', setUsername);
+  ipcMain.on('setNotificationTime', setNotificationTime);
 
   requestContributionData();
 });
