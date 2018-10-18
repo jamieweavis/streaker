@@ -252,7 +252,7 @@ app.on('ready', () => {
       if (data.currentStreak === 0 && Notification.isSupported()) {
         new Notification({
           title: 'Streaker',
-          body: 'You didn\'t contribute today'
+          body: 'You haven\'t contributed today'
         }).show()
       }
     }
