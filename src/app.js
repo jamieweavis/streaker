@@ -247,7 +247,7 @@ app.on('ready', () => {
 
   const job = new CronJob({
     cronTime: `0 0 20 * * *`,
-    onTick: async function() {
+    async onTick() {
       const data = await contribution(store.get('username'));
       if (data.currentStreak === 0 && Notification.isSupported()) {
         new Notification({
