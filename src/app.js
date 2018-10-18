@@ -246,12 +246,12 @@ app.on('ready', () => {
   }
 
   const job = new CronJob({
-    cronTime: `0 0 20 * * *`,
+    cronTime: '0 0 20 * * *',
     async onTick() {
       const data = await contribution(store.get('username'));
       if (data.currentStreak === 0 && Notification.isSupported()) {
         new Notification({
-          title: 'Streaker',
+          title: pjson.name,
           body: 'You haven\'t contributed today'
         }).show()
       }
