@@ -23,7 +23,7 @@ app.on('ready', () => {
       title: `${pjson.name} - Preferences`,
       frame: true,
       width: 500,
-      height: 600,
+      height: 400,
       resizable: false,
       maximizable: false,
       show: true
