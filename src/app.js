@@ -16,89 +16,19 @@ app.on('ready', () => {
   });
 
   const tray = new Tray(icon.done);
-  let usernameWindow = null;
-  let notificationWindow = null;
+  let preferencesWindow = null;
 
-  function createUsernameWindow() {
-    if (usernameWindow) {
-      usernameWindow.focus();
-      return;
-    }
-    usernameWindow = new BrowserWindow({
-      title: `${pjson.name} - Set GitHub Username`,
-      frame: false,
-      width: 270,
-      height: 60,
+  function createPreferencesWindow() {
+    preferencesWindow = new BrowserWindow({
+      title: `${pjson.name} - Preferences`,
+      frame: true,
+      width: 500,
+      height: 600,
       resizable: false,
       maximizable: false,
-      show: false
+      show: true
     });
-    usernameWindow.loadURL(`file://${__dirname}/username.html`);
-    usernameWindow.once('ready-to-show', () => {
-      const screen = electron.screen.getDisplayNearestPoint(
-        electron.screen.getCursorScreenPoint()
-      );
-      usernameWindow.setPosition(
-        Math.floor(
-          screen.bounds.x +
-            screen.size.width / 2 -
-            usernameWindow.getSize()[0] / 2
-        ),
-        Math.floor(
-          screen.bounds.y +
-            screen.size.height / 2 -
-            usernameWindow.getSize()[1] / 2
-        )
-      );
-      usernameWindow.show();
-    });
-    usernameWindow.on('closed', () => {
-      usernameWindow = null;
-    });
-    usernameWindow.on('blur', () => {
-      usernameWindow.close();
-    });
-  }
-
-  function createNotificationWindow() {
-    if (notificationWindow) {
-      notificationWindow.focus();
-      return;
-    }
-    notificationWindow = new BrowserWindow({
-      title: `${pjson.name} - Set GitHub Username`,
-      frame: false,
-      width: 270,
-      height: 60,
-      resizable: false,
-      maximizable: false,
-      show: false
-    });
-    notificationWindow.loadURL(`file://${__dirname}/notification.html`);
-    notificationWindow.once('ready-to-show', () => {
-      const screen = electron.screen.getDisplayNearestPoint(
-        electron.screen.getCursorScreenPoint()
-      );
-      notificationWindow.setPosition(
-        Math.floor(
-          screen.bounds.x +
-            screen.size.width / 2 -
-            notificationWindow.getSize()[0] / 2
-        ),
-        Math.floor(
-          screen.bounds.y +
-            screen.size.height / 2 -
-            notificationWindow.getSize()[1] / 2
-        )
-      );
-      notificationWindow.show();
-    });
-    notificationWindow.on('closed', () => {
-      notificationWindow = null;
-    });
-    notificationWindow.on('blur', () => {
-      notificationWindow.close();
-    });
+    preferencesWindow.loadURL(`file://${__dirname}/preferences.html`);
   }
 
   function createTrayMenu(contributionCount, currentStreak, bestStreak) {
@@ -119,46 +49,8 @@ app.on('ready', () => {
       },
       { type: 'separator' },
       {
-        label: 'Set GitHub Username...',
-        accelerator: 'Cmd+S',
-        click: createUsernameWindow
-      },
-      {
         label: 'Preferences',
-        submenu: [
-          {
-            label: `Launch ${pjson.name} at login`,
-            type: 'checkbox',
-            checked: store.get('autoLaunch'),
-            click: checkbox => {
-              store.set('autoLaunch', checkbox.checked);
-              if (checkbox.checked) {
-                streakerAutoLauncher.enable();
-              } else {
-                streakerAutoLauncher.disable();
-              }
-              log.info(`Store updated - autoLaunch=${checkbox.checked}`);
-            }
-          },
-          {
-            label: 'Activate notifications',
-            type: 'checkbox',
-            checked: store.get('notification.isEnabled'),
-            click: checkbox => {
-              store.set('notification.isEnabled', checkbox.checked);
-              if (checkbox.checked) {
-                job.start();
-              } else {
-                job.stop();
-              }
-              log.info(`Store updated - notification=${checkbox.checked}`);
-            }
-          },
-          {
-            label: 'Set notification time',
-            click: createNotificationWindow
-          }
-        ]
+        click: createPreferencesWindow
       },
       { type: 'separator' },
       {
