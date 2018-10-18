@@ -1,13 +1,14 @@
 const electron = require('electron');
 const AutoLaunch = require('auto-launch');
 const contribution = require('contribution');
+const { CronJob, CronTime } = require('cron');
 
 const log = require('./logger');
 const icon = require('./icon');
 const pjson = require('../package.json');
 const store = require('./store');
 
-const { app, BrowserWindow, Tray, Menu, shell, ipcMain } = electron;
+const { app, BrowserWindow, Tray, Menu, shell, ipcMain, Notification } = electron;
 
 app.on('ready', () => {
   const streakerAutoLauncher = new AutoLaunch({
@@ -16,6 +17,7 @@ app.on('ready', () => {
 
   const tray = new Tray(icon.done);
   let usernameWindow = null;
+  let notificationWindow = null;
 
   function createUsernameWindow() {
     if (usernameWindow) {
@@ -58,6 +60,47 @@ app.on('ready', () => {
     });
   }
 
+  function createNotificationWindow() {
+    if (notificationWindow) {
+      notificationWindow.focus();
+      return;
+    }
+    notificationWindow = new BrowserWindow({
+      title: `${pjson.name} - Set GitHub Username`,
+      frame: false,
+      width: 270,
+      height: 60,
+      resizable: false,
+      maximizable: false,
+      show: false
+    });
+    notificationWindow.loadURL(`file://${__dirname}/notification.html`);
+    notificationWindow.once('ready-to-show', () => {
+      const screen = electron.screen.getDisplayNearestPoint(
+        electron.screen.getCursorScreenPoint()
+      );
+      notificationWindow.setPosition(
+        Math.floor(
+          screen.bounds.x +
+            screen.size.width / 2 -
+            notificationWindow.getSize()[0] / 2
+        ),
+        Math.floor(
+          screen.bounds.y +
+            screen.size.height / 2 -
+            notificationWindow.getSize()[1] / 2
+        )
+      );
+      notificationWindow.show();
+    });
+    notificationWindow.on('closed', () => {
+      notificationWindow = null;
+    });
+    notificationWindow.on('blur', () => {
+      notificationWindow.close();
+    });
+  }
+
   function createTrayMenu(contributionCount, currentStreak, bestStreak) {
     const username = store.get('username') || 'Username not set';
     const githubProfileUrl = `https://github.com/${username}`;
@@ -96,6 +139,24 @@ app.on('ready', () => {
               }
               log.info(`Store updated - autoLaunch=${checkbox.checked}`);
             }
+          },
+          {
+            label: 'Activate notifications',
+            type: 'checkbox',
+            checked: store.get('notification.isEnabled'),
+            click: checkbox => {
+              store.set('notification.isEnabled', checkbox.checked);
+              if (checkbox.checked) {
+                job.start();
+              } else {
+                job.stop();
+              }
+              log.info(`Store updated - notification=${checkbox.checked}`);
+            }
+          },
+          {
+            label: 'Set notification time',
+            click: createNotificationWindow
           }
         ]
       },
@@ -170,6 +231,38 @@ app.on('ready', () => {
     }
   }
 
+  function setNotificationTime(event, time) {
+    notificationWindow.close();
+    if (time && time !== store.get('notification.time')) {
+      const hours = time.split(':')[0];
+      const minutes = time.split(':')[1];
+      store.set('notification.time', time);
+      store.set('notification.hours', hours);
+      store.set('notification.minutes', minutes);
+      log.info(`Store updated - time=${time} hours=${hours} minutes=${minutes}`);
+      job.setTime(new CronTime(`0 ${minutes} ${hours} * * *`));
+      job.start();
+    }
+  }
+
+  const job = new CronJob({
+    cronTime: '0 0 20 * * *',
+    async onTick() {
+      const data = await contribution(store.get('username'));
+      if (data.currentStreak === 0 && Notification.isSupported()) {
+        new Notification({
+          title: pjson.name,
+          body: 'You haven\'t contributed today'
+        }).show()
+      }
+    }
+  });
+  
+  if (store.get('notification.isEnabled')) {
+    job.setTime(new CronTime(`0 ${store.get('notification.minutes')} ${store.get('notification.hours')} * * *`));
+    job.start();
+  }
+
   process.on('uncaughtException', (error) => {
       tray.setContextMenu(createTrayMenu('Error', 'Error', 'Error'));
       tray.setImage(icon.fail);
@@ -183,6 +276,7 @@ app.on('ready', () => {
   app.on('window-all-closed', () => {});
   tray.on('right-click', requestContributionData);
   ipcMain.on('setUsername', setUsername);
+  ipcMain.on('setNotificationTime', setNotificationTime);
 
   requestContributionData();
 });
