@@ -234,13 +234,14 @@ app.on('ready', () => {
   function setNotificationTime(event, time) {
     notificationWindow.close();
     if (time && time !== store.get('notification.time')) {
-      let hours = time.split(':')[0];
-      let minutes = time.split(':')[1];
+      const hours = time.split(':')[0];
+      const minutes = time.split(':')[1];
       store.set('notification.time', time);
       store.set('notification.hours', hours);
       store.set('notification.minutes', minutes);
       log.info(`Store updated - time=${time} hours=${hours} minutes=${minutes}`);
       job.setTime(new CronTime(`0 ${minutes} ${hours} * * *`));
+      job.start();
     }
   }
 
@@ -259,8 +260,8 @@ app.on('ready', () => {
   });
   
   if (store.get('notification.isEnabled')) {
-    job.start();
     job.setTime(new CronTime(`0 ${store.get('notification.minutes')} ${store.get('notification.hours')} * * *`));
+    job.start();
   }
 
   process.on('uncaughtException', (error) => {
