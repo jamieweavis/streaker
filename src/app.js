@@ -143,16 +143,15 @@ app.on('ready', () => {
     event.sender.send('activateNotificationsSet');
   }
 
-  function setNotificationTime(event, hours, minutes) {
-    if (time && time !== store.get('notification.time')) {
-      store.set('notification.time', `${hours}:${minutes}`);
-      store.set('notification.hours', hours);
-      store.set('notification.minutes', minutes);
-      log.info(`Store updated - time=${time} hours=${hours} minutes=${minutes}`);
-      job.setTime(new CronTime(`0 ${minutes} ${hours} * * *`));
-      job.start();
-      event.sender.send('NotificationTimeSet');
-    }
+  function setNotificationTime(event, data) {
+    const { hours, minutes } = data;
+    console.log(hours, minutes);
+    store.set('notification.time', `${hours}:${minutes}`);
+    store.set('notification.hours', hours);
+    store.set('notification.minutes', minutes);
+    log.info(`Store updated - time=${time} hours=${hours} minutes=${minutes}`);      job.setTime(new CronTime(`0 ${minutes} ${hours} * * *`));
+    job.start();
+    event.sender.send('NotificationTimeSet');
   }
 
   const job = new CronJob({

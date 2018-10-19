@@ -115,6 +115,20 @@
       }
     })
 
+    notificationHour.addEventListener('keyup', () => {
+      ipcRenderer.send('setNotificationTime', {
+        hours: notificationHour.value,
+        minutes: store.get('notification.minutes')
+      });
+    })
+
+    notificationMinutes.addEventListener('keyup', () => {
+      ipcRenderer.send('setNotificationTime', {
+        hours: store.get('notification.hours'),
+        minutes: notificationMinutes.value
+      });
+    })
+
     ipcRenderer.on('usernameSet', () => {
       console.log('usernameSet : ', store.get('username'));
       githubUsername.parentElement.classList.remove('is-loading');
