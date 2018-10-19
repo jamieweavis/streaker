@@ -22,6 +22,7 @@ app.on('ready', () => {
     preferencesWindow = new BrowserWindow({
       title: `${pjson.name} - Preferences`,
       titleBarStyle: 'hiddenInset',
+      icon: icon.streaker,
       width: 500,
       height: 450,
       resizable: false,
@@ -140,7 +141,7 @@ app.on('ready', () => {
     store.set('notification.isEnabled', state);
     log.info(`Store updated - notification.isEnabled=${state}`);
     if (state) {
-      job.setTime(new CronTime(`0 ${minutes} ${hours} * * *`));
+      job.setTime(new CronTime(`0 ${store.get('notification.minutes')} ${store.get('notification.hours')} * * *`));
       job.start();
     } else {
       job.stop();
@@ -154,7 +155,7 @@ app.on('ready', () => {
     store.set('notification.time', `${hours}:${minutes}`);
     store.set('notification.hours', hours);
     store.set('notification.minutes', minutes);
-    log.info(`Store updated - time=${time} hours=${hours} minutes=${minutes}`);      job.setTime(new CronTime(`0 ${minutes} ${hours} * * *`));
+    log.info(`Store updated - time=${hours}:${minutes} hours=${hours} minutes=${minutes}`);      job.setTime(new CronTime(`0 ${minutes} ${hours} * * *`));
     job.start();
     event.sender.send('NotificationTimeSet');
   }
