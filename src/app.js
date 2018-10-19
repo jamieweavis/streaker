@@ -115,7 +115,6 @@ app.on('ready', () => {
   }
 
   function setUsername(event, username) {
-    usernameWindow.close();
     if (username && username !== store.get('username')) {
       store.set('username', username);
       requestContributionData();
@@ -124,7 +123,6 @@ app.on('ready', () => {
   }
 
   function setNotificationTime(event, time) {
-    notificationWindow.close();
     if (time && time !== store.get('notification.time')) {
       const hours = time.split(':')[0];
       const minutes = time.split(':')[1];
