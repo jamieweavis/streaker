@@ -21,9 +21,9 @@ app.on('ready', () => {
   function createPreferencesWindow() {
     preferencesWindow = new BrowserWindow({
       title: `${pjson.name} - Preferences`,
-      frame: true,
+      titleBarStyle: 'hiddenInset',
       width: 500,
-      height: 400,
+      height: 450,
       resizable: false,
       maximizable: false,
       show: true

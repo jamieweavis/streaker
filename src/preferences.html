@@ -13,13 +13,16 @@
 
   <header>
 
-    <div class="tabs is-centered">
-      <ul>
-        <li class="is-active"><a>All</a></li>
-        <li><a>GitHub</a></li>
-        <li><a>Notification</a></li>
-      </ul>
-    </div>
+      <nav class="navbar" role="navigation" aria-label="main navigation">
+        <div class="navbar-brand">
+          <div class="navbar-item">
+            <img src="./icons/streaker-icon.svg" alt="Streaker Logo">
+          </div>
+          <div class="navbar-item">
+            <span>Streaker</span>
+          </div>
+        </div>
+      </nav>
 
   </header>
 
@@ -31,7 +34,7 @@
       </p>
       <div class="field">
         <div class="control">
-          <input type="text" class="input" placeholder="Type your GitHub username">
+          <input id="githubUsername" type="text" class="input" placeholder="Type your GitHub username">
         </div>
       </div>
       <p class="panel-heading">
@@ -39,21 +42,58 @@
       </p>
       <div class="field">
         <div class="control">
-          <input type="text" class="input" placeholder="e.g 15minutes">
+          <input id="githubSyncInterval" type="text" class="input" placeholder="e.g 15">
         </div>
       </div>
       <p class="panel-heading">
-        Notification Time
+        Notifications
+        <label class="checkbox is-pulled-right">
+          <input id="notificationCheckbox" type="checkbox">
+          Enable
+        </label>
       </p>
       <div class="field">
         <div class="control">
-          <input type="text" class="input" placeholder="e.g 20:00">
+          <input id="notificationHour" type="number" class="input" placeholder="hh" min="0" max="23" maxlength="2">
+          <span class="timeSeparator"> : </span>
+          <input id="notificationMinutes" type="number" class="input" placeholder="mm" min="0" max="59" maxlength="2">
         </div>
       </div>
     </nav>
 
   </main>
 
+  <script>
+
+    const { ipcRenderer } = require('electron');
+
+    const store = require('./store');
+
+    const githubUsername = document.getElementById('githubUsername');
+    const githubSyncInterval = document.getElementById('githubSyncInterval');
+    const notificationCheckbox = document.getElementById('notificationCheckbox');
+    const notificationHour = document.getElementById('notificationHour');
+    const notificationMinutes = document.getElementById('notificationMinutes');
+
+    notificationHour.value = store.get('notification.hours') || 'hh';
+    notificationMinutes.value = store.get('notification.minutes') || 'mm';
+
+    if (store.get('notification.isEnabled') === false) {
+      notificationHour.disabled = true;
+      notificationMinutes.disabled = true;
+    }
+
+    notificationCheckbox.addEventListener('change', (event) => {
+      if (notificationCheckbox.checked === false) {
+        notificationHour.disabled = true;
+        notificationMinutes.disabled = true;
+      } else {
+        notificationHour.disabled = false;
+        notificationMinutes.disabled = false;
+      }
+    })
+
+  </script>
 </body>
 
 </html>

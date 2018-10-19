@@ -1,3 +1,26 @@
+/* NAVBAR */
+
+.navbar {
+  -webkit-user-select: none;
+  -webkit-app-region: drag;
+}
+
+/* FORMS */
+
 .field {
   padding: 10px 10px 0 10px;
+}
+
+input[type=number]::-webkit-inner-spin-button, 
+input[type=number]::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+input[type=number] {
+  width: 50px;
+}
+
+.timeSeparator {
+  line-height: 36px;
 }
