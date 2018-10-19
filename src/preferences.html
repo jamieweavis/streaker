@@ -76,13 +76,16 @@
     const notificationHour = document.getElementById('notificationHour');
     const notificationMinutes = document.getElementById('notificationMinutes');
 
-
     githubUsername.value = store.get('username') || '';
     githubSyncInterval.value = store.get('syncInterval') || ''
     notificationHour.value = store.get('notification.hours') || '';
     notificationMinutes.value = store.get('notification.minutes') || '';
 
-    if (store.get('notification.isEnabled') === false) {
+    if (githubUsername.value === '') {
+      githubUsername.focus();
+    }
+
+    if (!store.get('notification.isEnabled')) {
       notificationHour.disabled = true;
       notificationMinutes.disabled = true;
     }

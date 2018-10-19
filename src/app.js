@@ -76,7 +76,7 @@ app.on('ready', () => {
     if (!username) {
       tray.setImage(icon.fail);
       tray.setContextMenu(createTrayMenu(0, 0, 0));
-      createUsernameWindow();
+      createPreferencesWindow();
       return;
     }
 
