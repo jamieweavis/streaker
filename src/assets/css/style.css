@@ -5,6 +5,10 @@
   -webkit-app-region: drag;
 }
 
+.navbar-brand {
+  justify-content: center;
+}
+
 /* FORMS */
 
 .field {
