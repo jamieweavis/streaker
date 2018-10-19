@@ -32,11 +32,7 @@ app.on('ready', () => {
     
     preferencesWindow.on('closed', () => {
       preferencesWindow = null;
-    })
-
-    preferencesWindow.on('blur', () => {
-      preferencesWindow.close();
-    })
+    });
     
     preferencesWindow.webContents.toggleDevTools(); // DEV purpose
   }
