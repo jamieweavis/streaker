@@ -83,6 +83,7 @@
 
     if (githubUsername.value === '') {
       githubUsername.focus();
+      githubUsername.classList.add('is-warning');
     }
 
     if (!store.get('notification.isEnabled')) {
