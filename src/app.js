@@ -29,9 +29,18 @@ app.on('ready', () => {
       show: true
     });
     preferencesWindow.loadURL(`file://${__dirname}/preferences.html`);
-    preferencesWindow.webContents.toggleDevTools();
+    
+    preferencesWindow.on('closed', () => {
+      preferencesWindow = null;
+    })
+
+    preferencesWindow.on('blur', () => {
+      preferencesWindow.close();
+    })
+    
+    preferencesWindow.webContents.toggleDevTools(); // DEV purpose
   }
-  createPreferencesWindow();
+  createPreferencesWindow(); // DEV purpose
 
   function createTrayMenu(contributionCount, currentStreak, bestStreak) {
     const username = store.get('username') || 'Username not set';
