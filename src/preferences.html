@@ -75,8 +75,11 @@
     const notificationHour = document.getElementById('notificationHour');
     const notificationMinutes = document.getElementById('notificationMinutes');
 
-    notificationHour.value = store.get('notification.hours') || 'hh';
-    notificationMinutes.value = store.get('notification.minutes') || 'mm';
+
+    githubUsername.value = store.get('username') || '';
+    githubSyncInterval.value = store.get('syncInterval') || ''
+    notificationHour.value = store.get('notification.hours') || '';
+    notificationMinutes.value = store.get('notification.minutes') || '';
 
     if (store.get('notification.isEnabled') === false) {
       notificationHour.disabled = true;
