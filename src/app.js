@@ -24,7 +24,7 @@ app.on('ready', () => {
       titleBarStyle: 'hiddenInset',
       icon: icon.streaker,
       width: 500,
-      height: 450,
+      height: 470,
       resizable: false,
       maximizable: false,
       show: true
@@ -137,10 +137,21 @@ app.on('ready', () => {
     event.sender.send('syncIntervalSet');
   }
 
-  function activateNotifications(event, state) {
-    store.set('notification.isEnabled', state);
-    log.info(`Store updated - notification.isEnabled=${state}`);
-    if (state) {
+  function activateLaunchAtLogin(event, isEnabled) {
+    store.set('autoLaunch', isEnabled);
+    log.info(`Store updated - autoLaunch=${isEnabled}`);
+    if (isEnabled) {
+      streakerAutoLauncher.enable();
+    } else {
+      streakerAutoLauncher.disable();
+    }
+    event.sender.send('activateLaunchAtLoginSet')
+  }
+
+  function activateNotifications(event, isEnabled) {
+    store.set('notification.isEnabled', isEnabled);
+    log.info(`Store updated - notification.isEnabled=${isEnabled}`);
+    if (isEnabled) {
       job.setTime(new CronTime(`0 ${store.get('notification.minutes')} ${store.get('notification.hours')} * * *`));
       job.start();
     } else {
@@ -192,6 +203,7 @@ app.on('ready', () => {
   tray.on('right-click', requestContributionData);
   ipcMain.on('setUsername', setUsername);
   ipcMain.on('setSyncInterval', setSyncInterval);
+  ipcMain.on('activateLaunchAtLogin', activateLaunchAtLogin)
   ipcMain.on('activateNotifications', activateNotifications);
   ipcMain.on('setNotificationTime', setNotificationTime);
 

@@ -47,6 +47,13 @@
         </div>
       </div>
       <p class="panel-heading">
+        Launch at login
+        <label class="checkbox is-pulled-right">
+          <input id="launchAtLoginCheckbox" type="checkbox">
+          Enable
+        </label>
+      </p>
+      <p class="panel-heading">
         Notifications
         <label class="checkbox is-pulled-right">
           <input id="notificationCheckbox" type="checkbox">
@@ -72,18 +79,23 @@
 
     const githubUsername = document.getElementById('githubUsername');
     const githubSyncInterval = document.getElementById('githubSyncInterval');
+    const launchAtLoginCheckbox = document.getElementById('launchAtLoginCheckbox');
     const notificationCheckbox = document.getElementById('notificationCheckbox');
     const notificationHour = document.getElementById('notificationHour');
     const notificationMinutes = document.getElementById('notificationMinutes');
 
     githubUsername.value = store.get('username') || '';
-    githubSyncInterval.value = store.get('syncInterval') || ''
+    githubSyncInterval.value = store.get('syncInterval') || '';
     notificationHour.value = store.get('notification.hours') || '';
     notificationMinutes.value = store.get('notification.minutes') || '';
 
     if (githubUsername.value === '') {
       githubUsername.focus();
       githubUsername.classList.add('is-warning');
+    }
+
+    if (store.get('autoLaunch')) {
+      launchAtLoginCheckbox.checked = true;
     }
 
     if (!store.get('notification.isEnabled')) {
@@ -99,8 +111,11 @@
     })
 
     githubSyncInterval.addEventListener('keyup', () => {
-      const syncInterval = githubSyncInterval.value;
-      ipcRenderer.send('setSyncInterval', syncInterval);
+      ipcRenderer.send('setSyncInterval', githubSyncInterval.value);
+    })
+
+    launchAtLoginCheckbox.addEventListener('change', (event) => {
+      ipcRenderer.send('activateLaunchAtLogin', launchAtLoginCheckbox.checked);
     })
 
     notificationCheckbox.addEventListener('change', (event) => {
@@ -135,7 +150,11 @@
     });
 
     ipcRenderer.on('syncIntervalSet', () => {
-      console.log('syncIntervalSet :', store.get('syncInterval'));
+      console.log('syncInterval : ', store.get('syncInterval'));
+    })
+
+    ipcRenderer.on('activateLaunchAtLoginSet', () => {
+      console.log('autoLaunch : ', store.get('autoLaunch'));
     })
 
     ipcRenderer.on('activateNotificationsSet', () => {
