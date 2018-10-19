@@ -87,7 +87,7 @@ app.on('ready', () => {
       createTrayMenu('Loading...', 'Loading...', 'Loading...')
     );
 
-    setTimeout(requestContributionData, 1000 * 60 * 60); // 15 Minutes
+    setTimeout(requestContributionData, 1000 * 60 * store.get('syncInterval')); // `syncInterval` minutes
 
     contribution(username)
       .then(data => {
