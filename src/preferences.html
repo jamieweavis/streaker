@@ -89,16 +89,47 @@
     if (!store.get('notification.isEnabled')) {
       notificationHour.disabled = true;
       notificationMinutes.disabled = true;
+    } else {
+      notificationCheckbox.checked = true;
     }
 
+    githubUsername.addEventListener('keyup', () => {
+      githubUsername.parentElement.classList.add('is-loading');
+      ipcRenderer.send('setUsername', githubUsername.value);
+    })
+
+    githubSyncInterval.addEventListener('keyup', () => {
+      const syncInterval = githubSyncInterval.value;
+      ipcRenderer.send('setSyncInterval', syncInterval);
+    })
+
     notificationCheckbox.addEventListener('change', (event) => {
-      if (notificationCheckbox.checked === false) {
-        notificationHour.disabled = true;
-        notificationMinutes.disabled = true;
-      } else {
+      if (notificationCheckbox.checked) {
         notificationHour.disabled = false;
         notificationMinutes.disabled = false;
+        ipcRenderer.send('activateNotifications', notificationCheckbox.checked);
+      } else {
+        notificationHour.disabled = true;
+        notificationMinutes.disabled = true;
+        ipcRenderer.send('activateNotifications', notificationCheckbox.checked);
       }
+    })
+
+    ipcRenderer.on('usernameSet', () => {
+      console.log('usernameSet : ', store.get('username'));
+      githubUsername.parentElement.classList.remove('is-loading');
+    });
+
+    ipcRenderer.on('syncIntervalSet', () => {
+      console.log('syncIntervalSet :', store.get('syncInterval'));
+    })
+
+    ipcRenderer.on('activateNotificationsSet', () => {
+      console.log('Notification state : ', store.get('notification.isEnabled'));
+    })
+
+    ipcRenderer.on('NotificationTimeSet', () => {
+      console.log('NotificationTimeSet : ', store.get('notification.time'));
     })
 
   </script>

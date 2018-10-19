@@ -29,7 +29,9 @@ app.on('ready', () => {
       show: true
     });
     preferencesWindow.loadURL(`file://${__dirname}/preferences.html`);
+    preferencesWindow.webContents.toggleDevTools();
   }
+  createPreferencesWindow();
 
   function createTrayMenu(contributionCount, currentStreak, bestStreak) {
     const username = store.get('username') || 'Username not set';
@@ -119,19 +121,37 @@ app.on('ready', () => {
       store.set('username', username);
       requestContributionData();
       log.info(`Store updated - username=${username}`);
+      event.sender.send('usernameSet');
     }
   }
 
-  function setNotificationTime(event, time) {
+  function setSyncInterval(event, interval) {
+    store.set('syncInterval', interval);
+    log.info(`Store updated - syncInterval=${interval}`);
+    event.sender.send('syncIntervalSet');
+  }
+
+  function activateNotifications(event, state) {
+    store.set('notification.isEnabled', state);
+    log.info(`Store updated - notification.isEnabled=${state}`);
+    if (state) {
+      job.setTime(new CronTime(`0 ${minutes} ${hours} * * *`));
+      job.start();
+    } else {
+      job.stop();
+    }
+    event.sender.send('activateNotificationsSet');
+  }
+
+  function setNotificationTime(event, hours, minutes) {
     if (time && time !== store.get('notification.time')) {
-      const hours = time.split(':')[0];
-      const minutes = time.split(':')[1];
-      store.set('notification.time', time);
+      store.set('notification.time', `${hours}:${minutes}`);
       store.set('notification.hours', hours);
       store.set('notification.minutes', minutes);
       log.info(`Store updated - time=${time} hours=${hours} minutes=${minutes}`);
       job.setTime(new CronTime(`0 ${minutes} ${hours} * * *`));
       job.start();
+      event.sender.send('NotificationTimeSet');
     }
   }
 
@@ -166,6 +186,8 @@ app.on('ready', () => {
   app.on('window-all-closed', () => {});
   tray.on('right-click', requestContributionData);
   ipcMain.on('setUsername', setUsername);
+  ipcMain.on('setSyncInterval', setSyncInterval);
+  ipcMain.on('activateNotifications', activateNotifications);
   ipcMain.on('setNotificationTime', setNotificationTime);
 
   requestContributionData();
