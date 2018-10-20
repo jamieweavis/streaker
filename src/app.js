@@ -123,7 +123,7 @@ app.on('ready', () => {
   }
 
   function setUsername(event, username) {
-    if (username && username !== store.get('username')) {
+    if (username !== '' && username !== store.get('username')) {
       store.set('username', username);
       requestContributionData();
       log.info(`Store updated - username=${username}`);
@@ -162,7 +162,6 @@ app.on('ready', () => {
 
   function setNotificationTime(event, data) {
     const { hours, minutes } = data;
-    console.log(hours, minutes);
     store.set('notification.time', `${hours}:${minutes}`);
     store.set('notification.hours', hours);
     store.set('notification.minutes', minutes);

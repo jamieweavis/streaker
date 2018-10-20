@@ -106,12 +106,19 @@
     }
 
     githubUsername.addEventListener('keyup', () => {
+      if(isInputEmpty(githubUsername)) {
+        return;
+      }
       githubUsername.parentElement.classList.add('is-loading');
       ipcRenderer.send('setUsername', githubUsername.value);
     })
 
     githubSyncInterval.addEventListener('keyup', () => {
-      ipcRenderer.send('setSyncInterval', githubSyncInterval.value);
+      if (isInputEmpty(githubSyncInterval)) {
+        return;
+      }
+      const syncInterval = parseInt(githubSyncInterval.value, 10);
+      ipcRenderer.send('setSyncInterval', syncInterval);
     })
 
     launchAtLoginCheckbox.addEventListener('change', (event) => {
@@ -131,17 +138,33 @@
     })
 
     notificationHour.addEventListener('keyup', () => {
-      ipcRenderer.send('setNotificationTime', {
-        hours: notificationHour.value,
-        minutes: store.get('notification.minutes')
-      });
+      if (isInputEmpty(notificationHour)) {
+        return;
+      }
+      const hours = parseInt(notificationHour.value, 10);
+      if(hours >= 0 && hours <= 23) {
+        ipcRenderer.send('setNotificationTime', {
+          hours: hours,
+          minutes: store.get('notification.minutes')
+        });
+      } else {
+        notificationHour.classList.add('is-warning');
+      }
     })
 
     notificationMinutes.addEventListener('keyup', () => {
-      ipcRenderer.send('setNotificationTime', {
-        hours: store.get('notification.hours'),
-        minutes: notificationMinutes.value
-      });
+      if (isInputEmpty(notificationMinutes)) {
+        return;
+      }
+      const minutes = parseInt(notificationMinutes.value, 10);
+      if (minutes >= 0 && minutes <= 59) {
+        ipcRenderer.send('setNotificationTime', {
+          hours: store.get('notification.hours'),
+          minutes: minutes
+        });
+      } else {
+        notificationMinutes.classList.add('is-warning');
+      }
     })
 
     ipcRenderer.on('usernameSet', () => {
@@ -164,6 +187,16 @@
     ipcRenderer.on('NotificationTimeSet', () => {
       console.log('NotificationTimeSet : ', store.get('notification.time'));
     })
+
+    function isInputEmpty(element) {
+      if (element.value === '') {
+        element.classList.add('is-warning');
+        return true;
+      } else {
+        element.classList.remove('is-warning');
+        return false;
+      }
+    }
 
   </script>
 </body>
