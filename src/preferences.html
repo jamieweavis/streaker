@@ -42,7 +42,7 @@
       </p>
       <div class="field">
         <div class="control">
-          <input id="githubSyncInterval" type="number" class="input" placeholder="e.g 15">
+          <input id="githubSyncInterval" type="number" class="input" placeholder="15">
           <span class="input-text">Minutes</span>
         </div>
       </div>
@@ -138,10 +138,14 @@
       if (notificationCheckbox.checked) {
         notificationHour.disabled = false;
         notificationMinutes.disabled = false;
+        isInputEmpty(notificationHour);
+        isInputEmpty(notificationMinutes);
         ipcRenderer.send('activateNotifications', notificationCheckbox.checked);
       } else {
         notificationHour.disabled = true;
         notificationMinutes.disabled = true;
+        notificationHour.classList.remove('is-warning');
+        notificationMinutes.classList.remove('is-warning');
         ipcRenderer.send('activateNotifications', notificationCheckbox.checked);
       }
     })
