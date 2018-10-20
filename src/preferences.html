@@ -84,6 +84,8 @@
     const notificationHour = document.getElementById('notificationHour');
     const notificationMinutes = document.getElementById('notificationMinutes');
 
+    let typingTimer;
+
     githubUsername.value = store.get('username') || '';
     githubSyncInterval.value = store.get('syncInterval') || '';
     notificationHour.value = store.get('notification.hours') || '';
@@ -106,11 +108,18 @@
     }
 
     githubUsername.addEventListener('keyup', () => {
+      clearTimeout(typingTimer);
       if(isInputEmpty(githubUsername)) {
         return;
       }
       githubUsername.parentElement.classList.add('is-loading');
-      ipcRenderer.send('setUsername', githubUsername.value);
+      typingTimer = setTimeout(() => {
+        ipcRenderer.send('setUsername', githubUsername.value);
+      }, 1000);
+    })
+
+    githubUsername.addEventListener('keydown', () => {
+      clearTimeout(typingTimer);
     })
 
     githubSyncInterval.addEventListener('keyup', () => {
