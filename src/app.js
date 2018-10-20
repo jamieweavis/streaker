@@ -34,10 +34,7 @@ app.on('ready', () => {
     preferencesWindow.on('closed', () => {
       preferencesWindow = null;
     });
-    
-    preferencesWindow.webContents.toggleDevTools(); // DEV purpose
   }
-  createPreferencesWindow(); // DEV purpose
 
   function createTrayMenu(contributionCount, currentStreak, bestStreak) {
     const username = store.get('username') || 'Username not set';
