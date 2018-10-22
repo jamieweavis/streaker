@@ -59,16 +59,16 @@ app.on('ready', () => {
       { label: `Best Streak: ${bestStreak}`, enabled: false },
       { label: `Contributions: ${contributionCount}`, enabled: false },
       { type: 'separator' },
-      { label: 'Reload', accelerator: 'Cmd+R', click: requestContributionData },
+      { label: 'Reload', accelerator: 'CmdOrCtrl+R', click: requestContributionData },
       {
         label: 'Open GitHub Profile...',
-        accelerator: 'Cmd+O',
+        accelerator: 'CmdOrCtrl+O',
         click: () => shell.openExternal(githubProfileUrl)
       },
       { type: 'separator' },
       {
         label: 'Preferences',
-        accelerator: 'Cmd+,',
+        accelerator: 'CmdOrCtrl+,',
         click: createPreferencesWindow
       },
       { type: 'separator' },
@@ -83,7 +83,7 @@ app.on('ready', () => {
       { type: 'separator' },
       {
         label: `Quit ${pjson.name}`,
-        accelerator: 'Cmd+Q',
+        accelerator: 'CmdOrCtrl+Q',
         click: () => app.quit()
       }
     ];
