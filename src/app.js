@@ -23,17 +23,24 @@ app.on('ready', () => {
       title: `${pjson.name} - Preferences`,
       titleBarStyle: 'hiddenInset',
       icon: icon.streaker,
-      width: 500,
-      height: 470,
+      width: 480,
+      height: 480,
       resizable: false,
       maximizable: false,
-      show: true
+      minimizable: false,
+      fullscreenable: false,
+      show: false
     });
     preferencesWindow.loadURL(`file://${__dirname}/preferences.html`);
     
+    preferencesWindow.on('ready-to-show', () => {
+      preferencesWindow.show();
+    });
+
     preferencesWindow.on('closed', () => {
       preferencesWindow = null;
     });
+
   }
 
   function createTrayMenu(contributionCount, currentStreak, bestStreak) {
@@ -55,6 +62,7 @@ app.on('ready', () => {
       { type: 'separator' },
       {
         label: 'Preferences',
+        accelerator: 'Cmd+,',
         click: createPreferencesWindow
       },
       { type: 'separator' },
