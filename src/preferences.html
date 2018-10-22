@@ -107,6 +107,10 @@
       notificationCheckbox.checked = true;
     }
 
+    if (notificationMinutes.value === '' || notificationMinutes.value === '0') {
+      notificationMinutes.value = '00';
+    }
+
     githubUsername.addEventListener('keyup', () => {
       clearTimeout(typingTimer);
       if(isInputEmpty(githubUsername)) {
