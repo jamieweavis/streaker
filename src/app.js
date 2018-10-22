@@ -35,10 +35,16 @@ app.on('ready', () => {
     
     preferencesWindow.on('ready-to-show', () => {
       preferencesWindow.show();
+      if (process.platform === 'darwin') {
+        app.dock.show();
+      }
     });
 
     preferencesWindow.on('closed', () => {
       preferencesWindow = null;
+      if (process.platform === 'darwin') {
+        app.dock.hide();
+      }
     });
 
   }
