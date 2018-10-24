@@ -67,11 +67,10 @@ app.on('ready', () => {
       },
       { type: 'separator' },
       {
-        label: 'Preferences',
+        label: 'Preferences...',
         accelerator: 'CmdOrCtrl+,',
         click: createPreferencesWindow
       },
-      { type: 'separator' },
       {
         label: `About ${pjson.name}...`,
         click: () => shell.openExternal(pjson.homepage)
