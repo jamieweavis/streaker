@@ -28,3 +28,7 @@ input[type=number] {
 .input-text {
   line-height: 36px;
 }
+
+.panel-block {
+  justify-content: space-between;
+}
