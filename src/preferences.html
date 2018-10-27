@@ -29,46 +29,42 @@
 
   <main>
 
-    <nav class="panel">
-      <label class="panel-block">
-        GitHub Username
-      </label>
-      <div class="field">
-        <div class="control">
-          <input id="githubUsername" type="text" class="input" placeholder="Type your GitHub username">
-        </div>
+    <div class="field">
+      <label class="label">GitHub Username</label>
+      <div class="control">
+        <input id="githubUsername" type="text" class="input" placeholder="Type your GitHub username">
       </div>
-      <label class="panel-block">
-        GitHub Sync Interval
-      </label>
-      <div class="field">
-        <div class="control">
-          <input id="githubSyncInterval" type="number" class="input" placeholder="15">
-          <span class="input-text">Minutes</span>
-        </div>
+    </div>
+
+    <div class="field">
+      <label class="label">GitHub Sync Interval</label>
+      <div class="control">
+        <input id="githubSyncInterval" type="number" class="input" placeholder="15">
+        <span class="input-text">Minutes</span>
       </div>
-      <label class="panel-block">
-        Launch at login
-        <label class="checkbox">
-          <input id="launchAtLoginCheckbox" type="checkbox">
-          Enable
-        </label>
+    </div>
+
+    <div class="field-checkbox">
+      <span>Launch at login</span>
+      <label class="checkbox">
+        <input id="launchAtLoginCheckbox" type="checkbox">
+        Enable
       </label>
-      <label class="panel-block">
-        Notifications
-        <label class="checkbox">
-          <input id="notificationCheckbox" type="checkbox">
-          Enable
-        </label>
+    </div>
+    <div class="field-checkbox">
+      <span>Notifications</span>
+      <label class="checkbox">
+        <input id="notificationCheckbox" type="checkbox">
+        Enable
       </label>
-      <div class="field">
-        <div class="control">
-          <input id="notificationHour" type="number" class="input" placeholder="hh" min="0" max="23" maxlength="2">
-          <span class="input-text"> : </span>
-          <input id="notificationMinutes" type="number" class="input" placeholder="mm" min="0" max="59" maxlength="2">
-        </div>
+    </div>
+    <div class="field">
+      <div class="control">
+        <input id="notificationHour" type="number" class="input" placeholder="hh" min="0" max="23" maxlength="2">
+        <span class="input-text"> : </span>
+        <input id="notificationMinutes" type="number" class="input" placeholder="mm" min="0" max="59" maxlength="2">
       </div>
-    </nav>
+    </div>
 
   </main>
 

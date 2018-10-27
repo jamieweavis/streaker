@@ -29,6 +29,23 @@ input[type=number] {
   line-height: 36px;
 }
 
-.panel-block {
+.field-checkbox {
+  display: flex;
   justify-content: space-between;
+  padding: 10px 10px 0 10px;
+}
+
+.field-checkbox span {
+  color: #363636;
+  display: block;
+  font-size: 1rem;
+  font-weight: 700;
+}
+
+.field-checkbox:not(:last-child) {
+  margin-bottom: .75rem;
+}
+
+.field:last-child {
+  padding: 0 10px 0 10px;
 }
