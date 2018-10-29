@@ -1,7 +1,12 @@
+/* WINDOW */
+
+body {
+  -webkit-user-select: none;
+}
+
 /* NAVBAR */
 
 .navbar {
-  -webkit-user-select: none;
   -webkit-app-region: drag;
 }
 
