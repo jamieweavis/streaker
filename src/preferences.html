@@ -30,39 +30,43 @@
   <main>
 
     <div class="field">
-      <label class="label">GitHub Username</label>
+      <label class="label" for="github-username">GitHub Username</label>
       <div class="control">
-        <input id="githubUsername" type="text" class="input" placeholder="Type your GitHub username">
+        <input id="github-username" type="text" class="input" placeholder="Type your GitHub username">
       </div>
     </div>
 
-    <div class="field">
-      <label class="label">GitHub Sync Interval</label>
+    <div class="field has-addons">
+      <label class="label" for="github-sync-interval">GitHub Sync Interval</label>
       <div class="control">
-        <input id="githubSyncInterval" type="number" class="input" placeholder="15">
-        <span class="input-text">Minutes</span>
+        <input id="github-sync-interval" type="number" class="input" placeholder="15">
+      </div>
+      <div class="control">
+        <a class="button is-static">
+          minutes
+        </a>
       </div>
     </div>
 
     <div class="field-checkbox">
-      <span>Launch at login</span>
-      <label class="checkbox">
-        <input id="launchAtLoginCheckbox" type="checkbox">
+      <span>Launch at Login</span>
+      <label class="checkbox" for="launch-at-login-checkbox">
+        <input id="launch-at-login-checkbox" type="checkbox">
         Enable
       </label>
     </div>
     <div class="field-checkbox">
       <span>Notifications</span>
       <label class="checkbox">
-        <input id="notificationCheckbox" type="checkbox">
+        <input id="notification-checkbox" type="checkbox">
         Enable
       </label>
     </div>
     <div class="field">
       <div class="control">
-        <input id="notificationHour" type="number" class="input" placeholder="hh" min="0" max="23" maxlength="2">
+        <input id="notification-hour" type="number" class="input" placeholder="hh" min="0" max="23" maxlength="2">
         <span class="input-text"> : </span>
-        <input id="notificationMinutes" type="number" class="input" placeholder="mm" min="0" max="59" maxlength="2">
+        <input id="notification-minutes" type="number" class="input" placeholder="mm" min="0" max="59" maxlength="2">
       </div>
     </div>
 
@@ -74,12 +78,12 @@
 
     const store = require('./store');
 
-    const githubUsername = document.getElementById('githubUsername');
-    const githubSyncInterval = document.getElementById('githubSyncInterval');
-    const launchAtLoginCheckbox = document.getElementById('launchAtLoginCheckbox');
-    const notificationCheckbox = document.getElementById('notificationCheckbox');
-    const notificationHour = document.getElementById('notificationHour');
-    const notificationMinutes = document.getElementById('notificationMinutes');
+    const githubUsername = document.getElementById('github-username');
+    const githubSyncInterval = document.getElementById('github-sync-interval');
+    const launchAtLoginCheckbox = document.getElementById('launch-at-login-checkbox');
+    const notificationCheckbox = document.getElementById('notification-checkbox');
+    const notificationHour = document.getElementById('notification-hour');
+    const notificationMinutes = document.getElementById('notification-minutes');
 
     let typingTimer;
 
