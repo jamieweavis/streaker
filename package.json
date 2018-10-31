@@ -14,12 +14,14 @@
     "electron-store": "^2.0.0"
   },
   "devDependencies": {
+    "bulma": "^0.7.2",
     "electron": "^2.0.5",
     "electron-builder": "^20.25.0",
     "eslint": "^5.2.0",
     "eslint-config-airbnb-base": "^13.0.0",
     "eslint-config-prettier": "^2.9.0",
     "eslint-plugin-import": "^2.13.0",
+    "node-sass": "^4.9.4",
     "prettier": "^1.13.7"
   },
   "homepage": "https://github.com/jamieweavis/streaker#readme",
@@ -44,6 +46,8 @@
     "dist-win": "build -w",
     "pack": "build --dir",
     "start": "electron src/app.js",
-    "test": "eslint ."
+    "test": "eslint .",
+    "css-build": "node-sass ./src/assets/sass/style.scss ./src/assets/css/style.css --output-style compressed --omit-source-map-url",
+    "css-watch": "npm run css-build -- --watch"
   }
 }

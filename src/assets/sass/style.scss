@@ -1,0 +1,69 @@
+@charset "utf-8";
+
+/* Bulma Override */
+
+$navbar-height: 1rem;
+$navbar-item-img-max-height: 1rem;
+
+@import "../../../node_modules/bulma/bulma.sass";
+
+/* WINDOW */
+
+body {
+  -webkit-user-select: none;
+}
+
+/* NAVBAR */
+
+.navbar {
+  -webkit-app-region: drag;
+}
+
+.navbar-brand {
+  justify-content: center;
+}
+
+.navbar-item {
+  padding: 0.4rem 0.75rem;
+}
+
+/* FORMS */
+
+.field {
+  padding: 10px 10px 0 10px;
+}
+
+input[type=number]::-webkit-inner-spin-button, 
+input[type=number]::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+input[type=number] {
+  width: 50px;
+}
+
+.input-text {
+  line-height: 36px;
+}
+
+.field-checkbox {
+  display: flex;
+  justify-content: space-between;
+  padding: 10px 10px 0 10px;
+}
+
+.field-checkbox span {
+  color: #363636;
+  display: block;
+  font-size: 1rem;
+  font-weight: 700;
+}
+
+.field-checkbox:not(:last-child) {
+  margin-bottom: .75rem;
+}
+
+.field:last-child {
+  padding: 0 10px 0 10px;
+}
