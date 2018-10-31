@@ -47,6 +47,12 @@ app.on('ready', () => {
     });
   }
 
+  function onPreferencesClick() {
+    if (preferencesWindow === null) {
+      createPreferencesWindow();
+    }
+  }
+
   function createTrayMenu(contributionCount, currentStreak, bestStreak) {
     const username = store.get('username') || 'Username not set';
     const githubProfileUrl = `https://github.com/${username}`;
@@ -67,7 +73,7 @@ app.on('ready', () => {
       {
         label: 'Preferences...',
         accelerator: 'CmdOrCtrl+,',
-        click: createPreferencesWindow
+        click: onPreferencesClick
       },
       {
         label: `About ${pjson.name}...`,
