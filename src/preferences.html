@@ -111,7 +111,7 @@
       notificationMinutes.value = '00';
     }
 
-    githubUsername.addEventListener('keyup', () => {
+    githubUsername.addEventListener('keypress', () => {
       clearTimeout(typingTimer);
       if(isInputEmpty(githubUsername)) {
         return;
