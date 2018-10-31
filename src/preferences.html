@@ -184,9 +184,14 @@
       }
     })
 
-    ipcRenderer.on('usernameSet', () => {
-      console.log('usernameSet : ', store.get('username'));
-      githubUsername.parentElement.classList.remove('is-loading');
+    ipcRenderer.on('usernameSet', (event, userExist) => {
+      if (userExist) {
+        console.log('usernameSet : ', store.get('username'));
+        githubUsername.parentElement.classList.remove('is-loading');
+      } else {
+        githubUsername.parentElement.classList.remove('is-loading');
+        githubUsername.classList.add('is-warning');
+      }
     });
 
     ipcRenderer.on('syncIntervalSet', () => {

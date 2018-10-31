@@ -46,7 +46,6 @@ app.on('ready', () => {
         app.dock.hide();
       }
     });
-
   }
 
   function createTrayMenu(contributionCount, currentStreak, bestStreak) {
@@ -132,12 +131,17 @@ app.on('ready', () => {
       });
   }
 
-  function setUsername(event, username) {
+  async function setUsername(event, username) {
     if (username !== '' && username !== store.get('username')) {
-      store.set('username', username);
-      requestContributionData();
-      log.info(`Store updated - username=${username}`);
-      event.sender.send('usernameSet');
+      try {
+        const userExist = await contribution(username);
+        store.set('username', username);
+        requestContributionData();
+        log.info(`Store updated - username=${username}`);
+        event.sender.send('usernameSet', true);
+      } catch (error) {
+        event.sender.send('usernameSet', false);
+      }
     }
   }
 
