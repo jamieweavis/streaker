@@ -9,8 +9,13 @@ $navbar-item-img-max-height: 1rem;
 
 /* WINDOW */
 
-body {
+html, body {
   -webkit-user-select: none;
+  overflow-y: hidden;
+}
+
+main {
+  padding: 10px;
 }
 
 /* NAVBAR */
