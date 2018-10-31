@@ -47,7 +47,7 @@
     "pack": "build --dir",
     "start": "electron src/app.js",
     "test": "eslint .",
-    "css-build": "node-sass ./src/assets/sass/style.scss ./src/assets/css/style.css --output-style compressed --omit-source-map-url",
+    "css-build": "node-sass ./src/assets/sass/style.scss ./src/assets/css/style.min.css --output-style compressed --omit-source-map-url",
     "css-watch": "npm run css-build -- --watch"
   }
 }

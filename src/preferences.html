@@ -5,7 +5,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta http-equiv="Content-Security-Policy" content="default-src 'self'; style-src 'self'; script-src 'unsafe-inline'">
-  <link rel="stylesheet" href="./assets/css/style.css">
+  <link rel="stylesheet" href="./assets/css/style.min.css">
   <title>Preferences</title>
 </head>
 
@@ -28,6 +28,7 @@
 
   <main>
 
+    <!-- GitHub Username -->
     <div class="field">
       <label class="label" for="github-username">GitHub Username</label>
       <div class="control">
@@ -35,18 +36,22 @@
       </div>
     </div>
 
-    <div class="field has-addons">
+    <!-- GitHub Sync Interval -->
+    <div class="field">
       <label class="label" for="github-sync-interval">GitHub Sync Interval</label>
-      <div class="control">
-        <input id="github-sync-interval" type="number" class="input" placeholder="15">
-      </div>
-      <div class="control">
-        <a class="button is-static">
-          minutes
-        </a>
+      <div class="field has-addons">
+        <div class="control">
+          <input id="github-sync-interval" type="number" class="input" placeholder="15">
+        </div>
+        <div class="control">
+          <a class="button is-static">
+            minutes
+          </a>
+        </div>
       </div>
     </div>
 
+    <!-- CHECKBOX : Launch at Login -->
     <div class="field-checkbox">
       <span>Launch at Login</span>
       <label class="checkbox" for="launch-at-login-checkbox">
@@ -54,6 +59,8 @@
         Enable
       </label>
     </div>
+
+    <!-- CHECKBOX : Activate Notifications -->
     <div class="field-checkbox">
       <span>Notifications</span>
       <label class="checkbox">
@@ -61,6 +68,8 @@
         Enable
       </label>
     </div>
+
+    <!-- Notifications : Hours and Minutes input -->
     <div class="field">
       <div class="control">
         <input id="notification-hour" type="number" class="input" placeholder="hh" min="0" max="23" maxlength="2">
