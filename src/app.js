@@ -21,7 +21,6 @@ app.on('ready', () => {
   function createPreferencesWindow() {
     preferencesWindow = new BrowserWindow({
       title: `${pjson.name} - Preferences`,
-      icon: icon.streaker,
       width: 300,
       height: 420,
       resizable: false,
