@@ -56,9 +56,9 @@
     <!-- Notifications : Hours and Minutes input -->
     <div class="field">
       <div class="control">
-        <input id="notification-hour" type="number" class="input" placeholder="hh" min="0" max="23" maxlength="2">
+        <input id="notification-hour" type="number" class="input notification-time" placeholder="hh" min="0" max="23" maxlength="2">
         <span class="input-text"> : </span>
-        <input id="notification-minutes" type="number" class="input" placeholder="mm" min="0" max="59" maxlength="2">
+        <input id="notification-minutes" type="number" class="input notification-time" placeholder="mm" min="0" max="59" maxlength="2">
       </div>
     </div>
 
@@ -124,7 +124,11 @@
         return;
       }
       const syncInterval = parseInt(githubSyncInterval.value, 10);
-      ipcRenderer.send('setSyncInterval', syncInterval);
+      if (syncInterval > 0) {
+        ipcRenderer.send('setSyncInterval', syncInterval);
+      } else {
+        githubSyncInterval.classList.add('is-warning');
+      }
     })
 
     launchAtLoginCheckbox.addEventListener('change', (event) => {
