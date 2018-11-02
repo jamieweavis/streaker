@@ -15,7 +15,10 @@
     <!-- GitHub Username -->
     <div class="field">
       <label class="label" for="github-username">GitHub Username</label>
-      <div class="control">
+      <div class="control has-icons-left">
+        <span class="icon is-left">
+          <i class="fab fa-github"></i>
+        </span>
         <input id="github-username" type="text" class="input" placeholder="Type your GitHub username">
       </div>
     </div>
@@ -104,11 +107,12 @@
       notificationMinutes.value = '00';
     }
 
-    githubUsername.addEventListener('keypress', () => {
+    githubUsername.addEventListener('keyup', () => {
       clearTimeout(typingTimer);
       if(isInputEmpty(githubUsername)) {
         return;
       }
+      removeIconRight();
       githubUsername.parentElement.classList.add('is-loading');
       typingTimer = setTimeout(() => {
         ipcRenderer.send('setUsername', githubUsername.value);
@@ -182,12 +186,18 @@
     })
 
     ipcRenderer.on('usernameSet', (event, userExist) => {
+      const iconRight = document.querySelector('.icon.is-right');
       if (userExist) {
         console.log('usernameSet : ', store.get('username'));
         githubUsername.parentElement.classList.remove('is-loading');
+        githubUsername.classList.remove('is-danger');
+        removeIconRight();
+        addSuccessIcon(githubUsername);
       } else {
         githubUsername.parentElement.classList.remove('is-loading');
         githubUsername.classList.add('is-danger');
+        removeIconRight();
+        addErrorIcon(githubUsername);
       }
     });
 
@@ -215,6 +225,33 @@
         element.classList.remove('is-warning');
         return false;
       }
+    }
+
+    function removeIconRight() {
+      const icon = document.querySelector('.icon.is-right');
+      if (icon) {
+        icon.parentElement.removeChild(icon);
+      }
+    }
+
+    function addErrorIcon(element) {
+      if (!githubUsername.parentElement.classList.contains('has-icons-right')) {
+        githubUsername.parentElement.classList.add('has-icons-right');
+      }
+      element.insertAdjacentHTML('afterend', `
+        <span class="icon is-right">
+          <i class="fas fa-times"></i>
+        </span>`);
+    }
+
+    function addSuccessIcon(element) {
+      if (!githubUsername.parentElement.classList.contains('has-icons-right')) {
+        githubUsername.parentElement.classList.add('has-icons-right');
+      }
+      githubUsername.insertAdjacentHTML('afterend', `
+        <span class="icon is-right">
+          <i class="fas fa-check"></i>
+        </span>`);
     }
 
   </script>
