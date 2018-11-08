@@ -238,8 +238,8 @@
     }
 
     function addErrorIcon(element) {
-      if (!githubUsername.parentElement.classList.contains('has-icons-right')) {
-        githubUsername.parentElement.classList.add('has-icons-right');
+      if (!element.parentElement.classList.contains('has-icons-right')) {
+        element.parentElement.classList.add('has-icons-right');
       }
       element.insertAdjacentHTML('afterend', `
         <span class="icon is-right">
@@ -248,10 +248,10 @@
     }
 
     function addSuccessIcon(element) {
-      if (!githubUsername.parentElement.classList.contains('has-icons-right')) {
-        githubUsername.parentElement.classList.add('has-icons-right');
+      if (!element.parentElement.classList.contains('has-icons-right')) {
+        element.parentElement.classList.add('has-icons-right');
       }
-      githubUsername.insertAdjacentHTML('afterend', `
+      element.insertAdjacentHTML('afterend', `
         <span class="icon is-right">
           <i class="fas fa-check"></i>
         </span>`);
