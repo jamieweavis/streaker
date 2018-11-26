@@ -15,15 +15,14 @@
     "electron-store": "^2.0.0"
   },
   "devDependencies": {
-    "bulma": "^0.7.2",
     "electron": "^2.0.5",
     "electron-builder": "^20.25.0",
     "eslint": "^5.2.0",
-    "eslint-config-airbnb-base": "^13.0.0",
     "eslint-config-prettier": "^2.9.0",
-    "eslint-plugin-import": "^2.13.0",
-    "node-sass": "^4.9.4",
-    "prettier": "^1.13.7"
+    "eslint-plugin-prettier": "^3.0.0",
+    "husky": "^1.1.4",
+    "lint-staged": "^8.0.4",
+    "prettier": "^1.15.2"
   },
   "homepage": "https://github.com/jamieweavis/streaker#readme",
   "keywords": [
@@ -47,8 +46,23 @@
     "dist-win": "build -w",
     "pack": "build --dir",
     "start": "electron src/app.js",
-    "test": "eslint .",
-    "css-build": "node-sass ./src/assets/sass/style.scss ./src/assets/css/style.min.css --output-style compressed --omit-source-map-url",
-    "css-watch": "npm run css-build -- --watch"
+    "lint": "eslint .",
+    "fmt": "prettier --write './src/**/*.{js,html}'"
+  },
+  "lint-staged": {
+    "*.js": [
+      "prettier --write",
+      "eslint",
+      "git add"
+    ],
+    "*.html": [
+      "prettier --write",
+      "git add"
+    ]
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged"
+    }
   }
 }

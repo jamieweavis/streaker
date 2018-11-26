@@ -3,9 +3,9 @@
 <p align="center">🐙 GitHub contribution streak tracking menubar app<p>
 <p align="center">
     <a href="https://github.com/jamieweavis/streaker/releases"><img src="https://img.shields.io/github/downloads/jamieweavis/streaker/total.svg" alt="GitHub Downloads"></a>
-    <a href="https://github.com/jamieweavis/streaker/releases"><img src="https://img.shields.io/github/release/jamieweavis/streaker.svg" alt="Release Version"></a>
+    <a href="https://github.com/jamieweavis/streaker/releases"><img src="https://img.shields.io/github/release/jamieweavis/streaker.svg" alt="Current Release Version"></a>
     <a href="https://github.com/jamieweavis/readme-template/blob/master/LICENSE.md"><img src="https://img.shields.io/badge/license-MIT-blue.svg" alt="MIT License"></a>
-    <a href="https://github.com/airbnb/javascript"><img src="https://img.shields.io/badge/codestyle-airbnb-fd5c63.svg" alt="airbnb Code Style"></a>
+    <a href="https://github.com/prettier/prettier"><img src="https://img.shields.io/badge/code_style-prettier-ff69b4.svg" alt="Prettier Code Style"></a>
 </p>
 
 ## Installation
