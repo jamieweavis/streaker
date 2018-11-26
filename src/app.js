@@ -8,11 +8,19 @@ const icon = require('./icon');
 const pjson = require('../package.json');
 const store = require('./store');
 
-const { app, BrowserWindow, Tray, Menu, shell, ipcMain, Notification } = electron;
+const {
+  app,
+  BrowserWindow,
+  Tray,
+  Menu,
+  shell,
+  ipcMain,
+  Notification,
+} = electron;
 
 app.on('ready', () => {
   const streakerAutoLauncher = new AutoLaunch({
-    name: pjson.name
+    name: pjson.name,
   });
 
   const tray = new Tray(icon.done);
@@ -27,10 +35,12 @@ app.on('ready', () => {
       maximizable: false,
       minimizable: false,
       fullscreenable: false,
-      show: false
+      show: false,
     });
-    preferencesWindow.loadURL(`file://${__dirname}/preferences.html`);
-    
+    preferencesWindow.loadURL(
+      `file://${__dirname}/preferences/preferences.html`,
+    );
+
     preferencesWindow.on('ready-to-show', () => {
       preferencesWindow.show();
       if (process.platform === 'darwin') {
@@ -62,32 +72,36 @@ app.on('ready', () => {
       { label: `Best Streak: ${bestStreak}`, enabled: false },
       { label: `Contributions: ${contributionCount}`, enabled: false },
       { type: 'separator' },
-      { label: 'Reload', accelerator: 'CmdOrCtrl+R', click: requestContributionData },
+      {
+        label: 'Reload',
+        accelerator: 'CmdOrCtrl+R',
+        click: requestContributionData,
+      },
       {
         label: 'Open GitHub Profile...',
         accelerator: 'CmdOrCtrl+O',
-        click: () => shell.openExternal(githubProfileUrl)
+        click: () => shell.openExternal(githubProfileUrl),
       },
       { type: 'separator' },
       {
         label: 'Preferences...',
         accelerator: 'CmdOrCtrl+,',
-        click: onPreferencesClick
+        click: onPreferencesClick,
       },
       {
         label: `About ${pjson.name}...`,
-        click: () => shell.openExternal(pjson.homepage)
+        click: () => shell.openExternal(pjson.homepage),
       },
       {
         label: 'Feedback && Support...',
-        click: () => shell.openExternal(pjson.bugs.url)
+        click: () => shell.openExternal(pjson.bugs.url),
       },
       { type: 'separator' },
       {
         label: `Quit ${pjson.name}`,
         accelerator: 'CmdOrCtrl+Q',
-        click: () => app.quit()
-      }
+        click: () => app.quit(),
+      },
     ];
     return Menu.buildFromTemplate(menuTemplate);
   }
@@ -103,7 +117,7 @@ app.on('ready', () => {
 
     tray.setImage(icon.load);
     tray.setContextMenu(
-      createTrayMenu('Loading...', 'Loading...', 'Loading...')
+      createTrayMenu('Loading...', 'Loading...', 'Loading...'),
     );
 
     setTimeout(requestContributionData, 1000 * 60 * store.get('syncInterval')); // `syncInterval` minutes
@@ -114,14 +128,14 @@ app.on('ready', () => {
           createTrayMenu(
             data.contributions,
             data.currentStreak,
-            data.bestStreak
-          )
+            data.bestStreak,
+          ),
         );
         tray.setImage(data.currentStreak > 0 ? icon.done : icon.todo);
         log.info(
           `Request successful - username=${username} streak=${
             data.currentStreak
-          } today=${data.contributions > 0}`
+          } today=${data.contributions > 0}`,
         );
       })
       .catch(error => {
@@ -130,7 +144,7 @@ app.on('ready', () => {
         log.error(
           `Request failed - username=${username}) statusCode=${
             error.statusCode
-          }`
+          }`,
         );
       });
   }
@@ -163,14 +177,20 @@ app.on('ready', () => {
     } else {
       streakerAutoLauncher.disable();
     }
-    event.sender.send('activateLaunchAtLoginSet')
+    event.sender.send('activateLaunchAtLoginSet');
   }
 
   function activateNotifications(event, isEnabled) {
     store.set('notification.isEnabled', isEnabled);
     log.info(`Store updated - notification.isEnabled=${isEnabled}`);
     if (isEnabled) {
-      job.setTime(new CronTime(`0 ${store.get('notification.minutes')} ${store.get('notification.hours')} * * *`));
+      job.setTime(
+        new CronTime(
+          `0 ${store.get('notification.minutes')} ${store.get(
+            'notification.hours',
+          )} * * *`,
+        ),
+      );
       job.start();
     } else {
       job.stop();
@@ -183,7 +203,10 @@ app.on('ready', () => {
     store.set('notification.time', `${hours}:${minutes}`);
     store.set('notification.hours', hours);
     store.set('notification.minutes', minutes);
-    log.info(`Store updated - time=${hours}:${minutes} hours=${hours} minutes=${minutes}`);      job.setTime(new CronTime(`0 ${minutes} ${hours} * * *`));
+    log.info(
+      `Store updated - time=${hours}:${minutes} hours=${hours} minutes=${minutes}`,
+    );
+    job.setTime(new CronTime(`0 ${minutes} ${hours} * * *`));
     job.start();
     event.sender.send('NotificationTimeSet');
   }
@@ -195,22 +218,28 @@ app.on('ready', () => {
       if (data.currentStreak === 0 && Notification.isSupported()) {
         new Notification({
           title: pjson.name,
-          body: 'You haven\'t contributed today'
-        }).show()
+          body: "You haven't contributed today",
+        }).show();
       }
-    }
+    },
   });
-  
+
   if (store.get('notification.isEnabled')) {
-    job.setTime(new CronTime(`0 ${store.get('notification.minutes')} ${store.get('notification.hours')} * * *`));
+    job.setTime(
+      new CronTime(
+        `0 ${store.get('notification.minutes')} ${store.get(
+          'notification.hours',
+        )} * * *`,
+      ),
+    );
     job.start();
   }
 
-  process.on('uncaughtException', (error) => {
-      tray.setContextMenu(createTrayMenu('Error', 'Error', 'Error'));
-      tray.setImage(icon.fail);
-      log.error(error);
-  })
+  process.on('uncaughtException', error => {
+    tray.setContextMenu(createTrayMenu('Error', 'Error', 'Error'));
+    tray.setImage(icon.fail);
+    log.error(error);
+  });
 
   if (process.platform === 'darwin') {
     app.dock.hide();
@@ -220,7 +249,7 @@ app.on('ready', () => {
   tray.on('right-click', requestContributionData);
   ipcMain.on('setUsername', setUsername);
   ipcMain.on('setSyncInterval', setSyncInterval);
-  ipcMain.on('activateLaunchAtLogin', activateLaunchAtLogin)
+  ipcMain.on('activateLaunchAtLogin', activateLaunchAtLogin);
   ipcMain.on('activateNotifications', activateNotifications);
   ipcMain.on('setNotificationTime', setNotificationTime);
 

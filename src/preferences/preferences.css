@@ -1,19 +1,6 @@
-@charset "utf-8";
-
-/* Bulma Override */
-
-$navbar-height: 1rem;
-$navbar-item-img-max-height: 1rem;
-
-@import "../../../node_modules/bulma/bulma.sass";
-
-$fa-font-path: "../../../node_modules/@fortawesome/fontawesome-free/webfonts";
-@import "../../../node_modules/@fortawesome/fontawesome-free/scss/fontawesome.scss";
-@import "../../../node_modules/@fortawesome/fontawesome-free/scss/solid.scss";
-@import "../../../node_modules/@fortawesome/fontawesome-free/scss/brands.scss";
+@import '../../node_modules/@fortawesome/fontawesome-free/css/all.min.css';
 
 /* WINDOW */
-
 html, body {
   -webkit-user-select: none;
   overflow-y: hidden;
@@ -23,32 +10,19 @@ main {
   padding: 10px;
 }
 
-/* NAVBAR */
-
-.navbar {
-  -webkit-app-region: drag;
-}
-
-.navbar-brand {
-  justify-content: center;
-}
-
-.navbar-item {
-  padding: 0.4rem 0.3rem;
-}
-
 /* FORMS */
-
 .field {
   padding: 10px 10px 0 10px;
 }
 
+/* Remove default styling */
 input[type=number]::-webkit-inner-spin-button, 
 input[type=number]::-webkit-outer-spin-button {
   -webkit-appearance: none;
   margin: 0;
 }
 
+/* Reduce width */
 .notification-time {
   width: 50px;
 }
@@ -57,12 +31,14 @@ input[type=number]::-webkit-outer-spin-button {
   line-height: 36px;
 }
 
+/* Put the checkbox to the right */
 .field-checkbox {
   display: flex;
   justify-content: space-between;
   padding: 10px 10px 0 10px;
 }
 
+/* Style like an input label  */
 .field-checkbox span {
   color: #363636;
   display: block;
@@ -70,14 +46,17 @@ input[type=number]::-webkit-outer-spin-button {
   font-weight: 700;
 }
 
+/* Add spacing */
 .field-checkbox:not(:last-child) {
   margin-bottom: .75rem;
 }
 
+/* Remove extra padding */
 .field.has-addons {
   padding: 0 !important;
 }
 
+/* The end spacing */
 .field:last-child {
   padding: 0 10px 10px 10px;
 }
