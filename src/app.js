@@ -200,12 +200,9 @@ app.on('ready', () => {
 
   function setNotificationTime(event, data) {
     const { hours, minutes } = data;
-    store.set('notification.time', `${hours}:${minutes}`);
     store.set('notification.hours', hours);
     store.set('notification.minutes', minutes);
-    log.info(
-      `Store updated - time=${hours}:${minutes} hours=${hours} minutes=${minutes}`,
-    );
+    log.info(`Store updated - hours=${hours} minutes=${minutes}`);
     job.setTime(new CronTime(`0 ${minutes} ${hours} * * *`));
     job.start();
     event.sender.send('NotificationTimeSet');
