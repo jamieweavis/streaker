@@ -1,263 +1,325 @@
 <!DOCTYPE html>
 <html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<meta
+			http-equiv="Content-Security-Policy"
+			content="default-src 'self'; style-src 'self'; script-src 'unsafe-inline'"
+		/>
+		<link rel="stylesheet" href="./assets/css/style.min.css" />
+	</head>
 
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; style-src 'self'; script-src 'unsafe-inline'">
-  <link rel="stylesheet" href="./assets/css/style.min.css">
-</head>
+	<body>
+		<main>
+			<!-- GitHub Username -->
+			<div class="field">
+				<label class="label" for="github-username"
+					>GitHub Username</label
+				>
+				<div class="control has-icons-left">
+					<input
+						id="github-username"
+						type="text"
+						class="input"
+						placeholder="Type your GitHub username"
+					/>
+					<span class="icon is-left">
+						<i class="fab fa-github-alt"></i>
+					</span>
+				</div>
+			</div>
 
-<body>
+			<!-- GitHub Sync Interval -->
+			<div class="field">
+				<label class="label" for="github-sync-interval"
+					>GitHub Sync Interval</label
+				>
+				<div class="field has-addons">
+					<div class="control has-icons-left">
+						<input
+							id="github-sync-interval"
+							type="number"
+							class="input"
+							placeholder="15"
+							min="1"
+						/>
+						<span class="icon is-left">
+							<i class="fas fa-clock"></i>
+						</span>
+					</div>
+					<div class="control">
+						<a class="button is-static"> minutes </a>
+					</div>
+				</div>
+			</div>
 
-  <main>
+			<!-- CHECKBOX : Launch at Login -->
+			<div class="field-checkbox">
+				<span>Launch at Login</span>
+				<label class="checkbox" for="launch-at-login-checkbox">
+					<input id="launch-at-login-checkbox" type="checkbox" />
+					Enable
+				</label>
+			</div>
 
-    <!-- GitHub Username -->
-    <div class="field">
-      <label class="label" for="github-username">GitHub Username</label>
-      <div class="control has-icons-left">
-        <span class="icon is-left">
-          <i class="fab fa-github"></i>
-        </span>
-        <input id="github-username" type="text" class="input" placeholder="Type your GitHub username">
-      </div>
-    </div>
+			<!-- CHECKBOX : Activate Notifications -->
+			<div class="field-checkbox">
+				<span>Notifications</span>
+				<label class="checkbox">
+					<input id="notification-checkbox" type="checkbox" /> Enable
+				</label>
+			</div>
 
-    <!-- GitHub Sync Interval -->
-    <div class="field">
-      <label class="label" for="github-sync-interval">GitHub Sync Interval</label>
-      <div class="field has-addons">
-        <div class="control has-icons-left">
-          <input id="github-sync-interval" type="number" class="input" placeholder="15" min="1">
-          <span class="icon is-left">
-            <i class="fas fa-clock"></i>
-          </span>
-        </div>
-        <div class="control">
-          <a class="button is-static">
-            minutes
-          </a>
-        </div>
-      </div>
-    </div>
+			<!-- Notifications : Hours and Minutes input -->
+			<div class="field">
+				<div class="control">
+					<input
+						id="notification-hour"
+						type="number"
+						class="input notification-time"
+						placeholder="hh"
+						min="0"
+						max="23"
+						maxlength="2"
+					/>
+					<span class="input-text"> : </span>
+					<input
+						id="notification-minutes"
+						type="number"
+						class="input notification-time"
+						placeholder="mm"
+						min="0"
+						max="59"
+						maxlength="2"
+					/>
+				</div>
+			</div>
+		</main>
 
-    <!-- CHECKBOX : Launch at Login -->
-    <div class="field-checkbox">
-      <span>Launch at Login</span>
-      <label class="checkbox" for="launch-at-login-checkbox">
-        <input id="launch-at-login-checkbox" type="checkbox">
-        Enable
-      </label>
-    </div>
+		<script>
+			const { ipcRenderer } = require('electron');
 
-    <!-- CHECKBOX : Activate Notifications -->
-    <div class="field-checkbox">
-      <span>Notifications</span>
-      <label class="checkbox">
-        <input id="notification-checkbox" type="checkbox">
-        Enable
-      </label>
-    </div>
+			const store = require('./store');
 
-    <!-- Notifications : Hours and Minutes input -->
-    <div class="field">
-      <div class="control">
-        <input id="notification-hour" type="number" class="input notification-time" placeholder="hh" min="0" max="23" maxlength="2">
-        <span class="input-text"> : </span>
-        <input id="notification-minutes" type="number" class="input notification-time" placeholder="mm" min="0" max="59" maxlength="2">
-      </div>
-    </div>
+			const githubUsername = document.getElementById('github-username');
+			const githubSyncInterval = document.getElementById(
+				'github-sync-interval',
+			);
+			const launchAtLoginCheckbox = document.getElementById(
+				'launch-at-login-checkbox',
+			);
+			const notificationCheckbox = document.getElementById(
+				'notification-checkbox',
+			);
+			const notificationHour = document.getElementById(
+				'notification-hour',
+			);
+			const notificationMinutes = document.getElementById(
+				'notification-minutes',
+			);
 
-  </main>
+			let typingTimer;
 
-  <script>
+			githubUsername.value = store.get('username') || '';
+			githubSyncInterval.value = store.get('syncInterval') || '';
+			notificationHour.value = store.get('notification.hours') || '';
+			notificationMinutes.value = store.get('notification.minutes') || '';
 
-    const { ipcRenderer } = require('electron');
+			if (githubUsername.value === '') {
+				githubUsername.focus();
+				githubUsername.classList.add('is-warning');
+			}
 
-    const store = require('./store');
+			if (store.get('autoLaunch')) {
+				launchAtLoginCheckbox.checked = true;
+			}
 
-    const githubUsername = document.getElementById('github-username');
-    const githubSyncInterval = document.getElementById('github-sync-interval');
-    const launchAtLoginCheckbox = document.getElementById('launch-at-login-checkbox');
-    const notificationCheckbox = document.getElementById('notification-checkbox');
-    const notificationHour = document.getElementById('notification-hour');
-    const notificationMinutes = document.getElementById('notification-minutes');
+			if (!store.get('notification.isEnabled')) {
+				notificationHour.disabled = true;
+				notificationMinutes.disabled = true;
+			} else {
+				notificationCheckbox.checked = true;
+			}
 
-    let typingTimer;
+			if (
+				notificationMinutes.value === '' ||
+				notificationMinutes.value === '0'
+			) {
+				notificationMinutes.value = '00';
+			}
 
-    githubUsername.value = store.get('username') || '';
-    githubSyncInterval.value = store.get('syncInterval') || '';
-    notificationHour.value = store.get('notification.hours') || '';
-    notificationMinutes.value = store.get('notification.minutes') || '';
+			githubUsername.addEventListener('keyup', () => {
+				clearTimeout(typingTimer);
+				if (isInputEmpty(githubUsername)) {
+					return;
+				}
+				removeIconRight();
+				githubUsername.parentElement.classList.add('is-loading');
+				typingTimer = setTimeout(() => {
+					ipcRenderer.send('setUsername', githubUsername.value);
+				}, 1000);
+			});
 
-    if (githubUsername.value === '') {
-      githubUsername.focus();
-      githubUsername.classList.add('is-warning');
-    }
+			githubUsername.addEventListener('keydown', () => {
+				clearTimeout(typingTimer);
+			});
 
-    if (store.get('autoLaunch')) {
-      launchAtLoginCheckbox.checked = true;
-    }
+			githubSyncInterval.addEventListener('keyup', () => {
+				if (isInputEmpty(githubSyncInterval)) {
+					return;
+				}
+				const syncInterval = parseInt(githubSyncInterval.value, 10);
+				if (syncInterval > 0) {
+					ipcRenderer.send('setSyncInterval', syncInterval);
+				} else {
+					githubSyncInterval.classList.add('is-warning');
+				}
+			});
 
-    if (!store.get('notification.isEnabled')) {
-      notificationHour.disabled = true;
-      notificationMinutes.disabled = true;
-    } else {
-      notificationCheckbox.checked = true;
-    }
+			launchAtLoginCheckbox.addEventListener('change', event => {
+				ipcRenderer.send(
+					'activateLaunchAtLogin',
+					launchAtLoginCheckbox.checked,
+				);
+			});
 
-    if (notificationMinutes.value === '' || notificationMinutes.value === '0') {
-      notificationMinutes.value = '00';
-    }
+			notificationCheckbox.addEventListener('change', event => {
+				if (notificationCheckbox.checked) {
+					notificationHour.disabled = false;
+					notificationMinutes.disabled = false;
+					isInputEmpty(notificationHour);
+					isInputEmpty(notificationMinutes);
+					ipcRenderer.send(
+						'activateNotifications',
+						notificationCheckbox.checked,
+					);
+				} else {
+					notificationHour.disabled = true;
+					notificationMinutes.disabled = true;
+					notificationHour.classList.remove('is-warning');
+					notificationMinutes.classList.remove('is-warning');
+					ipcRenderer.send(
+						'activateNotifications',
+						notificationCheckbox.checked,
+					);
+				}
+			});
 
-    githubUsername.addEventListener('keyup', () => {
-      clearTimeout(typingTimer);
-      if(isInputEmpty(githubUsername)) {
-        return;
-      }
-      removeIconRight();
-      githubUsername.parentElement.classList.add('is-loading');
-      typingTimer = setTimeout(() => {
-        ipcRenderer.send('setUsername', githubUsername.value);
-      }, 1000);
-    })
+			notificationHour.addEventListener('keyup', () => {
+				if (isInputEmpty(notificationHour)) {
+					return;
+				}
+				const hours = parseInt(notificationHour.value, 10);
+				if (hours >= 0 && hours <= 23) {
+					ipcRenderer.send('setNotificationTime', {
+						hours: hours,
+						minutes: store.get('notification.minutes'),
+					});
+				} else {
+					notificationHour.classList.add('is-warning');
+				}
+			});
 
-    githubUsername.addEventListener('keydown', () => {
-      clearTimeout(typingTimer);
-    })
+			notificationMinutes.addEventListener('keyup', () => {
+				if (isInputEmpty(notificationMinutes)) {
+					return;
+				}
+				const minutes = parseInt(notificationMinutes.value, 10);
+				if (minutes >= 0 && minutes <= 59) {
+					ipcRenderer.send('setNotificationTime', {
+						hours: store.get('notification.hours'),
+						minutes: minutes,
+					});
+				} else {
+					notificationMinutes.classList.add('is-warning');
+				}
+			});
 
-    githubSyncInterval.addEventListener('keyup', () => {
-      if (isInputEmpty(githubSyncInterval)) {
-        return;
-      }
-      const syncInterval = parseInt(githubSyncInterval.value, 10);
-      if (syncInterval > 0) {
-        ipcRenderer.send('setSyncInterval', syncInterval);
-      } else {
-        githubSyncInterval.classList.add('is-warning');
-      }
-    })
+			ipcRenderer.on('usernameSet', (event, userExist) => {
+				const iconRight = document.querySelector('.icon.is-right');
+				if (userExist) {
+					console.log('usernameSet : ', store.get('username'));
+					githubUsername.parentElement.classList.remove('is-loading');
+					githubUsername.classList.remove('is-danger');
+					removeIconRight();
+					addSuccessIcon(githubUsername);
+				} else {
+					githubUsername.parentElement.classList.remove('is-loading');
+					githubUsername.classList.add('is-danger');
+					removeIconRight();
+					addErrorIcon(githubUsername);
+				}
+			});
 
-    launchAtLoginCheckbox.addEventListener('change', (event) => {
-      ipcRenderer.send('activateLaunchAtLogin', launchAtLoginCheckbox.checked);
-    })
+			ipcRenderer.on('syncIntervalSet', () => {
+				console.log('syncInterval : ', store.get('syncInterval'));
+			});
 
-    notificationCheckbox.addEventListener('change', (event) => {
-      if (notificationCheckbox.checked) {
-        notificationHour.disabled = false;
-        notificationMinutes.disabled = false;
-        isInputEmpty(notificationHour);
-        isInputEmpty(notificationMinutes);
-        ipcRenderer.send('activateNotifications', notificationCheckbox.checked);
-      } else {
-        notificationHour.disabled = true;
-        notificationMinutes.disabled = true;
-        notificationHour.classList.remove('is-warning');
-        notificationMinutes.classList.remove('is-warning');
-        ipcRenderer.send('activateNotifications', notificationCheckbox.checked);
-      }
-    })
+			ipcRenderer.on('activateLaunchAtLoginSet', () => {
+				console.log('autoLaunch : ', store.get('autoLaunch'));
+			});
 
-    notificationHour.addEventListener('keyup', () => {
-      if (isInputEmpty(notificationHour)) {
-        return;
-      }
-      const hours = parseInt(notificationHour.value, 10);
-      if(hours >= 0 && hours <= 23) {
-        ipcRenderer.send('setNotificationTime', {
-          hours: hours,
-          minutes: store.get('notification.minutes')
-        });
-      } else {
-        notificationHour.classList.add('is-warning');
-      }
-    })
+			ipcRenderer.on('activateNotificationsSet', () => {
+				console.log(
+					'Notification state : ',
+					store.get('notification.isEnabled'),
+				);
+			});
 
-    notificationMinutes.addEventListener('keyup', () => {
-      if (isInputEmpty(notificationMinutes)) {
-        return;
-      }
-      const minutes = parseInt(notificationMinutes.value, 10);
-      if (minutes >= 0 && minutes <= 59) {
-        ipcRenderer.send('setNotificationTime', {
-          hours: store.get('notification.hours'),
-          minutes: minutes
-        });
-      } else {
-        notificationMinutes.classList.add('is-warning');
-      }
-    })
+			ipcRenderer.on('NotificationTimeSet', () => {
+				console.log(
+					'NotificationTimeSet : ',
+					store.get('notification.time'),
+				);
+			});
 
-    ipcRenderer.on('usernameSet', (event, userExist) => {
-      const iconRight = document.querySelector('.icon.is-right');
-      if (userExist) {
-        console.log('usernameSet : ', store.get('username'));
-        githubUsername.parentElement.classList.remove('is-loading');
-        githubUsername.classList.remove('is-danger');
-        removeIconRight();
-        addSuccessIcon(githubUsername);
-      } else {
-        githubUsername.parentElement.classList.remove('is-loading');
-        githubUsername.classList.add('is-danger');
-        removeIconRight();
-        addErrorIcon(githubUsername);
-      }
-    });
+			function isInputEmpty(element) {
+				if (element.value === '') {
+					element.classList.add('is-warning');
+					return true;
+				} else {
+					element.classList.remove('is-warning');
+					return false;
+				}
+			}
 
-    ipcRenderer.on('syncIntervalSet', () => {
-      console.log('syncInterval : ', store.get('syncInterval'));
-    })
+			function removeIconRight() {
+				const icon = document.querySelector('.icon.is-right');
+				if (icon) {
+					icon.parentElement.removeChild(icon);
+				}
+			}
 
-    ipcRenderer.on('activateLaunchAtLoginSet', () => {
-      console.log('autoLaunch : ', store.get('autoLaunch'));
-    })
+			function addErrorIcon(element) {
+				if (
+					!element.parentElement.classList.contains('has-icons-right')
+				) {
+					element.parentElement.classList.add('has-icons-right');
+				}
+				element.insertAdjacentHTML(
+					'afterend',
+					`
+			        <span class="icon is-right">
+			          <i class="fas fa-times"></i>
+			        </span>`,
+				);
+			}
 
-    ipcRenderer.on('activateNotificationsSet', () => {
-      console.log('Notification state : ', store.get('notification.isEnabled'));
-    })
-
-    ipcRenderer.on('NotificationTimeSet', () => {
-      console.log('NotificationTimeSet : ', store.get('notification.time'));
-    })
-
-    function isInputEmpty(element) {
-      if (element.value === '') {
-        element.classList.add('is-warning');
-        return true;
-      } else {
-        element.classList.remove('is-warning');
-        return false;
-      }
-    }
-
-    function removeIconRight() {
-      const icon = document.querySelector('.icon.is-right');
-      if (icon) {
-        icon.parentElement.removeChild(icon);
-      }
-    }
-
-    function addErrorIcon(element) {
-      if (!element.parentElement.classList.contains('has-icons-right')) {
-        element.parentElement.classList.add('has-icons-right');
-      }
-      element.insertAdjacentHTML('afterend', `
-        <span class="icon is-right">
-          <i class="fas fa-times"></i>
-        </span>`);
-    }
-
-    function addSuccessIcon(element) {
-      if (!element.parentElement.classList.contains('has-icons-right')) {
-        element.parentElement.classList.add('has-icons-right');
-      }
-      element.insertAdjacentHTML('afterend', `
-        <span class="icon is-right">
-          <i class="fas fa-check"></i>
-        </span>`);
-    }
-
-  </script>
-</body>
-
+			function addSuccessIcon(element) {
+				if (
+					!element.parentElement.classList.contains('has-icons-right')
+				) {
+					element.parentElement.classList.add('has-icons-right');
+				}
+				element.insertAdjacentHTML(
+					'afterend',
+					`
+			        <span class="icon is-right">
+			          <i class="fas fa-check"></i>
+			        </span>`,
+				);
+			}
+		</script>
+	</body>
 </html>
