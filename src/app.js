@@ -159,13 +159,10 @@ app.on('ready', () => {
   function activateNotifications(event, isEnabled) {
     store.set('notification.isEnabled', isEnabled);
     if (isEnabled) {
-      job.setTime(
-        new CronTime(
-          `0 ${store.get('notification.minutes')} ${store.get(
-            'notification.hours',
-          )} * * *`,
-        ),
-      );
+      const time = store.get('notification.time');
+      const timeArray = time.split(':');
+      const cronTime = `0 ${timeArray[1]} ${timeArray[0]} * * *`;
+      job.setTime(new CronTime(cronTime));
       job.start();
     } else {
       job.stop();
@@ -173,17 +170,17 @@ app.on('ready', () => {
     event.sender.send('activateNotificationsSet');
   }
 
-  function setNotificationTime(event, data) {
-    const { hours, minutes } = data;
-    store.set('notification.hours', hours);
-    store.set('notification.minutes', minutes);
-    job.setTime(new CronTime(`0 ${minutes} ${hours} * * *`));
+  function setNotificationTime(event, time) {
+    store.set('notification.time', time);
+    const timeArray = time.split(':');
+    const cronTime = `0 ${timeArray[1]} ${timeArray[0]} * * *`;
+    job.setTime(new CronTime(cronTime));
     job.start();
     event.sender.send('NotificationTimeSet');
   }
 
   const job = new CronJob({
-    cronTime: '0 0 20 * * *',
+    cronTime: '0 0 20 00 * *',
     async onTick() {
       const data = await contribution(store.get('username'));
       if (data.currentStreak === 0 && Notification.isSupported()) {
@@ -196,13 +193,10 @@ app.on('ready', () => {
   });
 
   if (store.get('notification.isEnabled')) {
-    job.setTime(
-      new CronTime(
-        `0 ${store.get('notification.minutes')} ${store.get(
-          'notification.hours',
-        )} * * *`,
-      ),
-    );
+    const time = store.get('notification.time');
+    const timeArray = time.split(':');
+    const cronTime = `0 ${timeArray[1]} ${timeArray[0]} * * *`;
+    job.setTime(new CronTime(cronTime));
     job.start();
   }
 

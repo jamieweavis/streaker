@@ -9,25 +9,18 @@ const launchAtLoginCheckbox = document.getElementById(
   'launch-at-login-checkbox',
 );
 const notificationCheckbox = document.getElementById('notification-checkbox');
-const notificationHour = document.getElementById('notification-hour');
-const notificationMinutes = document.getElementById('notification-minutes');
+const notificationTime = document.getElementById('notification-time');
 
 githubUsername.value = store.get('username');
 githubSyncInterval.value = store.get('syncInterval');
 launchAtLoginCheckbox.checked = store.get('autoLaunch');
 notificationCheckbox.checked = store.get('notification.isEnabled');
-notificationHour.value = store.get('notification.hours');
-notificationMinutes.value = store.get('notification.minutes');
-notificationHour.disabled = !store.get('notification.isEnabled');
-notificationMinutes.disabled = !store.get('notification.isEnabled');
+notificationTime.value = store.get('notification.time');
+notificationTime.disabled = !store.get('notification.isEnabled');
 
 if (!githubUsername.value) {
   githubUsername.focus();
   isInvalid(githubUsername);
-}
-
-if (notificationMinutes.value === '' || notificationMinutes.value === '0') {
-  notificationMinutes.value = '00';
 }
 
 let typingTimer;
@@ -60,37 +53,13 @@ launchAtLoginCheckbox.addEventListener('change', event => {
 });
 
 notificationCheckbox.addEventListener('change', event => {
-  notificationHour.disabled = !notificationCheckbox.checked;
-  notificationMinutes.disabled = !notificationCheckbox.checked;
+  notificationTime.disabled = !notificationCheckbox.checked;
   ipcRenderer.send('activateNotifications', notificationCheckbox.checked);
-  isInvalid(notificationHour);
-  isInvalid(notificationMinutes);
 });
 
-notificationHour.addEventListener('input', () => {
-  if (isInvalid(notificationHour)) return;
-  const hours = parseInt(notificationHour.value, 10);
-  if (hours >= 0 && hours <= 23) {
-    ipcRenderer.send('setNotificationTime', {
-      hours: hours,
-      minutes: store.get('notification.minutes'),
-    });
-  } else {
-    notificationHour.classList.add('is-warning');
-  }
-});
-
-notificationMinutes.addEventListener('input', () => {
-  if (isInvalid(notificationMinutes)) return;
-  const minutes = parseInt(notificationMinutes.value, 10);
-  if (minutes >= 0 && minutes <= 59) {
-    ipcRenderer.send('setNotificationTime', {
-      hours: store.get('notification.hours'),
-      minutes: minutes,
-    });
-  } else {
-    notificationMinutes.classList.add('is-warning');
-  }
+notificationTime.addEventListener('input', () => {
+  if (isInvalid(notificationTime)) return;
+  ipcRenderer.send('setNotificationTime', notificationTime.value);
 });
 
 ipcRenderer.on('usernameSet', (event, userExists) => {
