@@ -30,7 +30,7 @@ app.on('ready', () => {
     preferencesWindow = new BrowserWindow({
       title: `${pjson.name} - Preferences`,
       width: 300,
-      height: 420,
+      height: 320,
       resizable: false,
       maximizable: false,
       minimizable: false,
