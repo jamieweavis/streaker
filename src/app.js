@@ -111,7 +111,6 @@ app.on('ready', () => {
     if (!username) {
       tray.setImage(icon.fail);
       tray.setContextMenu(createTrayMenu(0, 0, 0));
-      createPreferencesWindow();
       return;
     }
 
@@ -235,4 +234,8 @@ app.on('ready', () => {
   ipcMain.on('setNotificationTime', setNotificationTime);
 
   requestContributionData();
+
+  if (!store.get('username')) {
+    createPreferencesWindow();
+  }
 });
