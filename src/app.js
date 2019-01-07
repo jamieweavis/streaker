@@ -4,8 +4,8 @@ const contribution = require('contribution');
 const { CronJob, CronTime } = require('cron');
 
 const icon = require('./icon');
-const pjson = require('../package.json');
 const store = require('./store');
+const pjson = require('../package.json');
 
 const {
   app,
