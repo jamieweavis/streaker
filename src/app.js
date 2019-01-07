@@ -139,15 +139,12 @@ app.on('ready', () => {
   }
 
   async function setUsername(event, username) {
-    if (username !== '' && username !== store.get('username')) {
-      try {
-        const userExist = await contribution(username);
-        store.set('username', username);
-        requestContributionData();
-        event.sender.send('usernameSet', true);
-      } catch (error) {
-        event.sender.send('usernameSet', false);
-      }
+    try {
+      store.set('username', username);
+      requestContributionData();
+      event.sender.send('usernameSet', !!username);
+    } catch (error) {
+      event.sender.send('usernameSet', false);
     }
   }
 

@@ -34,7 +34,7 @@ let typingTimer;
 githubUsername.addEventListener('input', () => {
   githubUsername.parentElement.classList.remove('is-loading');
   clearTimeout(typingTimer);
-  if (isInvalid(githubUsername)) return;
+  isInvalid(githubUsername);
 
   githubUsername.parentElement.classList.add('is-loading');
   githubUsernameStatus.classList.remove('fa-check');
