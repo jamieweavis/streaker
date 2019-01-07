@@ -34,7 +34,7 @@ if (notificationMinutes.value === '' || notificationMinutes.value === '0') {
 }
 
 // Send the GitHub username via IPC
-githubUsername.addEventListener('keyup', () => {
+githubUsername.addEventListener('input', () => {
   clearTimeout(typingTimer);
   if (isInputEmpty(githubUsername)) {
     return;
@@ -47,12 +47,12 @@ githubUsername.addEventListener('keyup', () => {
 });
 
 // Add a timer before sending to the main process
-githubUsername.addEventListener('keydown', () => {
+githubUsername.addEventListener('input', () => {
   clearTimeout(typingTimer);
 });
 
 // Send the sync interval via IPC
-githubSyncInterval.addEventListener('keyup', () => {
+githubSyncInterval.addEventListener('input', () => {
   if (isInputEmpty(githubSyncInterval)) {
     return;
   }
@@ -87,7 +87,7 @@ notificationCheckbox.addEventListener('change', event => {
 });
 
 // Send the notification hour via IPC
-notificationHour.addEventListener('keyup', () => {
+notificationHour.addEventListener('input', () => {
   if (isInputEmpty(notificationHour)) {
     return;
   }
@@ -103,7 +103,7 @@ notificationHour.addEventListener('keyup', () => {
 });
 
 // Send the notification minutes via IPC
-notificationMinutes.addEventListener('keyup', () => {
+notificationMinutes.addEventListener('input', () => {
   if (isInputEmpty(notificationMinutes)) {
     return;
   }
