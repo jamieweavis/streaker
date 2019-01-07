@@ -3,7 +3,6 @@ const AutoLaunch = require('auto-launch');
 const contribution = require('contribution');
 const { CronJob, CronTime } = require('cron');
 
-const log = require('./logger');
 const icon = require('./icon');
 const pjson = require('../package.json');
 const store = require('./store');
@@ -133,20 +132,10 @@ app.on('ready', () => {
           ),
         );
         tray.setImage(data.currentStreak > 0 ? icon.done : icon.todo);
-        log.info(
-          `Request successful - username=${username} streak=${
-            data.currentStreak
-          } today=${data.contributions > 0}`,
-        );
       })
       .catch(error => {
         tray.setContextMenu(createTrayMenu('Error', 'Error', 'Error'));
         tray.setImage(icon.fail);
-        log.error(
-          `Request failed - username=${username}) statusCode=${
-            error.statusCode
-          }`,
-        );
       });
   }
 
@@ -156,7 +145,6 @@ app.on('ready', () => {
         const userExist = await contribution(username);
         store.set('username', username);
         requestContributionData();
-        log.info(`Store updated - username=${username}`);
         event.sender.send('usernameSet', true);
       } catch (error) {
         event.sender.send('usernameSet', false);
@@ -166,13 +154,11 @@ app.on('ready', () => {
 
   function setSyncInterval(event, interval) {
     store.set('syncInterval', interval);
-    log.info(`Store updated - syncInterval=${interval}`);
     event.sender.send('syncIntervalSet');
   }
 
   function activateLaunchAtLogin(event, isEnabled) {
     store.set('autoLaunch', isEnabled);
-    log.info(`Store updated - autoLaunch=${isEnabled}`);
     if (isEnabled) {
       streakerAutoLauncher.enable();
     } else {
@@ -183,7 +169,6 @@ app.on('ready', () => {
 
   function activateNotifications(event, isEnabled) {
     store.set('notification.isEnabled', isEnabled);
-    log.info(`Store updated - notification.isEnabled=${isEnabled}`);
     if (isEnabled) {
       job.setTime(
         new CronTime(
@@ -203,7 +188,6 @@ app.on('ready', () => {
     const { hours, minutes } = data;
     store.set('notification.hours', hours);
     store.set('notification.minutes', minutes);
-    log.info(`Store updated - hours=${hours} minutes=${minutes}`);
     job.setTime(new CronTime(`0 ${minutes} ${hours} * * *`));
     job.start();
     event.sender.send('NotificationTimeSet');
@@ -233,10 +217,9 @@ app.on('ready', () => {
     job.start();
   }
 
-  process.on('uncaughtException', error => {
+  process.on('uncaughtException', () => {
     tray.setContextMenu(createTrayMenu('Error', 'Error', 'Error'));
     tray.setImage(icon.fail);
-    log.error(error);
   });
 
   if (process.platform === 'darwin') {
