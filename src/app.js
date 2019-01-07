@@ -58,8 +58,9 @@ app.on('ready', () => {
 
   function onPreferencesClick() {
     if (preferencesWindow === null) {
-      createPreferencesWindow();
+      return createPreferencesWindow();
     }
+    preferencesWindow.focus();
   }
 
   function createTrayMenu(contributionCount, currentStreak, bestStreak) {
