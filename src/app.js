@@ -10,11 +10,11 @@ const store = require('./store');
 const {
   app,
   BrowserWindow,
-  Tray,
-  Menu,
-  shell,
   ipcMain,
+  Menu,
   Notification,
+  shell,
+  Tray,
 } = electron;
 
 app.on('ready', () => {
