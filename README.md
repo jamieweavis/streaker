@@ -1,4 +1,4 @@
-<p align="center"><img src="./build/icon.png" height="64" alt="Project Logo"></p>
+<p align="center"><img src="./build/icon.png" height="64" alt="Streaker Logo"></p>
 <h3 align="center">Streaker</h3>
 <p align="center">🐙 GitHub contribution streak tracking menubar app<p>
 <p align="center">
@@ -12,9 +12,21 @@
 
 Download the latest version of Streaker from the the **[GitHub releases](https://github.com/jamieweavis/streaker/releases)** page. (currently macOS & Windows only)
 
-## Screenshot
+## Features
 
-<img src="./screenshot.png" width="280" alt="Screenshot">
+- Current streak, best streak & total contribution stats
+- Launch at login
+- Notification when you haven't commited today
+
+## Screenshots
+
+### Menubar
+
+<img src="./screenshots/menubar.png" width="280" alt="Menubar Screenshot">
+
+### Preferences
+
+<img src="./screenshots/preferences.png" width="380" alt="Preferences Screenshot">
 
 ## Menu Bar Icons
 
