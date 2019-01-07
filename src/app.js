@@ -18,10 +18,7 @@ const {
 } = electron;
 
 app.on('ready', () => {
-  const autoLauncher = new AutoLaunch({
-    name: pjson.name,
-  });
-
+  const autoLauncher = new AutoLaunch({ name: pjson.name });
   const tray = new Tray(icon.done);
   let preferencesWindow = null;
 

@@ -93,11 +93,11 @@ notificationMinutes.addEventListener('input', () => {
   }
 });
 
-ipcRenderer.on('usernameSet', (event, userExist) => {
+ipcRenderer.on('usernameSet', (event, userExists) => {
   githubUsername.parentElement.classList.remove('is-loading');
-  githubUsername.classList.toggle('is-danger', !userExist);
-  githubUsernameStatus.classList.toggle('fa-check', userExist);
-  githubUsernameStatus.classList.toggle('fa-times', !userExist);
+  githubUsername.classList.toggle('is-danger', !userExists);
+  githubUsernameStatus.classList.toggle('fa-check', userExists);
+  githubUsernameStatus.classList.toggle('fa-times', !userExists);
 });
 
 function isInvalid(input) {
