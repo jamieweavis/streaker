@@ -4,11 +4,11 @@ module.exports = new Store({
   defaults: {
     username: '',
     autoLaunch: false,
+    syncInterval: 15,
     notification: {
       isEnabled: false,
-      time: '20:00',
       hours: '20',
-      minutes: '00'
-    }
-  }
+      minutes: '00',
+    },
+  },
 });

@@ -8,97 +8,58 @@ const icon = require('./icon');
 const pjson = require('../package.json');
 const store = require('./store');
 
-const { app, BrowserWindow, Tray, Menu, shell, ipcMain, Notification } = electron;
+const {
+  app,
+  BrowserWindow,
+  Tray,
+  Menu,
+  shell,
+  ipcMain,
+  Notification,
+} = electron;
 
 app.on('ready', () => {
   const streakerAutoLauncher = new AutoLaunch({
-    name: pjson.name
+    name: pjson.name,
   });
 
   const tray = new Tray(icon.done);
-  let usernameWindow = null;
-  let notificationWindow = null;
+  let preferencesWindow = null;
 
-  function createUsernameWindow() {
-    if (usernameWindow) {
-      usernameWindow.focus();
-      return;
-    }
-    usernameWindow = new BrowserWindow({
-      title: `${pjson.name} - Set GitHub Username`,
-      frame: false,
-      width: 270,
-      height: 60,
+  function createPreferencesWindow() {
+    preferencesWindow = new BrowserWindow({
+      title: `${pjson.name} - Preferences`,
+      width: 300,
+      height: 420,
       resizable: false,
       maximizable: false,
-      show: false
+      minimizable: false,
+      fullscreenable: false,
+      show: false,
     });
-    usernameWindow.loadURL(`file://${__dirname}/username.html`);
-    usernameWindow.once('ready-to-show', () => {
-      const screen = electron.screen.getDisplayNearestPoint(
-        electron.screen.getCursorScreenPoint()
-      );
-      usernameWindow.setPosition(
-        Math.floor(
-          screen.bounds.x +
-            screen.size.width / 2 -
-            usernameWindow.getSize()[0] / 2
-        ),
-        Math.floor(
-          screen.bounds.y +
-            screen.size.height / 2 -
-            usernameWindow.getSize()[1] / 2
-        )
-      );
-      usernameWindow.show();
+    preferencesWindow.loadURL(
+      `file://${__dirname}/preferences/preferences.html`,
+    );
+
+    preferencesWindow.on('ready-to-show', () => {
+      preferencesWindow.show();
+      if (process.platform === 'darwin') {
+        app.dock.show();
+      }
     });
-    usernameWindow.on('closed', () => {
-      usernameWindow = null;
-    });
-    usernameWindow.on('blur', () => {
-      usernameWindow.close();
+
+    preferencesWindow.on('closed', () => {
+      preferencesWindow = null;
+      if (process.platform === 'darwin') {
+        app.dock.hide();
+      }
     });
   }
 
-  function createNotificationWindow() {
-    if (notificationWindow) {
-      notificationWindow.focus();
-      return;
+  function onPreferencesClick() {
+    if (preferencesWindow === null) {
+      createPreferencesWindow();
     }
-    notificationWindow = new BrowserWindow({
-      title: `${pjson.name} - Set GitHub Username`,
-      frame: false,
-      width: 270,
-      height: 60,
-      resizable: false,
-      maximizable: false,
-      show: false
-    });
-    notificationWindow.loadURL(`file://${__dirname}/notification.html`);
-    notificationWindow.once('ready-to-show', () => {
-      const screen = electron.screen.getDisplayNearestPoint(
-        electron.screen.getCursorScreenPoint()
-      );
-      notificationWindow.setPosition(
-        Math.floor(
-          screen.bounds.x +
-            screen.size.width / 2 -
-            notificationWindow.getSize()[0] / 2
-        ),
-        Math.floor(
-          screen.bounds.y +
-            screen.size.height / 2 -
-            notificationWindow.getSize()[1] / 2
-        )
-      );
-      notificationWindow.show();
-    });
-    notificationWindow.on('closed', () => {
-      notificationWindow = null;
-    });
-    notificationWindow.on('blur', () => {
-      notificationWindow.close();
-    });
   }
 
   function createTrayMenu(contributionCount, currentStreak, bestStreak) {
@@ -111,70 +72,36 @@ app.on('ready', () => {
       { label: `Best Streak: ${bestStreak}`, enabled: false },
       { label: `Contributions: ${contributionCount}`, enabled: false },
       { type: 'separator' },
-      { label: 'Reload', accelerator: 'Cmd+R', click: requestContributionData },
+      {
+        label: 'Reload',
+        accelerator: 'CmdOrCtrl+R',
+        click: requestContributionData,
+      },
       {
         label: 'Open GitHub Profile...',
-        accelerator: 'Cmd+O',
-        click: () => shell.openExternal(githubProfileUrl)
+        accelerator: 'CmdOrCtrl+O',
+        click: () => shell.openExternal(githubProfileUrl),
       },
       { type: 'separator' },
       {
-        label: 'Set GitHub Username...',
-        accelerator: 'Cmd+S',
-        click: createUsernameWindow
+        label: 'Preferences...',
+        accelerator: 'CmdOrCtrl+,',
+        click: onPreferencesClick,
       },
-      {
-        label: 'Preferences',
-        submenu: [
-          {
-            label: `Launch ${pjson.name} at login`,
-            type: 'checkbox',
-            checked: store.get('autoLaunch'),
-            click: checkbox => {
-              store.set('autoLaunch', checkbox.checked);
-              if (checkbox.checked) {
-                streakerAutoLauncher.enable();
-              } else {
-                streakerAutoLauncher.disable();
-              }
-              log.info(`Store updated - autoLaunch=${checkbox.checked}`);
-            }
-          },
-          {
-            label: 'Activate notifications',
-            type: 'checkbox',
-            checked: store.get('notification.isEnabled'),
-            click: checkbox => {
-              store.set('notification.isEnabled', checkbox.checked);
-              if (checkbox.checked) {
-                job.start();
-              } else {
-                job.stop();
-              }
-              log.info(`Store updated - notification=${checkbox.checked}`);
-            }
-          },
-          {
-            label: 'Set notification time',
-            click: createNotificationWindow
-          }
-        ]
-      },
-      { type: 'separator' },
       {
         label: `About ${pjson.name}...`,
-        click: () => shell.openExternal(pjson.homepage)
+        click: () => shell.openExternal(pjson.homepage),
       },
       {
         label: 'Feedback && Support...',
-        click: () => shell.openExternal(pjson.bugs.url)
+        click: () => shell.openExternal(pjson.bugs.url),
       },
       { type: 'separator' },
       {
         label: `Quit ${pjson.name}`,
-        accelerator: 'Cmd+Q',
-        click: () => app.quit()
-      }
+        accelerator: 'CmdOrCtrl+Q',
+        click: () => app.quit(),
+      },
     ];
     return Menu.buildFromTemplate(menuTemplate);
   }
@@ -184,16 +111,16 @@ app.on('ready', () => {
     if (!username) {
       tray.setImage(icon.fail);
       tray.setContextMenu(createTrayMenu(0, 0, 0));
-      createUsernameWindow();
+      createPreferencesWindow();
       return;
     }
 
     tray.setImage(icon.load);
     tray.setContextMenu(
-      createTrayMenu('Loading...', 'Loading...', 'Loading...')
+      createTrayMenu('Loading...', 'Loading...', 'Loading...'),
     );
 
-    setTimeout(requestContributionData, 1000 * 60 * 60); // 15 Minutes
+    setTimeout(requestContributionData, 1000 * 60 * store.get('syncInterval')); // `syncInterval` minutes
 
     contribution(username)
       .then(data => {
@@ -201,14 +128,14 @@ app.on('ready', () => {
           createTrayMenu(
             data.contributions,
             data.currentStreak,
-            data.bestStreak
-          )
+            data.bestStreak,
+          ),
         );
         tray.setImage(data.currentStreak > 0 ? icon.done : icon.todo);
         log.info(
           `Request successful - username=${username} streak=${
             data.currentStreak
-          } today=${data.contributions > 0}`
+          } today=${data.contributions > 0}`,
         );
       })
       .catch(error => {
@@ -217,32 +144,68 @@ app.on('ready', () => {
         log.error(
           `Request failed - username=${username}) statusCode=${
             error.statusCode
-          }`
+          }`,
         );
       });
   }
 
-  function setUsername(event, username) {
-    usernameWindow.close();
-    if (username && username !== store.get('username')) {
-      store.set('username', username);
-      requestContributionData();
-      log.info(`Store updated - username=${username}`);
+  async function setUsername(event, username) {
+    if (username !== '' && username !== store.get('username')) {
+      try {
+        const userExist = await contribution(username);
+        store.set('username', username);
+        requestContributionData();
+        log.info(`Store updated - username=${username}`);
+        event.sender.send('usernameSet', true);
+      } catch (error) {
+        event.sender.send('usernameSet', false);
+      }
     }
   }
 
-  function setNotificationTime(event, time) {
-    notificationWindow.close();
-    if (time && time !== store.get('notification.time')) {
-      const hours = time.split(':')[0];
-      const minutes = time.split(':')[1];
-      store.set('notification.time', time);
-      store.set('notification.hours', hours);
-      store.set('notification.minutes', minutes);
-      log.info(`Store updated - time=${time} hours=${hours} minutes=${minutes}`);
-      job.setTime(new CronTime(`0 ${minutes} ${hours} * * *`));
-      job.start();
+  function setSyncInterval(event, interval) {
+    store.set('syncInterval', interval);
+    log.info(`Store updated - syncInterval=${interval}`);
+    event.sender.send('syncIntervalSet');
+  }
+
+  function activateLaunchAtLogin(event, isEnabled) {
+    store.set('autoLaunch', isEnabled);
+    log.info(`Store updated - autoLaunch=${isEnabled}`);
+    if (isEnabled) {
+      streakerAutoLauncher.enable();
+    } else {
+      streakerAutoLauncher.disable();
     }
+    event.sender.send('activateLaunchAtLoginSet');
+  }
+
+  function activateNotifications(event, isEnabled) {
+    store.set('notification.isEnabled', isEnabled);
+    log.info(`Store updated - notification.isEnabled=${isEnabled}`);
+    if (isEnabled) {
+      job.setTime(
+        new CronTime(
+          `0 ${store.get('notification.minutes')} ${store.get(
+            'notification.hours',
+          )} * * *`,
+        ),
+      );
+      job.start();
+    } else {
+      job.stop();
+    }
+    event.sender.send('activateNotificationsSet');
+  }
+
+  function setNotificationTime(event, data) {
+    const { hours, minutes } = data;
+    store.set('notification.hours', hours);
+    store.set('notification.minutes', minutes);
+    log.info(`Store updated - hours=${hours} minutes=${minutes}`);
+    job.setTime(new CronTime(`0 ${minutes} ${hours} * * *`));
+    job.start();
+    event.sender.send('NotificationTimeSet');
   }
 
   const job = new CronJob({
@@ -252,22 +215,28 @@ app.on('ready', () => {
       if (data.currentStreak === 0 && Notification.isSupported()) {
         new Notification({
           title: pjson.name,
-          body: 'You haven\'t contributed today'
-        }).show()
+          body: "You haven't contributed today",
+        }).show();
       }
-    }
+    },
   });
-  
+
   if (store.get('notification.isEnabled')) {
-    job.setTime(new CronTime(`0 ${store.get('notification.minutes')} ${store.get('notification.hours')} * * *`));
+    job.setTime(
+      new CronTime(
+        `0 ${store.get('notification.minutes')} ${store.get(
+          'notification.hours',
+        )} * * *`,
+      ),
+    );
     job.start();
   }
 
-  process.on('uncaughtException', (error) => {
-      tray.setContextMenu(createTrayMenu('Error', 'Error', 'Error'));
-      tray.setImage(icon.fail);
-      log.error(error);
-  })
+  process.on('uncaughtException', error => {
+    tray.setContextMenu(createTrayMenu('Error', 'Error', 'Error'));
+    tray.setImage(icon.fail);
+    log.error(error);
+  });
 
   if (process.platform === 'darwin') {
     app.dock.hide();
@@ -276,6 +245,9 @@ app.on('ready', () => {
   app.on('window-all-closed', () => {});
   tray.on('right-click', requestContributionData);
   ipcMain.on('setUsername', setUsername);
+  ipcMain.on('setSyncInterval', setSyncInterval);
+  ipcMain.on('activateLaunchAtLogin', activateLaunchAtLogin);
+  ipcMain.on('activateNotifications', activateNotifications);
   ipcMain.on('setNotificationTime', setNotificationTime);
 
   requestContributionData();
