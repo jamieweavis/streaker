@@ -13,30 +13,19 @@ const notificationMinutes = document.getElementById('notification-minutes');
 
 let typingTimer;
 
-// Get default values
-githubUsername.value = store.get('username') || '';
-githubSyncInterval.value = store.get('syncInterval') || '';
-notificationHour.value = store.get('notification.hours') || '';
-notificationMinutes.value = store.get('notification.minutes') || '';
+githubUsername.value = store.get('username');
+githubSyncInterval.value = store.get('syncInterval');
+launchAtLoginCheckbox.checked = store.get('autoLaunch');
+notificationCheckbox.checked = store.get('notification.isEnabled');
+notificationHour.value = store.get('notification.hours');
+notificationMinutes.value = store.get('notification.minutes');
+notificationHour.disabled = !store.get('notification.isEnabled');
+notificationMinutes.disabled = !store.get('notification.isEnabled');
 
 // Auto focus the username input if empty
 if (githubUsername.value === '') {
   githubUsername.focus();
   githubUsername.classList.add('is-warning');
-}
-
-// Auto check if autoLaunch is enabled
-if (store.get('autoLaunch')) {
-  launchAtLoginCheckbox.checked = true;
-}
-
-// Disable notifications input if disabled
-// Check the notification checkbox otherwise
-if (!store.get('notification.isEnabled')) {
-  notificationHour.disabled = true;
-  notificationMinutes.disabled = true;
-} else {
-  notificationCheckbox.checked = true;
 }
 
 // Replace '' or '0' by '00' (e.g 20:0 -> 20:00)
