@@ -25,6 +25,11 @@
     "prettier": "^1.15.3"
   },
   "homepage": "https://github.com/jamieweavis/streaker#readme",
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged"
+    }
+  },
   "keywords": [
     "contribution",
     "contribution-graph",
@@ -36,19 +41,6 @@
     "streak"
   ],
   "license": "MIT",
-  "main": "src/app.js",
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/jamieweavis/streaker.git"
-  },
-  "scripts": {
-    "dist": "build",
-    "dist-win": "build -w",
-    "pack": "build --dir",
-    "start": "electron src/app.js",
-    "lint": "eslint .",
-    "format": "prettier --write './src/**/*.{js,html}'"
-  },
   "lint-staged": {
     "*.js": [
       "prettier --write",
@@ -60,9 +52,17 @@
       "git add"
     ]
   },
-  "husky": {
-    "hooks": {
-      "pre-commit": "lint-staged"
-    }
+  "main": "src/app.js",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jamieweavis/streaker.git"
+  },
+  "scripts": {
+    "dist": "build",
+    "dist-win": "build -w",
+    "format": "prettier --write './src/**/*.{js,html}'",
+    "lint": "eslint .",
+    "pack": "build --dir",
+    "start": "electron src/app.js"
   }
 }
