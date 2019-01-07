@@ -48,7 +48,7 @@
     "pack": "build --dir",
     "start": "electron src/app.js",
     "lint": "eslint .",
-    "fmt": "prettier --write './src/**/*.{js,html}'"
+    "format": "prettier --write './src/**/*.{js,html}'"
   },
   "lint-staged": {
     "*.js": [
