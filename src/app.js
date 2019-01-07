@@ -129,7 +129,7 @@ app.on('ready', () => {
         );
         tray.setImage(data.currentStreak > 0 ? icon.done : icon.todo);
       })
-      .catch(error => {
+      .catch(() => {
         tray.setContextMenu(createTrayMenu('Error', 'Error', 'Error'));
         tray.setImage(icon.fail);
       });

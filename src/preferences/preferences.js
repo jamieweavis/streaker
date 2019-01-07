@@ -48,11 +48,11 @@ githubSyncInterval.addEventListener('input', () => {
   }
 });
 
-launchAtLoginCheckbox.addEventListener('change', event => {
+launchAtLoginCheckbox.addEventListener('change', () => {
   ipcRenderer.send('activateLaunchAtLogin', launchAtLoginCheckbox.checked);
 });
 
-notificationCheckbox.addEventListener('change', event => {
+notificationCheckbox.addEventListener('change', () => {
   notificationTime.disabled = !notificationCheckbox.checked;
   ipcRenderer.send('activateNotifications', notificationCheckbox.checked);
 });
