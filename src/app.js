@@ -18,7 +18,7 @@ const {
 } = electron;
 
 app.on('ready', () => {
-  const streakerAutoLauncher = new AutoLaunch({
+  const autoLauncher = new AutoLaunch({
     name: pjson.name,
   });
 
@@ -155,11 +155,7 @@ app.on('ready', () => {
 
   function activateLaunchAtLogin(event, isEnabled) {
     store.set('autoLaunch', isEnabled);
-    if (isEnabled) {
-      streakerAutoLauncher.enable();
-    } else {
-      streakerAutoLauncher.disable();
-    }
+    isEnabled ? autoLauncher.enable() : autoLauncher.disable();
     event.sender.send('activateLaunchAtLoginSet');
   }
 
