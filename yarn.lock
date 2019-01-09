@@ -676,10 +676,10 @@ configstore@^3.0.0:
     write-file-atomic "^2.0.0"
     xdg-basedir "^3.0.0"
 
-contribution@^2.0.0:
-  version "2.0.0"
-  resolved "https://registry.yarnpkg.com/contribution/-/contribution-2.0.0.tgz#88e1818ec21ff43e923e5cf672ab8f8f0288fece"
-  integrity sha512-XtWE/0CSiXCJJCHDQG9IAw8ytaNhVz/9EtdTwbflO7YYmoXGDCN8xh2hTpT4JaK0MG7zpsBo0WKnrlzs88G5hA==
+contribution@^2.1.0:
+  version "2.1.0"
+  resolved "https://registry.yarnpkg.com/contribution/-/contribution-2.1.0.tgz#6c184e6b303e6fcca980e8f76e04b816551e66c5"
+  integrity sha512-B+z5q3iCFMlACJBWPvQ4FuuHz4HiOXVdWK68FROA7JLngtjIPiG1uOS89g+6WtYl258xZu2E41qYrVZfZ/I3bA==
 
 copy-descriptor@^0.1.0:
   version "0.1.1"

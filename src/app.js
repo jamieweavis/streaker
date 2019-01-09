@@ -59,7 +59,12 @@ app.on('ready', () => {
     preferencesWindow.focus();
   }
 
-  function createTrayMenu(contributionCount, currentStreak, bestStreak) {
+  function createTrayMenu(
+    contributionCount,
+    currentStreak,
+    bestStreak,
+    bestDay,
+  ) {
     const username = store.get('username') || 'Username not set';
     const githubProfileUrl = `https://github.com/${username}`;
     const menuTemplate = [
@@ -68,6 +73,7 @@ app.on('ready', () => {
       { label: `Current Streak: ${currentStreak}`, enabled: false },
       { label: `Best Streak: ${bestStreak}`, enabled: false },
       { label: `Contributions: ${contributionCount}`, enabled: false },
+      { label: `Best Day: ${bestDay}`, enabled: false },
       { type: 'separator' },
       {
         label: 'Reload',
@@ -107,13 +113,13 @@ app.on('ready', () => {
     const username = store.get('username');
     if (!username) {
       tray.setImage(icon.fail);
-      tray.setContextMenu(createTrayMenu(0, 0, 0));
+      tray.setContextMenu(createTrayMenu(0, 0, 0, 0));
       return;
     }
 
     tray.setImage(icon.load);
     tray.setContextMenu(
-      createTrayMenu('Loading...', 'Loading...', 'Loading...'),
+      createTrayMenu('Loading...', 'Loading...', 'Loading...', 'Loading...'),
     );
 
     setTimeout(requestContributionData, 1000 * 60 * store.get('syncInterval')); // `syncInterval` minutes
@@ -125,12 +131,13 @@ app.on('ready', () => {
             data.contributions,
             data.currentStreak,
             data.bestStreak,
+            data.bestDay,
           ),
         );
         tray.setImage(data.currentStreak > 0 ? icon.done : icon.todo);
       })
       .catch(() => {
-        tray.setContextMenu(createTrayMenu('Error', 'Error', 'Error'));
+        tray.setContextMenu(createTrayMenu('Error', 'Error', 'Error', 'Error'));
         tray.setImage(icon.fail);
       });
   }
@@ -201,7 +208,7 @@ app.on('ready', () => {
   }
 
   process.on('uncaughtException', () => {
-    tray.setContextMenu(createTrayMenu('Error', 'Error', 'Error'));
+    tray.setContextMenu(createTrayMenu('Error', 'Error', 'Error', 'Error'));
     tray.setImage(icon.fail);
   });
 
