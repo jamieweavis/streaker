@@ -59,7 +59,7 @@ app.on('ready', () => {
     preferencesWindow.focus();
   }
 
-  function createTrayMenu(data = {}) {
+  function createTrayMenu(data = { streak: {}, contributions: {} }) {
     return Menu.buildFromTemplate([
       {
         label: store.get('username') || 'Set username...',
@@ -67,10 +67,19 @@ app.on('ready', () => {
         click: onPreferencesClick,
       },
       { type: 'separator' },
-      { label: `Current Streak: ${data.currentStreak || 0}`, enabled: false },
-      { label: `Best Streak: ${data.bestStreak || 0}`, enabled: false },
-      { label: `Contributions: ${data.contributions || 0}`, enabled: false },
-      { label: `Best Day: ${data.bestDay || 0}`, enabled: false },
+      { label: 'Streak:', enabled: false },
+      { label: `    Best: ${data.streak.best || 0}`, enabled: false },
+      { label: `    Current: ${data.streak.current || 0}`, enabled: false },
+      { label: 'Contributions:', enabled: false },
+      { label: `    Best: ${data.contributions.best || 0}`, enabled: false },
+      {
+        label: `    Current: ${data.contributions.current || 0}`,
+        enabled: false,
+      },
+      {
+        label: `    Total: ${data.contributions.total || 0}`,
+        enabled: false,
+      },
       { type: 'separator' },
       {
         label: 'Reload',
