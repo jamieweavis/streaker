@@ -138,6 +138,7 @@ app.on('ready', () => {
       store.set('userExists', !!username);
       event.sender.send('usernameSet', !!username);
     } catch (error) {
+      store.set('userExists', false);
       event.sender.send('usernameSet', false);
     }
   }

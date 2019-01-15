@@ -18,6 +18,19 @@ notificationCheckbox.checked = store.get('notification.isEnabled');
 notificationTime.value = store.get('notification.time');
 notificationTime.disabled = !store.get('notification.isEnabled');
 
+githubUsername.classList.toggle(
+  'is-danger',
+  !store.get('username') || !store.get('userExists'),
+);
+githubUsernameStatus.classList.toggle(
+  'fa-check',
+  store.get('userExists') && store.get('username'),
+);
+githubUsernameStatus.classList.toggle(
+  'fa-times',
+  !store.get('username') || !store.get('userExists'),
+);
+
 if (!githubUsername.value) {
   githubUsername.focus();
   isInvalid(githubUsername);
@@ -43,9 +56,8 @@ githubSyncInterval.addEventListener('input', () => {
   const syncInterval = parseInt(githubSyncInterval.value, 10);
   if (syncInterval > 0) {
     ipcRenderer.send('setSyncInterval', syncInterval);
-  } else {
-    githubSyncInterval.classList.add('is-warning');
   }
+  githubSyncInterval.classList.toggle('is-danger', syncInterval < 1);
 });
 
 launchAtLoginCheckbox.addEventListener('change', () => {
@@ -70,7 +82,5 @@ ipcRenderer.on('usernameSet', (event, userExists) => {
 });
 
 function isInvalid(input) {
-  const valid = !input.value && !input.disabled;
-  input.classList.toggle('is-warning', valid);
-  return valid;
+  return !input.value && !input.disabled;
 }
