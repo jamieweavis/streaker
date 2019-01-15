@@ -133,7 +133,7 @@ app.on('ready', () => {
     try {
       const data = await contribution(username);
       tray.setContextMenu(createTrayMenu(data));
-      tray.setImage(data.currentStreak > 0 ? icon.done : icon.todo);
+      tray.setImage(data.streak.current > 0 ? icon.done : icon.todo);
       return data;
     } catch (error) {
       tray.setContextMenu(createTrayMenu());
@@ -192,7 +192,7 @@ app.on('ready', () => {
     cronTime: '0 0 20 00 * *',
     async onTick() {
       const data = await contribution(store.get('username'));
-      if (data.currentStreak === 0 && Notification.isSupported()) {
+      if (data.streak.current === 0 && Notification.isSupported()) {
         new Notification({
           title: pjson.name,
           body: "You haven't contributed today",
