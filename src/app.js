@@ -74,11 +74,13 @@ app.on('ready', () => {
       { type: 'separator' },
       {
         label: 'Reload',
+        enabled: !!store.get('username'),
         accelerator: 'CmdOrCtrl+R',
         click: requestContributionData,
       },
       {
         label: 'Open GitHub Profile...',
+        enabled: !!store.get('username'),
         accelerator: 'CmdOrCtrl+O',
         click: () =>
           shell.openExternal(`https://github.com/${store.get('username')}`),
