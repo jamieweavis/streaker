@@ -59,21 +59,18 @@ app.on('ready', () => {
     preferencesWindow.focus();
   }
 
-  function createTrayMenu(
-    contributionCount,
-    currentStreak,
-    bestStreak,
-    bestDay,
-  ) {
-    const username = store.get('username') || 'Username not set';
-    const githubProfileUrl = `https://github.com/${username}`;
-    const menuTemplate = [
-      { label: username, enabled: false },
+  function createTrayMenu(data = {}) {
+    return Menu.buildFromTemplate([
+      {
+        label: store.get('username') || 'Set username...',
+        enabled: !store.get('username'),
+        click: onPreferencesClick,
+      },
       { type: 'separator' },
-      { label: `Current Streak: ${currentStreak}`, enabled: false },
-      { label: `Best Streak: ${bestStreak}`, enabled: false },
-      { label: `Contributions: ${contributionCount}`, enabled: false },
-      { label: `Best Day: ${bestDay}`, enabled: false },
+      { label: `Current Streak: ${data.currentStreak || 0}`, enabled: false },
+      { label: `Best Streak: ${data.bestStreak || 0}`, enabled: false },
+      { label: `Contributions: ${data.contributions || 0}`, enabled: false },
+      { label: `Best Day: ${data.bestDay || 0}`, enabled: false },
       { type: 'separator' },
       {
         label: 'Reload',
@@ -83,7 +80,8 @@ app.on('ready', () => {
       {
         label: 'Open GitHub Profile...',
         accelerator: 'CmdOrCtrl+O',
-        click: () => shell.openExternal(githubProfileUrl),
+        click: () =>
+          shell.openExternal(`https://github.com/${store.get('username')}`),
       },
       { type: 'separator' },
       {
@@ -105,47 +103,39 @@ app.on('ready', () => {
         accelerator: 'CmdOrCtrl+Q',
         click: () => app.quit(),
       },
-    ];
-    return Menu.buildFromTemplate(menuTemplate);
+    ]);
   }
 
-  function requestContributionData() {
+  async function requestContributionData() {
     const username = store.get('username');
     if (!username) {
       tray.setImage(icon.fail);
-      tray.setContextMenu(createTrayMenu(0, 0, 0, 0));
+      tray.setContextMenu(createTrayMenu());
       return;
     }
 
     tray.setImage(icon.load);
-    tray.setContextMenu(
-      createTrayMenu('Loading...', 'Loading...', 'Loading...', 'Loading...'),
-    );
+    tray.setContextMenu(createTrayMenu());
 
-    setTimeout(requestContributionData, 1000 * 60 * store.get('syncInterval')); // `syncInterval` minutes
+    setTimeout(requestContributionData, 1000 * 60 * store.get('syncInterval'));
 
-    contribution(username)
-      .then(data => {
-        tray.setContextMenu(
-          createTrayMenu(
-            data.contributions,
-            data.currentStreak,
-            data.bestStreak,
-            data.bestDay,
-          ),
-        );
-        tray.setImage(data.currentStreak > 0 ? icon.done : icon.todo);
-      })
-      .catch(() => {
-        tray.setContextMenu(createTrayMenu('Error', 'Error', 'Error', 'Error'));
-        tray.setImage(icon.fail);
-      });
+    try {
+      const data = await contribution(username);
+      tray.setContextMenu(createTrayMenu(data));
+      tray.setImage(data.currentStreak > 0 ? icon.done : icon.todo);
+      return data;
+    } catch (error) {
+      tray.setContextMenu(createTrayMenu());
+      tray.setImage(icon.fail);
+      throw new Error(error);
+    }
   }
 
   async function setUsername(event, username) {
     try {
       store.set('username', username);
-      requestContributionData();
+      await requestContributionData();
+      store.set('userExists', !!username);
       event.sender.send('usernameSet', !!username);
     } catch (error) {
       event.sender.send('usernameSet', false);
@@ -208,7 +198,7 @@ app.on('ready', () => {
   }
 
   process.on('uncaughtException', () => {
-    tray.setContextMenu(createTrayMenu('Error', 'Error', 'Error', 'Error'));
+    tray.setContextMenu(createTrayMenu());
     tray.setImage(icon.fail);
   });
 
