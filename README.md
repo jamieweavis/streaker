@@ -1,6 +1,6 @@
 <p align="center"><img src="./build/icon.png" height="64" alt="Streaker Logo"></p>
 <h3 align="center">Streaker</h3>
-<p align="center">🐙 GitHub contribution streak tracking menubar app<p>
+<p align="center">🐙 GitHub contribution streak & stat tracking menu bar app<p>
 <p align="center">
     <a href="https://github.com/jamieweavis/streaker/releases"><img src="https://img.shields.io/github/downloads/jamieweavis/streaker/total.svg" alt="GitHub Downloads"></a>
     <a href="https://github.com/jamieweavis/streaker/releases"><img src="https://img.shields.io/github/release/jamieweavis/streaker.svg" alt="Current Release Version"></a>
