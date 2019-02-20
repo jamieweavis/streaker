@@ -20,13 +20,13 @@ Download the latest version of Streaker from the **[GitHub releases](https://git
 
 ## Screenshots
 
-### Menubar
+### Menu Bar
 
-<img src="./screenshots/menubar.png" width="280" alt="Menubar Screenshot">
+<img src="./screenshots/menu-bar.png" width="280" alt="Menu Bar Screenshot">
 
-### Preferences
+### Preferences Window
 
-<img src="./screenshots/preferences.png" width="380" alt="Preferences Screenshot">
+<img src="./screenshots/preferences-window.png" width="380" alt="Preferences Screenshot">
 
 ## Menu Bar Icons
 
