@@ -16,7 +16,7 @@ Download the latest version of Streaker from the **[GitHub releases](https://git
 
 - Current streak, best streak, total contribution & best day stats
 - Launch at login
-- Notification when you haven't commited today
+- Notification when you haven't contributed today
 
 ## Screenshots
 
