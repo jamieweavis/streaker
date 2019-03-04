@@ -1,4 +1,4 @@
-<p align="center"><img src="./build/icon.png" height="64" alt="Streaker Logo"></p>
+<p align="center"><img src="./build/icon@2x.png" height="64" alt="Streaker Icon"></p>
 <h3 align="center">Streaker</h3>
 <p align="center">🐙 GitHub contribution streak & stat tracking menu bar app<p>
 <p align="center">
