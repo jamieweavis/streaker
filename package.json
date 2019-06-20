@@ -64,8 +64,7 @@
     "url": "git+https://github.com/jamieweavis/streaker.git"
   },
   "scripts": {
-    "dist": "build",
-    "dist-win": "build -w",
+    "dist": "build -m -w",
     "format": "prettier --write './src/**/*.{js,html}'",
     "lint": "eslint .",
     "pack": "build --dir",
