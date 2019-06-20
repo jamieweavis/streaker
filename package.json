@@ -66,7 +66,7 @@
   "scripts": {
     "dist": "build -m -w",
     "format": "prettier --write './src/**/*.{js,html}'",
-    "lint": "eslint .",
+    "lint": "eslint src",
     "pack": "build --dir",
     "start": "electron src/app.js"
   }
