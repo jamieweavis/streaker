@@ -18,7 +18,7 @@
     "bulma": "^0.7.4",
     "contribution": "^3.0.1",
     "cron": "^1.6.0",
-    "electron-store": "^2.0.0"
+    "electron-store": "^3.0.0"
   },
   "devDependencies": {
     "electron": "4.2.4",
