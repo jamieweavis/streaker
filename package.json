@@ -21,7 +21,7 @@
     "electron-store": "^5.0.0"
   },
   "devDependencies": {
-    "electron": "6.0.8",
+    "electron": "6.0.9",
     "electron-builder": "21.2.0",
     "eslint": "6.3.0",
     "eslint-config-prettier": "6.3.0",
