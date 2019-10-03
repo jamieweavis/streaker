@@ -2,7 +2,7 @@
 
 > 🐙 GitHub contribution streak & stat tracking menu bar app
 
-[![Build](https://img.shields.io/travis/jamieweavis/streaker.svg)](https://travis-ci.org/jamieweavis/streaker)
+[![Build](https://travis-ci.com/jamieweavis/streaker.svg?branch=master)](https://travis-ci.org/jamieweavis/streaker)
 [![Downloads](https://img.shields.io/github/downloads/jamieweavis/streaker/total.svg)](https://github.com/jamieweavis/streaker/releases)
 [![Version](https://img.shields.io/github/release/jamieweavis/streaker.svg)](https://github.com/jamieweavis/streaker/releases)
 [![License](https://img.shields.io/badge/license-MIT-blue.svg)](https://github.com/jamieweavis/streaker/blob/master/LICENSE.md)
