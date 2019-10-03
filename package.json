@@ -13,7 +13,7 @@
     }
   },
   "dependencies": {
-    "@fortawesome/fontawesome-free": "^5.11.1",
+    "@fortawesome/fontawesome-free": "^5.11.2",
     "auto-launch": "^5.0.5",
     "bulma": "^0.7.4",
     "contribution": "^3.0.1",
@@ -21,13 +21,13 @@
     "electron-store": "^5.0.0"
   },
   "devDependencies": {
-    "electron": "6.0.10",
+    "electron": "6.0.11",
     "electron-builder": "21.2.0",
-    "eslint": "6.4.0",
+    "eslint": "6.5.1",
     "eslint-config-prettier": "6.3.0",
     "eslint-plugin-prettier": "3.1.1",
     "husky": "3.0.8",
-    "lint-staged": "9.2.5",
+    "lint-staged": "9.4.1",
     "prettier": "1.18.2"
   },
   "homepage": "https://github.com/jamieweavis/streaker#readme",
