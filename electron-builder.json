@@ -1,0 +1,13 @@
+{
+  "appId": "com.jamieweavis.streaker",
+  "productName": "Streaker",
+  "extends": null,
+  "files": ["build/**/*"],
+  "directories": {
+    "output": "dist/${version}",
+    "buildResources": "src/main/assets"
+  },
+  "mac": {
+    "category": "public.app-category.developer-tools"
+  }
+}

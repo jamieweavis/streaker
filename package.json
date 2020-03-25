@@ -1,40 +1,94 @@
 {
-  "name": "Streaker",
+  "name": "streaker",
   "description": "GitHub contribution streak & stat tracking menu bar app",
   "version": "1.4.3",
-  "author": "Jamie Weavis <jamie.weavis@gmail.com>",
+  "homepage": "https://github.com/jamieweavis/streaker#readme",
+  "license": "MIT",
+  "main": "build/main.js",
+  "author": {
+    "name": "Jamie Weavis",
+    "email": "jamie.weavis@gmail.com",
+    "url": "https://jamieweavis.dev"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jamieweavis/streaker.git"
+  },
   "bugs": {
     "url": "https://github.com/jamieweavis/streaker/issues"
   },
-  "build": {
-    "appId": "com.jamieweavis.streaker",
-    "mac": {
-      "darkModeSupport": true
-    }
+  "scripts": {
+    "dev": "cross-env START_MAIN=1 npm run dev:renderer",
+    "dev:main": "webpack --config config/webpack/webpack.main.config.js && electron build/main.js",
+    "dev:renderer": "webpack-dev-server --config config/webpack/webpack.renderer.dev.config.js",
+    "build": "npm run build:main && npm run build:renderer",
+    "build:main": "cross-env NODE_ENV=production webpack --config config/webpack/webpack.main.prod.config.js",
+    "build:renderer": "cross-env NODE_ENV=production webpack --config config/webpack/webpack.renderer.prod.config.js",
+    "clean": "rimraf build && rimraf dist",
+    "start": "npm run build && electron build/main.js",
+    "format": "prettier --write 'src/**/*.ts'",
+    "lint": "eslint src",
+    "predist": "npm run build",
+    "dist": "electron-builder -mw -c.mac.identity=null",
+    "pack": "electron-builder --dir -c.mac.identity=null"
   },
   "dependencies": {
-    "@fortawesome/fontawesome-free": "^5.11.2",
+    "@fortawesome/fontawesome-free": "^5.13.0",
     "auto-launch": "^5.0.5",
-    "bulma": "^0.7.4",
-    "contribution": "^3.0.1",
+    "bulma": "^0.8.1",
+    "contribution": "^4.0.1",
     "cron": "^1.7.2",
-    "electron-store": "^5.0.0"
+    "electron-store": "^5.0.0",
+    "react": "^16.13.1",
+    "react-dom": "^16.13.1"
   },
   "devDependencies": {
-    "electron": "6.0.11",
-    "electron-builder": "21.2.0",
-    "eslint": "6.5.1",
-    "eslint-config-prettier": "6.3.0",
-    "eslint-plugin-prettier": "3.1.1",
-    "husky": "3.0.8",
-    "lint-staged": "9.4.1",
-    "prettier": "1.18.2"
+    "@babel/core": "^7.9.0",
+    "@babel/plugin-proposal-class-properties": "^7.8.3",
+    "@babel/polyfill": "^7.8.7",
+    "@babel/preset-env": "^7.9.0",
+    "@babel/preset-react": "^7.9.4",
+    "@babel/preset-typescript": "^7.9.0",
+    "@hot-loader/react-dom": "^16.13.0",
+    "@types/jest": "^25.1.4",
+    "@types/react": "^16.9.25",
+    "@types/react-dom": "^16.9.5",
+    "@types/webpack-env": "^1.15.1",
+    "@typescript-eslint/eslint-plugin": "^2.25.0",
+    "@typescript-eslint/parser": "^2.25.0",
+    "babel-loader": "^8.1.0",
+    "copy-webpack-plugin": "^5.1.1",
+    "cross-env": "^7.0.2",
+    "electron": "8.2.0",
+    "electron-builder": "22.4.1",
+    "eslint": "6.8.0",
+    "eslint-config-prettier": "6.10.1",
+    "eslint-plugin-prettier": "3.1.2",
+    "eslint-plugin-react": "^7.19.0",
+    "fork-ts-checker-webpack-plugin": "^4.1.1",
+    "html-webpack-plugin": "^4.0.1",
+    "husky": "4.2.3",
+    "lint-staged": "10.0.9",
+    "prettier": "2.0.2",
+    "react-hot-loader": "^4.12.20",
+    "rimraf": "^3.0.2",
+    "source-map-loader": "^0.2.4",
+    "typescript": "^3.8.3",
+    "webpack": "^4.42.1",
+    "webpack-cli": "^3.3.11",
+    "webpack-dev-server": "^3.10.3",
+    "webpack-merge": "^4.2.2"
   },
-  "homepage": "https://github.com/jamieweavis/streaker#readme",
   "husky": {
     "hooks": {
       "pre-commit": "lint-staged"
     }
+  },
+  "lint-staged": {
+    "*.ts": [
+      "prettier --write",
+      "eslint"
+    ]
   },
   "keywords": [
     "contribution",
@@ -45,29 +99,5 @@
     "macos",
     "menubar",
     "streak"
-  ],
-  "license": "MIT",
-  "lint-staged": {
-    "*.js": [
-      "prettier --write",
-      "eslint",
-      "git add"
-    ],
-    "*.html": [
-      "prettier --write",
-      "git add"
-    ]
-  },
-  "main": "src/app.js",
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/jamieweavis/streaker.git"
-  },
-  "scripts": {
-    "dist": "build -m -w",
-    "format": "prettier --write 'src/**/*.{js,html}'",
-    "lint": "eslint src",
-    "pack": "build --dir",
-    "start": "electron src/app.js"
-  }
+  ]
 }

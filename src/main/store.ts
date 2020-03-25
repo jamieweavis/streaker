@@ -1,6 +1,6 @@
-const Store = require('electron-store');
+import Store from 'electron-store';
 
-module.exports = new Store({
+const store = new Store({
   defaults: {
     username: '',
     userExists: false,
@@ -12,3 +12,5 @@ module.exports = new Store({
     },
   },
 });
+
+export default store;

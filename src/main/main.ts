@@ -1,13 +1,9 @@
-const electron = require('electron');
-const AutoLaunch = require('auto-launch');
-const contribution = require('contribution');
-const { CronJob, CronTime } = require('cron');
-
-const icon = require('./icon');
-const store = require('./store');
-const pjson = require('../package.json');
-
-const {
+import url from 'url';
+import path from 'path';
+import AutoLaunch from 'auto-launch';
+import { fetchStats } from 'contribution';
+import { CronJob, CronTime } from 'cron';
+import {
   app,
   BrowserWindow,
   ipcMain,
@@ -15,14 +11,19 @@ const {
   Notification,
   shell,
   Tray,
-} = electron;
+  IpcMainEvent,
+} from 'electron';
+
+import icons from './icons';
+import store from './store';
+import pjson from '../../package.json';
 
 app.on('ready', () => {
   const autoLauncher = new AutoLaunch({ name: pjson.name });
-  const tray = new Tray(icon.done);
-  let preferencesWindow = null;
+  const tray = new Tray(icons.done);
+  let preferencesWindow: Electron.BrowserWindow | null = null;
 
-  function createPreferencesWindow() {
+  const createPreferencesWindow = (): void => {
     preferencesWindow = new BrowserWindow({
       title: `${pjson.name} - Preferences`,
       width: 300,
@@ -32,35 +33,43 @@ app.on('ready', () => {
       minimizable: false,
       fullscreenable: false,
       show: false,
+      webPreferences: {
+        nodeIntegration: true,
+      },
     });
-    preferencesWindow.loadURL(
-      `file://${__dirname}/preferences/preferences.html`,
-    );
+
+    if (process.env.NODE_ENV !== 'production') {
+      preferencesWindow.loadURL(`http://localhost:3000`);
+    } else {
+      preferencesWindow.loadURL(
+        url.format({
+          pathname: path.join(__dirname, 'index.html'),
+          protocol: 'file:',
+          slashes: true,
+        }),
+      );
+    }
 
     preferencesWindow.on('ready-to-show', () => {
-      preferencesWindow.show();
-      if (process.platform === 'darwin') {
-        app.dock.show();
-      }
+      if (preferencesWindow) preferencesWindow.show();
+      if (process.platform === 'darwin') app.dock.show();
     });
 
     preferencesWindow.on('closed', () => {
       preferencesWindow = null;
-      if (process.platform === 'darwin') {
-        app.dock.hide();
-      }
+      if (process.platform === 'darwin') app.dock.hide();
     });
-  }
+  };
 
-  function onPreferencesClick() {
+  const onPreferencesClick = (): void => {
     if (preferencesWindow === null) {
       return createPreferencesWindow();
     }
     preferencesWindow.focus();
-  }
+  };
 
-  function createTrayMenu(data = { streak: {}, contributions: {} }) {
-    return Menu.buildFromTemplate([
+  const createTrayMenu = (stats?): Menu =>
+    Menu.buildFromTemplate([
       {
         label: store.get('username') || 'Set username...',
         enabled: !store.get('username'),
@@ -68,16 +77,22 @@ app.on('ready', () => {
       },
       { type: 'separator' },
       { label: 'Streak:', enabled: false },
-      { label: `    Best: ${data.streak.best || 0}`, enabled: false },
-      { label: `    Current: ${data.streak.current || 0}`, enabled: false },
-      { label: 'Contributions:', enabled: false },
-      { label: `    Best: ${data.contributions.best || 0}`, enabled: false },
+      { label: `    Best: ${stats?.streak?.best || 0}`, enabled: false },
       {
-        label: `    Current: ${data.contributions.current || 0}`,
+        label: `    Current: ${stats?.streak?.current || 0}`,
+        enabled: false,
+      },
+      { label: 'Contributions:', enabled: false },
+      {
+        label: `    Best: ${stats?.contributions?.best || 0}`,
         enabled: false,
       },
       {
-        label: `    Total: ${data.contributions.total || 0}`,
+        label: `    Current: ${stats?.contributions?.current || 0}`,
+        enabled: false,
+      },
+      {
+        label: `    Total: ${stats?.contributions?.total || 0}`,
         enabled: false,
       },
       { type: 'separator' },
@@ -85,13 +100,13 @@ app.on('ready', () => {
         label: 'Reload',
         enabled: !!store.get('username'),
         accelerator: 'CmdOrCtrl+R',
-        click: requestContributionData,
+        click: requestContributionData, //eslint-disable-line
       },
       {
         label: 'Open GitHub Profile...',
         enabled: !!store.get('username'),
         accelerator: 'CmdOrCtrl+O',
-        click: () =>
+        click: (): Promise<void> =>
           shell.openExternal(`https://github.com/${store.get('username')}`),
       },
       { type: 'separator' },
@@ -102,47 +117,49 @@ app.on('ready', () => {
       },
       {
         label: `About ${pjson.name}...`,
-        click: () => shell.openExternal(pjson.homepage),
+        click: (): Promise<void> => shell.openExternal(pjson.homepage),
       },
       {
         label: 'Feedback && Support...',
-        click: () => shell.openExternal(pjson.bugs.url),
+        click: (): Promise<void> => shell.openExternal(pjson.bugs.url),
       },
       { type: 'separator' },
       {
         label: `Quit ${pjson.name}`,
         accelerator: 'CmdOrCtrl+Q',
-        click: () => app.quit(),
+        click: (): void => app.quit(),
       },
     ]);
-  }
 
-  async function requestContributionData() {
+  const requestContributionData = async (): Promise<object> => {
     const username = store.get('username');
     if (!username) {
-      tray.setImage(icon.fail);
+      tray.setImage(icons.fail);
       tray.setContextMenu(createTrayMenu());
       return;
     }
 
-    tray.setImage(icon.load);
+    tray.setImage(icons.load);
     tray.setContextMenu(createTrayMenu());
 
     setTimeout(requestContributionData, 1000 * 60 * store.get('syncInterval'));
 
     try {
-      const data = await contribution(username);
+      const data = await fetchStats(username);
       tray.setContextMenu(createTrayMenu(data));
-      tray.setImage(data.streak.current > 0 ? icon.done : icon.todo);
+      tray.setImage(data.streak.current > 0 ? icons.done : icons.todo);
       return data;
     } catch (error) {
       tray.setContextMenu(createTrayMenu());
-      tray.setImage(icon.fail);
+      tray.setImage(icons.fail);
       throw new Error(error);
     }
-  }
+  };
 
-  async function setUsername(event, username) {
+  const setUsername = async (
+    event: IpcMainEvent,
+    username: string,
+  ): Promise<void> => {
     try {
       store.set('username', username);
       await requestContributionData();
@@ -152,46 +169,58 @@ app.on('ready', () => {
       store.set('userExists', false);
       event.sender.send('usernameSet', false);
     }
-  }
+  };
 
-  function setSyncInterval(event, interval) {
+  const setSyncInterval = (event: IpcMainEvent, interval: number): void => {
     store.set('syncInterval', interval);
     event.sender.send('syncIntervalSet');
-  }
+  };
 
-  function activateLaunchAtLogin(event, isEnabled) {
+  const activateLaunchAtLogin = (
+    event: IpcMainEvent,
+    isEnabled: boolean,
+  ): void => {
     store.set('autoLaunch', isEnabled);
     isEnabled ? autoLauncher.enable() : autoLauncher.disable();
     event.sender.send('activateLaunchAtLoginSet');
-  }
+  };
 
-  function activateNotifications(event, isEnabled) {
+  const activateNotifications = (
+    event: IpcMainEvent,
+    isEnabled: boolean,
+  ): void => {
+    //eslint-disable-next-line
+    // @ts-ignore
     store.set('notification.isEnabled', isEnabled);
     if (isEnabled) {
+      //eslint-disable-next-line
+      // @ts-ignore
       const time = store.get('notification.time');
       const timeArray = time.split(':');
       const cronTime = `0 ${timeArray[1]} ${timeArray[0]} * * *`;
-      job.setTime(new CronTime(cronTime));
-      job.start();
+      job.setTime(new CronTime(cronTime)); // eslint-disable-line
+      job.start(); // eslint-disable-line
     } else {
-      job.stop();
+      job.stop(); // eslint-disable-line
     }
     event.sender.send('activateNotificationsSet');
-  }
+  };
 
-  function setNotificationTime(event, time) {
+  const setNotificationTime = (event: IpcMainEvent, time: string): void => {
+    // eslint-disable-next-line
+    // @ts-ignore
     store.set('notification.time', time);
     const timeArray = time.split(':');
     const cronTime = `0 ${timeArray[1]} ${timeArray[0]} * * *`;
-    job.setTime(new CronTime(cronTime));
-    job.start();
+    job.setTime(new CronTime(cronTime)); // eslint-disable-line
+    job.start(); // eslint-disable-line
     event.sender.send('NotificationTimeSet');
-  }
+  };
 
   const job = new CronJob({
-    cronTime: '0 0 20 00 * *',
-    async onTick() {
-      const data = await contribution(store.get('username'));
+    cronTime: '0 0 20 * * *',
+    async onTick(): Promise<void> {
+      const data = await fetchStats(store.get('username'));
       if (data.streak.current === 0 && Notification.isSupported()) {
         new Notification({
           title: pjson.name,
@@ -200,8 +229,11 @@ app.on('ready', () => {
       }
     },
   });
-
+  //eslint-disable-next-line
+  // @ts-ignore
   if (store.get('notification.isEnabled')) {
+    //eslint-disable-next-line
+    // @ts-ignore
     const time = store.get('notification.time');
     const timeArray = time.split(':');
     const cronTime = `0 ${timeArray[1]} ${timeArray[0]} * * *`;
@@ -211,14 +243,14 @@ app.on('ready', () => {
 
   process.on('uncaughtException', () => {
     tray.setContextMenu(createTrayMenu());
-    tray.setImage(icon.fail);
+    tray.setImage(icons.fail);
   });
 
   if (process.platform === 'darwin') {
     app.dock.hide();
   }
 
-  app.on('window-all-closed', () => {});
+  app.on('window-all-closed', () => {}); // eslint-disable-line
   tray.on('right-click', requestContributionData);
   ipcMain.on('setUsername', setUsername);
   ipcMain.on('setSyncInterval', setSyncInterval);
