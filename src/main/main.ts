@@ -19,13 +19,13 @@ import store from './store';
 import pjson from '../../package.json';
 
 app.on('ready', () => {
-  const autoLauncher = new AutoLaunch({ name: pjson.name });
+  const autoLauncher = new AutoLaunch({ name: 'Streaker' });
   const tray = new Tray(icons.done);
   let preferencesWindow: Electron.BrowserWindow | null = null;
 
   const createPreferencesWindow = (): void => {
     preferencesWindow = new BrowserWindow({
-      title: `${pjson.name} - Preferences`,
+      title: 'Streaker',
       width: 300,
       height: 320,
       resizable: false,
@@ -116,7 +116,7 @@ app.on('ready', () => {
         click: onPreferencesClick,
       },
       {
-        label: `About ${pjson.name}...`,
+        label: 'About Streaker...',
         click: (): Promise<void> => shell.openExternal(pjson.homepage),
       },
       {
@@ -125,7 +125,7 @@ app.on('ready', () => {
       },
       { type: 'separator' },
       {
-        label: `Quit ${pjson.name}`,
+        label: 'Quit Streaker',
         accelerator: 'CmdOrCtrl+Q',
         click: (): void => app.quit(),
       },
@@ -223,8 +223,8 @@ app.on('ready', () => {
       const data = await fetchStats(store.get('username'));
       if (data.streak.current === 0 && Notification.isSupported()) {
         new Notification({
-          title: pjson.name,
-          body: "You haven't contributed today",
+          title: 'Streaker',
+          body: "Reminder: You haven't contributed today!",
         }).show();
       }
     },
