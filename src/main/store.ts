@@ -6,10 +6,8 @@ const store = new Store({
     userExists: false,
     autoLaunch: false,
     syncInterval: 15,
-    notification: {
-      isEnabled: false,
-      time: '20:00',
-    },
+    notificationEnabled: false,
+    notificationTime: '20:00',
   },
 });
 

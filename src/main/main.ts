@@ -189,13 +189,9 @@ app.on('ready', () => {
     event: IpcMainEvent,
     isEnabled: boolean,
   ): void => {
-    //eslint-disable-next-line
-    // @ts-ignore
-    store.set('notification.isEnabled', isEnabled);
+    store.set('notificationEnabled', isEnabled);
     if (isEnabled) {
-      //eslint-disable-next-line
-      // @ts-ignore
-      const time = store.get('notification.time');
+      const time = store.get('notificationTime');
       const timeArray = time.split(':');
       const cronTime = `0 ${timeArray[1]} ${timeArray[0]} * * *`;
       job.setTime(new CronTime(cronTime)); // eslint-disable-line
@@ -207,9 +203,7 @@ app.on('ready', () => {
   };
 
   const setNotificationTime = (event: IpcMainEvent, time: string): void => {
-    // eslint-disable-next-line
-    // @ts-ignore
-    store.set('notification.time', time);
+    store.set('notificationTime', time);
     const timeArray = time.split(':');
     const cronTime = `0 ${timeArray[1]} ${timeArray[0]} * * *`;
     job.setTime(new CronTime(cronTime)); // eslint-disable-line
@@ -229,13 +223,11 @@ app.on('ready', () => {
       }
     },
   });
-  //eslint-disable-next-line
-  // @ts-ignore
-  if (store.get('notification.isEnabled')) {
-    //eslint-disable-next-line
-    // @ts-ignore
-    const time = store.get('notification.time');
-    const timeArray = time.split(':');
+
+  const notificationTime = store.get('notificationTime');
+  const notificationEnabled = store.get('notificationEnabled');
+  if (notificationEnabled) {
+    const timeArray = notificationTime.split(':');
     const cronTime = `0 ${timeArray[1]} ${timeArray[0]} * * *`;
     job.setTime(new CronTime(cronTime));
     job.start();
