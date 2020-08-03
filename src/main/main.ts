@@ -145,10 +145,10 @@ app.on('ready', () => {
     setTimeout(requestContributionData, 1000 * 60 * store.get('syncInterval'));
 
     try {
-      const data = await fetchStats(username);
-      tray.setContextMenu(createTrayMenu(data));
-      tray.setImage(data.streak.current > 0 ? icons.done : icons.todo);
-      return data;
+      const stats = await fetchStats(username);
+      tray.setContextMenu(createTrayMenu(stats));
+      tray.setImage(stats.streak.current > 0 ? icons.done : icons.todo);
+      return stats;
     } catch (error) {
       tray.setContextMenu(createTrayMenu());
       tray.setImage(icons.fail);
