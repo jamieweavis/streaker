@@ -18,7 +18,7 @@ import icons from './icons';
 import store from './store';
 import pjson from '../../package.json';
 
-app.on('ready', () => {
+const init = (): void => {
   const autoLauncher = new AutoLaunch({ name: 'Streaker' });
   const tray = new Tray(icons.done);
   let preferencesWindow: Electron.BrowserWindow | null = null;
@@ -255,4 +255,6 @@ app.on('ready', () => {
   if (!store.get('username')) {
     createPreferencesWindow();
   }
-});
+};
+
+app.whenReady().then(init);
