@@ -15,7 +15,7 @@ import {
 } from 'electron';
 
 import icons from './icons';
-import store from './store';
+import store from '../common/store';
 import pjson from '../../package.json';
 
 const init = (): void => {
