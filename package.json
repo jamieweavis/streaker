@@ -27,7 +27,7 @@
     "clean": "rimraf build && rimraf dist",
     "start": "npm run build && electron build/main.js",
     "format": "prettier --write 'src/**/*.ts'",
-    "lint": "eslint src",
+    "lint": "eslint 'src/**/*.ts'",
     "predist": "npm run build",
     "dist": "electron-builder -mw -c.mac.identity=null",
     "pack": "electron-builder --dir -c.mac.identity=null"
