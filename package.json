@@ -18,14 +18,14 @@
     "url": "https://github.com/jamieweavis/streaker/issues"
   },
   "scripts": {
-    "dev": "cross-env START_MAIN=1 npm run dev:renderer",
-    "dev:main": "webpack --config config/webpack/webpack.main.config.js && electron build/main.js",
-    "dev:renderer": "webpack-dev-server --config config/webpack/webpack.renderer.dev.config.js",
+    "start": "npm run build && electron build/main.js",
+    "start:dev": "cross-env START_MAIN=1 npm run dev:renderer",
+    "start:dev:main": "webpack --config config/webpack/webpack.main.config.js && electron build/main.js",
+    "start:dev:renderer": "webpack-dev-server --config config/webpack/webpack.renderer.dev.config.js",
     "build": "npm run build:main && npm run build:renderer",
     "build:main": "cross-env NODE_ENV=production webpack --config config/webpack/webpack.main.prod.config.js",
     "build:renderer": "cross-env NODE_ENV=production webpack --config config/webpack/webpack.renderer.prod.config.js",
     "clean": "rimraf build && rimraf dist",
-    "start": "npm run build && electron build/main.js",
     "format": "prettier --write 'src/**/*.ts'",
     "lint": "eslint 'src/**/*.ts'",
     "predist": "npm run build",
