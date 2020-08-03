@@ -29,7 +29,7 @@
     "format": "prettier --write 'src/**/*.ts'",
     "lint": "eslint 'src/**/*.ts'",
     "predist": "npm run build",
-    "dist": "electron-builder -mw -c.mac.identity=null",
+    "dist": "electron-builder -m -c.mac.identity=null",
     "pack": "electron-builder --dir -c.mac.identity=null"
   },
   "dependencies": {
