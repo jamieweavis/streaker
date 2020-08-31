@@ -27,7 +27,7 @@
     "eslint-config-prettier": "6.11.0",
     "eslint-plugin-prettier": "3.1.4",
     "husky": "3.0.8",
-    "lint-staged": "9.4.1",
+    "lint-staged": "10.2.13",
     "prettier": "2.0.5"
   },
   "homepage": "https://github.com/jamieweavis/streaker#readme",
