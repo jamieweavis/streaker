@@ -1,17 +1,19 @@
-import React, { Fragment } from 'react';
+import React from 'react';
+import { Helmet } from 'react-helmet';
 import { hot } from 'react-hot-loader';
-import { Avatar, BranchName } from '@primer/components';
+import { BaseStyles } from '@primer/components';
 
-import store from '../common/store';
+import PreferencesForm from './preferences-form';
 
-const App = (): JSX.Element => (
-  <Fragment>
-    <Avatar
-      square
-      src={`https://avatars.githubusercontent.com/${store.get('username')}`}
-    />
-    <BranchName>{store.get('username')}</BranchName>
-  </Fragment>
-);
+const App = (): JSX.Element => {
+  return (
+    <BaseStyles>
+      <Helmet>
+        <title>Streaker - Preferences</title>
+      </Helmet>
+      <PreferencesForm />
+    </BaseStyles>
+  );
+};
 
 export default hot(module)(App);

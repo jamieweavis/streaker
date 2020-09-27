@@ -7,27 +7,28 @@ import {
   app,
   BrowserWindow,
   ipcMain,
-  Menu,
   Notification,
   shell,
   Tray,
   IpcMainEvent,
 } from 'electron';
 
+import { createMenu } from './menu';
 import icons from './icons';
 import store from '../common/store';
+import { PreferencesSavedArgs } from '../common/types';
 import pjson from '../../package.json';
 
-const init = (): void => {
-  const autoLauncher = new AutoLaunch({ name: 'Streaker' });
+const bootstrap = (): void => {
+  const autoLaunch = new AutoLaunch({ name: 'Streaker' });
   const tray = new Tray(icons.done);
   let preferencesWindow: Electron.BrowserWindow | null = null;
 
   const createPreferencesWindow = (): void => {
     preferencesWindow = new BrowserWindow({
       title: 'Streaker',
-      width: 300,
-      height: 320,
+      width: 290,
+      height: 420,
       resizable: false,
       maximizable: false,
       minimizable: false,
@@ -41,12 +42,9 @@ const init = (): void => {
     if (process.env.NODE_ENV !== 'production') {
       preferencesWindow.loadURL(`http://localhost:3000`);
     } else {
+      const pathname = path.join(__dirname, 'index.html');
       preferencesWindow.loadURL(
-        url.format({
-          pathname: path.join(__dirname, 'index.html'),
-          protocol: 'file:',
-          slashes: true,
-        }),
+        url.format({ pathname, protocol: 'file:', slashes: true }),
       );
     }
 
@@ -61,6 +59,23 @@ const init = (): void => {
     });
   };
 
+  const reminderNotificationJob = new CronJob({
+    cronTime: '0 0 20 * * *',
+    onTick: async (): Promise<void> => {
+      if (!Notification.isSupported()) {
+        return;
+      }
+      const stats = await fetchStats(store.get('username'));
+      if (stats.contributions.current === 0) {
+        new Notification({
+          title: "🔥 You haven't contributed today",
+          body:
+            "Don't forget to contribute today to continue your streak on GitHub!",
+        }).show();
+      }
+    },
+  });
+
   const onPreferencesClick = (): void => {
     if (preferencesWindow === null) {
       return createPreferencesWindow();
@@ -68,193 +83,116 @@ const init = (): void => {
     preferencesWindow.focus();
   };
 
-  const createTrayMenu = (stats?): Menu =>
-    Menu.buildFromTemplate([
-      {
-        label: store.get('username') || 'Set username...',
-        enabled: !store.get('username'),
-        click: onPreferencesClick,
-      },
-      { type: 'separator' },
-      { label: 'Streak:', enabled: false },
-      { label: `    Best: ${stats?.streak?.best || 0}`, enabled: false },
-      {
-        label: `    Current: ${stats?.streak?.current || 0}`,
-        enabled: false,
-      },
-      { label: 'Contributions:', enabled: false },
-      {
-        label: `    Best: ${stats?.contributions?.best || 0}`,
-        enabled: false,
-      },
-      {
-        label: `    Current: ${stats?.contributions?.current || 0}`,
-        enabled: false,
-      },
-      {
-        label: `    Total: ${stats?.contributions?.total || 0}`,
-        enabled: false,
-      },
-      { type: 'separator' },
-      {
-        label: 'Reload',
-        enabled: !!store.get('username'),
-        accelerator: 'CmdOrCtrl+R',
-        click: requestContributionData, //eslint-disable-line
-      },
-      {
-        label: 'Open GitHub Profile...',
-        enabled: !!store.get('username'),
-        accelerator: 'CmdOrCtrl+O',
-        click: (): Promise<void> =>
-          shell.openExternal(`https://github.com/${store.get('username')}`),
-      },
-      { type: 'separator' },
-      {
-        label: 'Preferences...',
-        accelerator: 'CmdOrCtrl+,',
-        click: onPreferencesClick,
-      },
-      {
-        label: 'About Streaker...',
-        click: (): Promise<void> => shell.openExternal(pjson.homepage),
-      },
-      {
-        label: 'Feedback && Support...',
-        click: (): Promise<void> => shell.openExternal(pjson.bugs.url),
-      },
-      { type: 'separator' },
-      {
-        label: 'Quit Streaker',
-        accelerator: 'CmdOrCtrl+Q',
-        click: (): void => app.quit(),
-      },
-    ]);
+  const onAboutClick = (): Promise<void> => shell.openExternal(pjson.homepage);
 
-  const requestContributionData = async (): Promise<object> => {
+  const onProfileClick = (): Promise<void> =>
+    shell.openExternal(`https://github.com/${store.get('username')}`);
+
+  const onFeedbackClick = (): Promise<void> =>
+    shell.openExternal(pjson.bugs.url);
+
+  const onQuitClick = (): void => app.quit();
+
+  const setTrayMenu = (username?, stats?): void => {
+    const menu = createMenu({
+      onPreferencesClick,
+      onAboutClick,
+      onQuitClick,
+      onProfileClick,
+      onFeedbackClick,
+      requestContributionData,
+      stats,
+      username,
+    });
+    tray.setContextMenu(menu);
+  };
+
+  const requestContributionData = async (): Promise<void> => {
+    setTimeout(requestContributionData, 1000 * 60 * store.get('syncInterval'));
+    tray.setImage(icons.load);
+
     const username = store.get('username');
     if (!username) {
       tray.setImage(icons.fail);
-      tray.setContextMenu(createTrayMenu());
+      setTrayMenu();
       return;
     }
 
-    tray.setImage(icons.load);
-    tray.setContextMenu(createTrayMenu());
-
-    setTimeout(requestContributionData, 1000 * 60 * store.get('syncInterval'));
-
+    let stats;
     try {
-      const stats = await fetchStats(username);
-      tray.setContextMenu(createTrayMenu(stats));
-      tray.setImage(stats.streak.current > 0 ? icons.done : icons.todo);
-      return stats;
-    } catch (error) {
-      tray.setContextMenu(createTrayMenu());
+      stats = await fetchStats(username);
+      tray.setImage(stats?.streak?.current > 0 ? icons.done : icons.todo);
+    } catch (err) {
       tray.setImage(icons.fail);
-      throw new Error(error);
     }
+
+    setTrayMenu(username, stats);
   };
 
-  const setUsername = async (
+  const onPreferencesSaved = (
     event: IpcMainEvent,
-    username: string,
-  ): Promise<void> => {
-    try {
-      store.set('username', username);
-      await requestContributionData();
-      store.set('userExists', !!username);
-      event.sender.send('usernameSet', !!username);
-    } catch (error) {
-      store.set('userExists', false);
-      event.sender.send('usernameSet', false);
-    }
-  };
-
-  const setSyncInterval = (event: IpcMainEvent, interval: number): void => {
-    store.set('syncInterval', interval);
-    event.sender.send('syncIntervalSet');
-  };
-
-  const activateLaunchAtLogin = (
-    event: IpcMainEvent,
-    isEnabled: boolean,
+    args: PreferencesSavedArgs,
   ): void => {
-    store.set('autoLaunch', isEnabled);
-    isEnabled ? autoLauncher.enable() : autoLauncher.disable();
-    event.sender.send('activateLaunchAtLoginSet');
-  };
-
-  const activateNotifications = (
-    event: IpcMainEvent,
-    isEnabled: boolean,
-  ): void => {
-    store.set('notificationEnabled', isEnabled);
-    if (isEnabled) {
-      const time = store.get('notificationTime');
-      const timeArray = time.split(':');
-      const cronTime = `0 ${timeArray[1]} ${timeArray[0]} * * *`;
-      job.setTime(new CronTime(cronTime)); // eslint-disable-line
-      job.start(); // eslint-disable-line
-    } else {
-      job.stop(); // eslint-disable-line
+    if (args.launchAtLogin !== store.get('launchAtLogin')) {
+      args.launchAtLogin ? autoLaunch.enable() : autoLaunch.disable();
     }
-    event.sender.send('activateNotificationsSet');
-  };
-
-  const setNotificationTime = (event: IpcMainEvent, time: string): void => {
-    store.set('notificationTime', time);
-    const timeArray = time.split(':');
-    const cronTime = `0 ${timeArray[1]} ${timeArray[0]} * * *`;
-    job.setTime(new CronTime(cronTime)); // eslint-disable-line
-    job.start(); // eslint-disable-line
-    event.sender.send('NotificationTimeSet');
-  };
-
-  const job = new CronJob({
-    cronTime: '0 0 20 * * *',
-    async onTick(): Promise<void> {
-      const data = await fetchStats(store.get('username'));
-      if (data.streak.current === 0 && Notification.isSupported()) {
-        new Notification({
-          title: 'Streaker',
-          body: "Reminder: You haven't contributed today!",
-        }).show();
+    if (
+      args.notificationEnabled !== store.get('notificationEnabled') ||
+      args.notificationTime !== store.get('notificationTime')
+    ) {
+      if (args.notificationEnabled) {
+        const [hours, minutes] = args.notificationTime.split(':');
+        const cronTime = `0 ${minutes} ${hours} * * *`;
+        reminderNotificationJob.setTime(new CronTime(cronTime));
+        reminderNotificationJob.start();
+      } else {
+        reminderNotificationJob.stop();
       }
-    },
-  });
+    }
+    store.set(args);
+    requestContributionData();
+  };
 
-  const notificationTime = store.get('notificationTime');
-  const notificationEnabled = store.get('notificationEnabled');
-  if (notificationEnabled) {
-    const timeArray = notificationTime.split(':');
-    const cronTime = `0 ${timeArray[1]} ${timeArray[0]} * * *`;
-    job.setTime(new CronTime(cronTime));
-    job.start();
+  if (store.get('notificationEnabled')) {
+    const notificationTime = store.get('notificationTime');
+    const [hours, minutes] = notificationTime.split(':');
+    const cronTime = `0 ${minutes} ${hours} * * *`;
+    reminderNotificationJob.setTime(new CronTime(cronTime));
+    reminderNotificationJob.start();
   }
 
-  process.on('uncaughtException', () => {
-    tray.setContextMenu(createTrayMenu());
-    tray.setImage(icons.fail);
+  tray.on('right-click', requestContributionData);
+
+  ipcMain.on('preferences-saved', onPreferencesSaved);
+
+  app.on('window-all-closed', () => {
+    /* Keep open on macos */
   });
 
   if (process.platform === 'darwin') {
     app.dock.hide();
   }
 
-  app.on('window-all-closed', () => {}); // eslint-disable-line
-  tray.on('right-click', requestContributionData);
-  ipcMain.on('setUsername', setUsername);
-  ipcMain.on('setSyncInterval', setSyncInterval);
-  ipcMain.on('activateLaunchAtLogin', activateLaunchAtLogin);
-  ipcMain.on('activateNotifications', activateNotifications);
-  ipcMain.on('setNotificationTime', setNotificationTime);
+  if (!store.get('username')) createPreferencesWindow();
 
   requestContributionData();
 
-  if (!store.get('username')) {
-    createPreferencesWindow();
-  }
+  // TODO: Remove for debug
+  createPreferencesWindow();
+
+  // process.on('uncaughtException', () => {
+  //   const menu = createMenu({
+  //     onPreferencesClick,
+  //     onAboutClick,
+  //     onQuitClick,
+  //     onProfileClick,
+  //     onFeedbackClick,
+  //     requestContributionData,
+  //     username: store.get('username'),
+  //   });
+  //   tray.setContextMenu(menu);
+  //   tray.setImage(icons.fail);
+  // });
 };
 
-app.whenReady().then(init);
+app.whenReady().then(bootstrap);

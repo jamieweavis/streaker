@@ -4,7 +4,7 @@ const store = new Store({
   defaults: {
     username: '',
     userExists: false,
-    autoLaunch: false,
+    launchAtLogin: false,
     syncInterval: 15,
     notificationEnabled: false,
     notificationTime: '20:00',
