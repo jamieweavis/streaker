@@ -37,11 +37,12 @@
     "@primer/components": "^20.0.0",
     "auto-launch": "^5.0.5",
     "bulma": "^0.8.1",
-    "contribution": "^4.0.1",
+    "contribution": "^4.0.2",
     "cron": "^1.7.2",
     "electron-store": "^5.0.0",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
+    "react-helmet": "^6.1.0",
     "styled-components": "^5.1.1"
   },
   "devDependencies": {
@@ -87,7 +88,7 @@
     }
   },
   "lint-staged": {
-    "*.ts": [
+    "*.{ts,tsx}": [
       "prettier --write",
       "eslint"
     ]
