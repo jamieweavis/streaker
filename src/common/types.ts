@@ -1,8 +1,8 @@
 export interface PreferencesSavedValues {
   username: string;
-  syncInterval: number;
+  pollInterval: number;
   launchAtLogin: boolean;
-  notificationEnabled: boolean;
-  notificationTime: string;
+  reminderEnabled: boolean;
+  reminderTime: string;
   iconSet: string;
 }

@@ -11,6 +11,7 @@ import {
   Flex,
   Dropdown,
   Box,
+  FilterList,
 } from '@primer/components';
 
 import { icons, IconSets } from './icons';
@@ -26,10 +27,10 @@ const PreferencesForm = (): JSX.Element => (
   <Formik
     initialValues={{
       username: store.get('username'),
-      syncInterval: store.get('syncInterval'),
+      pollInterval: store.get('pollInterval'),
       launchAtLogin: store.get('launchAtLogin'),
-      notificationEnabled: store.get('notificationEnabled'),
-      notificationTime: store.get('notificationTime'),
+      reminderEnabled: store.get('reminderEnabled'),
+      reminderTime: store.get('reminderTime'),
       iconSet: store.get('iconSet'),
     }}
     onSubmit={async (values: PreferencesSavedValues): Promise<void> => {
@@ -71,7 +72,6 @@ const PreferencesForm = (): JSX.Element => (
           />
         )}
       />
-
       <Text
         fontWeight="bold"
         fontSize="14px"
@@ -85,7 +85,7 @@ const PreferencesForm = (): JSX.Element => (
       </Text>
       <Text fontSize="14px">Sync every </Text>
       <Field
-        name="syncInterval"
+        name="pollInterval"
         as={(props): JSX.Element => (
           <TextInput
             id="sync-interval"
@@ -120,7 +120,7 @@ const PreferencesForm = (): JSX.Element => (
         <Field
           id="notification-enabled"
           type="checkbox"
-          name="notificationEnabled"
+          name="reminderEnabled"
         />
         <Text> Enable reminder notification</Text>
       </Text>
@@ -140,22 +140,29 @@ const PreferencesForm = (): JSX.Element => (
       </Text>
       <Text fontSize="14px">Remind me at </Text>
       <Field
-        name="notificationTime"
-        as={(props): JSX.Element => (
-          <TextInput
-            id="reminder-time"
-            icon={ClockIcon}
-            placeholder="Reminder Time"
-            type="time"
-            {...props}
-          />
-        )}
+        name="reminderTime"
+        render={(props): JSX.Element => {
+          console.log(props);
+          return (
+            <TextInput
+              id="reminder-time"
+              icon={ClockIcon}
+              placeholder="Reminder Time"
+              type="time"
+              onChange={(e): void =>
+                props.form.setFieldValue('reminderTime', e.target.value)
+              }
+              value={props.field.value}
+              disabled={!props.form.values.reminderEnabled}
+              {...props}
+            />
+          );
+        }}
       />
       <Text
         fontWeight="bold"
         fontSize="14px"
         as="label"
-        htmlFor="notification-enabled"
         style={{ display: 'block' }}
         mt="3"
         mb="2"
@@ -166,41 +173,50 @@ const PreferencesForm = (): JSX.Element => (
         name="iconSet"
         render={({ field, form }): JSX.Element => {
           return (
-            <Flex>
-              <Dropdown direction="ne">
-                <Dropdown.Button>{IconSets[field.value]}</Dropdown.Button>
-                <Dropdown.Menu direction="ne">
-                  {Object.keys(IconSets).map((iconSet) => (
-                    <Dropdown.Item
-                      key={iconSet}
-                      onClick={(): void => {
-                        form.setFieldValue('iconSet', iconSet);
+            <React.Fragment>
+              <FilterList>
+                {Object.keys(IconSets).map((iconSet) => (
+                  <FilterList.Item
+                    key={iconSet}
+                    href="#bar"
+                    mr="3"
+                    selected={iconSet === store.get('iconSet')}
+                    onClick={(): void => {
+                      form.setFieldValue('iconSet', iconSet);
+                    }}
+                  >
+                    <img
+                      src={icons[field.value].contributed}
+                      style={{
+                        height: 16,
+                        marginRight: 10,
+                        position: 'relative',
+                        top: 2,
                       }}
-                    >
-                      {IconSets[iconSet]}
-                    </Dropdown.Item>
-                  ))}
-                </Dropdown.Menu>
-              </Dropdown>
+                    />
+                    {IconSets[iconSet]}
+                  </FilterList.Item>
+                ))}
+              </FilterList>
               <Box ml="3" pt="2">
                 <img
                   src={icons[field.value].contributed}
-                  style={{ height: 18, marginRight: 10 }}
+                  style={{ height: 20, marginRight: 10 }}
                 />
                 <img
                   src={icons[field.value].error}
-                  style={{ height: 18, marginRight: 10 }}
+                  style={{ height: 20, marginRight: 10 }}
                 />
                 <img
                   src={icons[field.value].loading}
-                  style={{ height: 18, marginRight: 10 }}
+                  style={{ height: 20, marginRight: 10 }}
                 />
                 <img
                   src={icons[field.value].pending}
-                  style={{ height: 18, marginRight: 10 }}
+                  style={{ height: 20, marginRight: 10 }}
                 />
               </Box>
-            </Flex>
+            </React.Fragment>
           );
         }}
       />

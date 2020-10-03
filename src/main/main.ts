@@ -28,7 +28,7 @@ const bootstrap = (): void => {
     preferencesWindow = new BrowserWindow({
       title: 'Streaker',
       width: 290,
-      height: 500,
+      height: 580,
       resizable: false,
       maximizable: false,
       minimizable: false,
@@ -108,7 +108,7 @@ const bootstrap = (): void => {
   };
 
   const requestContributionData = async (): Promise<void> => {
-    setTimeout(requestContributionData, 1000 * 60 * store.get('syncInterval'));
+    setTimeout(requestContributionData, 1000 * 60 * store.get('pollInterval'));
     tray.setImage(icons[store.get('iconSet')].loading);
 
     const username = store.get('username');
@@ -141,11 +141,11 @@ const bootstrap = (): void => {
       args.launchAtLogin ? autoLaunch.enable() : autoLaunch.disable();
     }
     if (
-      args.notificationEnabled !== store.get('notificationEnabled') ||
-      args.notificationTime !== store.get('notificationTime')
+      args.reminderEnabled !== store.get('reminderEnabled') ||
+      args.reminderTime !== store.get('reminderTime')
     ) {
-      if (args.notificationEnabled) {
-        const [hours, minutes] = args.notificationTime.split(':');
+      if (args.reminderEnabled) {
+        const [hours, minutes] = args.reminderTime.split(':');
         const cronTime = `0 ${minutes} ${hours} * * *`;
         reminderNotificationJob.setTime(new CronTime(cronTime));
         reminderNotificationJob.start();
@@ -157,9 +157,9 @@ const bootstrap = (): void => {
     requestContributionData();
   };
 
-  if (store.get('notificationEnabled')) {
-    const notificationTime = store.get('notificationTime');
-    const [hours, minutes] = notificationTime.split(':');
+  if (store.get('reminderEnabled')) {
+    const reminderTime = store.get('reminderTime');
+    const [hours, minutes] = reminderTime.split(':');
     const cronTime = `0 ${minutes} ${hours} * * *`;
     reminderNotificationJob.setTime(new CronTime(cronTime));
     reminderNotificationJob.start();
