@@ -1,15 +1,17 @@
 import { remote, ipcRenderer } from 'electron';
-import React, { useState } from 'react';
+import React from 'react';
 import { MarkGithubIcon, ClockIcon } from '@primer/octicons-react';
+import { Formik, Field, Form } from 'formik';
 import {
   TextInput,
   Text,
   Avatar,
   Button,
   ButtonPrimary,
+  Flex,
 } from '@primer/components';
 
-import { PreferencesSavedArgs } from '../common/types';
+import { PreferencesSavedValues } from '../common/types';
 import store from '../common/store';
 
 const closeWindow = (): void => {
@@ -17,157 +19,145 @@ const closeWindow = (): void => {
   window.close();
 };
 
-const PreferencesForm = (): JSX.Element => {
-  const [username, setUsername] = useState(store.get('username'));
-  const [syncInterval, setSyncInterval] = useState(store.get('syncInterval'));
-  const [launchAtLogin, setLaunchAtLogin] = useState(
-    store.get('launchAtLogin'),
-  );
-  const [notificationEnabled, setNotificationEnabled] = useState(
-    store.get('notificationEnabled'),
-  );
-  const [notificationTime, setNotificationTime] = useState(
-    store.get('notificationTime'),
-  );
+const PreferencesForm = (): JSX.Element => (
+  <Formik
+    initialValues={{
+      username: store.get('username'),
+      syncInterval: store.get('syncInterval'),
+      launchAtLogin: store.get('launchAtLogin'),
+      notificationEnabled: store.get('notificationEnabled'),
+      notificationTime: store.get('notificationTime'),
+    }}
+    onSubmit={async (values: PreferencesSavedValues): Promise<void> => {
+      await ipcRenderer.send('preferences-saved', values);
+      closeWindow();
+    }}
+  >
+    <Form style={{ paddingLeft: 15 }}>
+      <Text
+        fontWeight="bold"
+        fontSize="14px"
+        as="label"
+        htmlFor="github-username"
+        style={{ display: 'block' }}
+        mt="2"
+        mb="2"
+      >
+        GitHub username
+      </Text>
+      <Field
+        name="username"
+        as={(props): JSX.Element => (
+          <TextInput
+            id="github-username"
+            icon={MarkGithubIcon}
+            placeholder="GitHub Username"
+            width={175}
+            {...props}
+          />
+        )}
+      />
+      <Field
+        name="username"
+        render={({ field }): JSX.Element => (
+          <Avatar
+            src={`https://avatars.githubusercontent.com/${field?.value || '_'}`}
+            square
+            ml="2"
+          />
+        )}
+      />
 
-  return (
-    <form style={{ paddingLeft: 15 }}>
-      <label htmlFor="github-username">
-        <Text
-          fontWeight="bold"
-          fontSize="14px"
-          as="p"
-          style={{ marginBottom: 5 }}
-        >
-          GitHub username
-        </Text>
-      </label>
-      <TextInput
-        id="github-username"
-        icon={MarkGithubIcon}
-        placeholder="GitHub Username"
-        value={username}
-        width={175}
-        onChange={(event): void => {
-          const newUsername = event?.target?.value || '';
-          setUsername(newUsername);
-        }}
-      />
-      <Avatar
-        style={{ marginLeft: 10 }}
-        square
-        src={`https://avatars.githubusercontent.com/${
-          username ? username : '_' // If empty default to placeholder
-        }`}
-      />
-      <label htmlFor="sync-interval">
-        <Text
-          fontWeight="bold"
-          fontSize="14px"
-          as="p"
-          style={{ marginBottom: 5 }}
-        >
-          Sync interval
-        </Text>
-      </label>
+      <Text
+        fontWeight="bold"
+        fontSize="14px"
+        as="label"
+        htmlFor="sync-interval"
+        style={{ display: 'block' }}
+        mt="3"
+        mb="2"
+      >
+        Sync interval
+      </Text>
       <Text fontSize="14px">Sync every </Text>
-      <TextInput
-        id="sync-interval"
-        placeholder="15"
-        value={syncInterval === 15 ? '' : syncInterval}
-        width={70}
-        type="number"
-        onChange={(event): void => {
-          let newSyncInterval = event?.target?.value;
-          if (newSyncInterval === '') {
-            newSyncInterval = '15';
-          }
-          setSyncInterval(parseInt(newSyncInterval));
-        }}
+      <Field
+        name="syncInterval"
+        as={(props): JSX.Element => (
+          <TextInput
+            id="sync-interval"
+            placeholder="15"
+            width={70}
+            type="number"
+            {...props}
+          />
+        )}
       />
       <Text fontSize="14px"> minutes</Text>
-      <label htmlFor="launch-at-login">
-        <Text
-          fontWeight="bold"
-          fontSize="14px"
-          as="p"
-          style={{ marginBottom: 5 }}
-        >
-          <input
-            id="launch-at-login"
-            type="checkbox"
-            checked={launchAtLogin}
-            onChange={(event): void => {
-              const newAutoLaunch = !!event?.target?.checked || false;
-              setLaunchAtLogin(newAutoLaunch);
-            }}
-          />
-          <Text> Launch at login</Text>
-        </Text>
-      </label>
-      <label htmlFor="notification-enabled">
-        <Text
-          fontWeight="bold"
-          fontSize="14px"
-          as="p"
-          style={{ marginBottom: 5 }}
-        >
-          <input
-            id="notification-enabled"
-            type="checkbox"
-            checked={notificationEnabled}
-            onChange={(event): void => {
-              const newNotificationEnabled = !!event?.target?.checked || false;
-              setNotificationEnabled(newNotificationEnabled);
-            }}
-          />
-          <Text> Enable reminder notification</Text>
-        </Text>
-      </label>
+      <Text
+        fontWeight="bold"
+        fontSize="14px"
+        as="label"
+        htmlFor="launch-at-login"
+        style={{ display: 'block' }}
+        mt="3"
+        mb="2"
+      >
+        <Field id="launch-at-login" type="checkbox" name="launchAtLogin" />
+        <Text> Launch at login</Text>
+      </Text>
+      <Text
+        fontWeight="bold"
+        fontSize="14px"
+        as="label"
+        htmlFor="notification-enabled"
+        style={{ display: 'block' }}
+        mt="3"
+        mb="2"
+      >
+        <Field
+          id="notification-enabled"
+          type="checkbox"
+          name="notificationEnabled"
+        />
+        <Text> Enable reminder notification</Text>
+      </Text>
       <Text color="grey" fontSize="12px" as="p">
         Get a reminder so you don&apos;t lose your streak! 🔥
       </Text>
       <Text
         fontWeight="bold"
         fontSize="14px"
-        as="p"
-        style={{ marginBottom: 5 }}
+        as="label"
+        htmlFor="reminder-time"
+        style={{ display: 'block' }}
+        mt="3"
+        mb="2"
       >
         Reminder time
       </Text>
       <Text fontSize="14px">Remind me at </Text>
-      <TextInput
-        icon={ClockIcon}
-        placeholder="Reminder Time"
-        type="time"
-        value={notificationTime}
-        disabled={!notificationEnabled}
-        onChange={(event): void => {
-          const newReminderTime = event?.target?.value || '';
-          setNotificationTime(newReminderTime);
-        }}
+      <Field
+        name="notificationTime"
+        as={(props): JSX.Element => (
+          <TextInput
+            id="reminder-time"
+            icon={ClockIcon}
+            placeholder="Reminder Time"
+            type="time"
+            {...props}
+          />
+        )}
       />
-      <div style={{ position: 'absolute', bottom: 15, right: 15 }}>
-        <Button onClick={closeWindow} style={{ marginRight: 10 }}>
+      <Flex p="3">
+        <Button onClick={closeWindow} ml="auto">
           Cancel
         </Button>
-        <ButtonPrimary
-          onClick={(): void => {
-            ipcRenderer.send('preferences-saved', {
-              username,
-              syncInterval,
-              launchAtLogin,
-              notificationEnabled,
-              notificationTime,
-            } as PreferencesSavedArgs);
-            closeWindow();
-          }}
-        >
+        <ButtonPrimary type="submit" ml="2">
           Save
         </ButtonPrimary>
-      </div>
-    </form>
-  );
-};
+      </Flex>
+    </Form>
+  </Formik>
+);
 
 export default PreferencesForm;

@@ -40,6 +40,7 @@
     "contribution": "^4.0.3",
     "cron": "^1.7.2",
     "electron-store": "^5.0.0",
+    "formik": "^2.1.7",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
     "react-helmet": "^6.1.0",

@@ -16,7 +16,7 @@ import {
 import { createMenu } from './menu';
 import icons from './icons';
 import store from '../common/store';
-import { PreferencesSavedArgs } from '../common/types';
+import { PreferencesSavedValues } from '../common/types';
 import pjson from '../../package.json';
 
 const bootstrap = (): void => {
@@ -131,7 +131,7 @@ const bootstrap = (): void => {
 
   const onPreferencesSaved = (
     event: IpcMainEvent,
-    args: PreferencesSavedArgs,
+    args: PreferencesSavedValues,
   ): void => {
     if (args.launchAtLogin !== store.get('launchAtLogin')) {
       args.launchAtLogin ? autoLaunch.enable() : autoLaunch.disable();

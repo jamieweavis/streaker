@@ -1,4 +1,4 @@
-export interface PreferencesSavedArgs {
+export interface PreferencesSavedValues {
   username: string;
   syncInterval: number;
   launchAtLogin: boolean;
