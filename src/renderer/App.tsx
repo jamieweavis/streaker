@@ -8,9 +8,7 @@ import PreferencesForm from './preferences-form';
 const App = (): JSX.Element => {
   return (
     <BaseStyles>
-      <Helmet>
-        <title>Streaker - Preferences</title>
-      </Helmet>
+      <Helmet title="Streaker - Preferences" />
       <PreferencesForm />
     </BaseStyles>
   );
