@@ -43,7 +43,7 @@ module.exports = merge.smart(baseConfig, {
     new CopyPlugin([
       {
         context: 'src/main/',
-        from: 'assets/**/*',
+        from: 'icons/**/*',
         to: '',
       },
     ]),

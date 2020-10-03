@@ -27,7 +27,7 @@
     "build:renderer": "cross-env NODE_ENV=production webpack --config config/webpack/webpack.renderer.prod.config.js",
     "clean": "rimraf build && rimraf dist",
     "format": "prettier --write 'src/**/*.{ts,tsx}'",
-    "lint": "eslint 'src/**/*.{ts,tsx}'",
+    "lint": "eslint --fix 'src/**/*.{ts,tsx}'",
     "predist": "npm run build",
     "dist": "electron-builder -m -c.mac.identity=null",
     "pack": "electron-builder --dir -c.mac.identity=null"
@@ -72,6 +72,7 @@
     "eslint-config-prettier": "6.10.1",
     "eslint-plugin-prettier": "3.1.2",
     "eslint-plugin-react": "^7.19.0",
+    "file-loader": "^6.1.0",
     "fork-ts-checker-webpack-plugin": "^4.1.1",
     "html-webpack-plugin": "^4.0.1",
     "husky": "^4.3.0",

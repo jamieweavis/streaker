@@ -9,8 +9,11 @@ import {
   Button,
   ButtonPrimary,
   Flex,
+  Dropdown,
+  Box,
 } from '@primer/components';
 
+import { icons, IconSets } from './icons';
 import { PreferencesSavedValues } from '../common/types';
 import store from '../common/store';
 
@@ -27,6 +30,7 @@ const PreferencesForm = (): JSX.Element => (
       launchAtLogin: store.get('launchAtLogin'),
       notificationEnabled: store.get('notificationEnabled'),
       notificationTime: store.get('notificationTime'),
+      iconSet: store.get('iconSet'),
     }}
     onSubmit={async (values: PreferencesSavedValues): Promise<void> => {
       await ipcRenderer.send('preferences-saved', values);
@@ -112,7 +116,6 @@ const PreferencesForm = (): JSX.Element => (
         htmlFor="notification-enabled"
         style={{ display: 'block' }}
         mt="3"
-        mb="2"
       >
         <Field
           id="notification-enabled"
@@ -147,6 +150,59 @@ const PreferencesForm = (): JSX.Element => (
             {...props}
           />
         )}
+      />
+      <Text
+        fontWeight="bold"
+        fontSize="14px"
+        as="label"
+        htmlFor="notification-enabled"
+        style={{ display: 'block' }}
+        mt="3"
+        mb="2"
+      >
+        Icon set
+      </Text>
+      <Field
+        name="iconSet"
+        render={({ field, form }): JSX.Element => {
+          return (
+            <Flex>
+              <Dropdown direction="ne">
+                <Dropdown.Button>{IconSets[field.value]}</Dropdown.Button>
+                <Dropdown.Menu direction="ne">
+                  {Object.keys(IconSets).map((iconSet) => (
+                    <Dropdown.Item
+                      key={iconSet}
+                      onClick={(): void => {
+                        form.setFieldValue('iconSet', iconSet);
+                      }}
+                    >
+                      {IconSets[iconSet]}
+                    </Dropdown.Item>
+                  ))}
+                </Dropdown.Menu>
+              </Dropdown>
+              <Box ml="3" pt="2">
+                <img
+                  src={icons[field.value].contributed}
+                  style={{ height: 18, marginRight: 10 }}
+                />
+                <img
+                  src={icons[field.value].error}
+                  style={{ height: 18, marginRight: 10 }}
+                />
+                <img
+                  src={icons[field.value].loading}
+                  style={{ height: 18, marginRight: 10 }}
+                />
+                <img
+                  src={icons[field.value].pending}
+                  style={{ height: 18, marginRight: 10 }}
+                />
+              </Box>
+            </Flex>
+          );
+        }}
       />
       <Flex p="3">
         <Button onClick={closeWindow} ml="auto">

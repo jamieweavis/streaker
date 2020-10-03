@@ -21,14 +21,14 @@ import pjson from '../../package.json';
 
 const bootstrap = (): void => {
   const autoLaunch = new AutoLaunch({ name: 'Streaker' });
-  const tray = new Tray(icons.done);
+  const tray = new Tray(icons[store.get('iconSet')].contributed);
   let preferencesWindow: Electron.BrowserWindow | null = null;
 
   const createPreferencesWindow = (): void => {
     preferencesWindow = new BrowserWindow({
       title: 'Streaker',
       width: 290,
-      height: 420,
+      height: 500,
       resizable: false,
       maximizable: false,
       minimizable: false,
@@ -109,11 +109,11 @@ const bootstrap = (): void => {
 
   const requestContributionData = async (): Promise<void> => {
     setTimeout(requestContributionData, 1000 * 60 * store.get('syncInterval'));
-    tray.setImage(icons.load);
+    tray.setImage(icons[store.get('iconSet')].loading);
 
     const username = store.get('username');
     if (!username) {
-      tray.setImage(icons.fail);
+      tray.setImage(icons[store.get('iconSet')].error);
       setTrayMenu();
       return;
     }
@@ -121,9 +121,13 @@ const bootstrap = (): void => {
     let stats;
     try {
       stats = await fetchStats(username);
-      tray.setImage(stats?.streak?.current > 0 ? icons.done : icons.todo);
+      tray.setImage(
+        stats?.streak?.current > 0
+          ? icons[store.get('iconSet')].contributed
+          : icons[store.get('iconSet')].pending,
+      );
     } catch (err) {
-      tray.setImage(icons.fail);
+      tray.setImage(icons[store.get('iconSet')].error);
     }
 
     setTrayMenu(username, stats);

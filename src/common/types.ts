@@ -4,4 +4,5 @@ export interface PreferencesSavedValues {
   launchAtLogin: boolean;
   notificationEnabled: boolean;
   notificationTime: string;
+  iconSet: string;
 }
