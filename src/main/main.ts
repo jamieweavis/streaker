@@ -100,7 +100,7 @@ const bootstrap = (): void => {
       onQuitClick,
       onProfileClick,
       onFeedbackClick,
-      requestContributionData,
+      requestContributionData, // eslint-disable-line
       stats,
       username,
     });
@@ -181,22 +181,19 @@ const bootstrap = (): void => {
 
   requestContributionData();
 
-  // TODO: Remove for debug
-  createPreferencesWindow();
-
-  // process.on('uncaughtException', () => {
-  //   const menu = createMenu({
-  //     onPreferencesClick,
-  //     onAboutClick,
-  //     onQuitClick,
-  //     onProfileClick,
-  //     onFeedbackClick,
-  //     requestContributionData,
-  //     username: store.get('username'),
-  //   });
-  //   tray.setContextMenu(menu);
-  //   tray.setImage(icons.fail);
-  // });
+  process.on('uncaughtException', () => {
+    const menu = createMenu({
+      onPreferencesClick,
+      onAboutClick,
+      onQuitClick,
+      onProfileClick,
+      onFeedbackClick,
+      requestContributionData,
+      username: store.get('username'),
+    });
+    tray.setContextMenu(menu);
+    tray.setImage(icons[store.get('iconSet')].error);
+  });
 };
 
 app.whenReady().then(bootstrap);
