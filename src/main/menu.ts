@@ -1,7 +1,8 @@
 import { Menu } from 'electron';
+import { GitHubStats } from 'contribution';
 
 export interface CreateMenuOptions {
-  stats?: any;
+  stats?: GitHubStats;
   username: string;
   onPreferencesClick: Function;
   onAboutClick: Function;
