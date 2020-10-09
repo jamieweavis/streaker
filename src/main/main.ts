@@ -147,8 +147,6 @@ const bootstrap = (): void => {
 
   // Open preferences window if no username is set (probably initial launch)
   if (!store.get('username')) createPreferencesWindow();
-
-  createPreferencesWindow(); // TODO: Remove - debug only
 };
 
 const triggerReminderNotification = async (): Promise<void> => {
