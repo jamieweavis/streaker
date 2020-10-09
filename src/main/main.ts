@@ -55,12 +55,12 @@ const bootstrap = (): void => {
     icon?: string;
   }): void => {
     const menu = createMenu({
-      app,
-      stats,
       username,
-      preferencesWindow,
+      stats,
       createPreferencesWindow,
       requestContributionData,
+      isPreferencesWindowOpen: () => !!preferencesWindow,
+      focusPreferencesWindow: () => preferencesWindow.focus(),
     });
     tray.setContextMenu(menu);
     if (icon) tray.setImage(icon);
