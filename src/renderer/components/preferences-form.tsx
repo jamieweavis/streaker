@@ -1,7 +1,7 @@
-import { remote, ipcRenderer } from 'electron';
 import React from 'react';
-import { MarkGithubIcon, ClockIcon } from '@primer/octicons-react';
 import { Formik, Field, Form } from 'formik';
+import { remote, ipcRenderer } from 'electron';
+import { MarkGithubIcon, ClockIcon } from '@primer/octicons-react';
 import {
   TextInput,
   Text,
