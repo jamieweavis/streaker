@@ -1,32 +1,29 @@
-import octocatContributedIcon from './octocat/contributed.svg';
-import octocatErrorIcon from './octocat/error.svg';
-import octocatLoadingIcon from './octocat/loading.svg';
-import octocatPendingIcon from './octocat/pending.svg';
+import octocatIcons from '@renderer/icons/octocat';
+import flameIcons from '@renderer/icons/flame';
 
-interface IconSet {
-  contributed: string;
-  error: string;
-  loading: string;
-  pending: string;
+export interface IconSet {
+  name: string;
+  displayName: string;
+  icons: {
+    contributed: string;
+    error: string;
+    loading: string;
+    pending: string;
+    streaking: string;
+  };
 }
 
-interface Icons {
-  [key: string]: IconSet;
-}
+const iconSets: IconSet[] = [
+  {
+    name: 'octocat',
+    displayName: 'Octocat',
+    icons: { ...octocatIcons },
+  },
+  {
+    name: 'flame',
+    displayName: 'Flame',
+    icons: { ...flameIcons },
+  },
+];
 
-enum IconSets {
-  octocat = 'Octocat',
-}
-
-const octocat: IconSet = {
-  contributed: octocatContributedIcon,
-  error: octocatErrorIcon,
-  loading: octocatLoadingIcon,
-  pending: octocatPendingIcon,
-};
-
-const icons: Icons = {
-  octocat,
-};
-
-export { icons, IconSets };
+export { iconSets };

@@ -3,7 +3,7 @@ import { Helmet } from 'react-helmet';
 import { hot } from 'react-hot-loader';
 import { BaseStyles } from '@primer/components';
 
-import PreferencesForm from './preferences-form';
+import { PreferencesForm } from '@renderer/components';
 
 const App = (): JSX.Element => {
   return (

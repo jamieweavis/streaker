@@ -9,14 +9,11 @@ import {
   Button,
   ButtonPrimary,
   Flex,
-  Dropdown,
-  Box,
-  FilterList,
 } from '@primer/components';
 
-import { icons, IconSets } from './icons';
-import { PreferencesSavedValues } from '../common/types';
-import store from '../common/store';
+import { PreferencesSavedValues } from '@common/types';
+import { IconPicker } from '@renderer/components';
+import store from '@common/store';
 
 const closeWindow = (): void => {
   const window = remote.getCurrentWindow();
@@ -141,85 +138,22 @@ const PreferencesForm = (): JSX.Element => (
       <Text fontSize="14px">Remind me at </Text>
       <Field
         name="reminderTime"
-        render={(props): JSX.Element => {
-          console.log(props);
-          return (
-            <TextInput
-              id="reminder-time"
-              icon={ClockIcon}
-              placeholder="Reminder Time"
-              type="time"
-              onChange={(e): void =>
-                props.form.setFieldValue('reminderTime', e.target.value)
-              }
-              value={props.field.value}
-              disabled={!props.form.values.reminderEnabled}
-              {...props}
-            />
-          );
-        }}
+        render={({ form, field, ...rest }): JSX.Element => (
+          <TextInput
+            id="reminder-time"
+            icon={ClockIcon}
+            placeholder="Reminder Time"
+            type="time"
+            onChange={(e): void =>
+              form.setFieldValue('reminderTime', e.target.value)
+            }
+            value={field.value}
+            disabled={!form.values.reminderEnabled}
+            {...rest}
+          />
+        )}
       />
-      <Text
-        fontWeight="bold"
-        fontSize="14px"
-        as="label"
-        style={{ display: 'block' }}
-        mt="3"
-        mb="2"
-      >
-        Icon set
-      </Text>
-      <Field
-        name="iconSet"
-        render={({ field, form }): JSX.Element => {
-          return (
-            <React.Fragment>
-              <FilterList>
-                {Object.keys(IconSets).map((iconSet) => (
-                  <FilterList.Item
-                    key={iconSet}
-                    href="#bar"
-                    mr="3"
-                    selected={iconSet === store.get('iconSet')}
-                    onClick={(): void => {
-                      form.setFieldValue('iconSet', iconSet);
-                    }}
-                  >
-                    <img
-                      src={icons[field.value].contributed}
-                      style={{
-                        height: 16,
-                        marginRight: 10,
-                        position: 'relative',
-                        top: 2,
-                      }}
-                    />
-                    {IconSets[iconSet]}
-                  </FilterList.Item>
-                ))}
-              </FilterList>
-              <Box ml="3" pt="2">
-                <img
-                  src={icons[field.value].contributed}
-                  style={{ height: 20, marginRight: 10 }}
-                />
-                <img
-                  src={icons[field.value].error}
-                  style={{ height: 20, marginRight: 10 }}
-                />
-                <img
-                  src={icons[field.value].loading}
-                  style={{ height: 20, marginRight: 10 }}
-                />
-                <img
-                  src={icons[field.value].pending}
-                  style={{ height: 20, marginRight: 10 }}
-                />
-              </Box>
-            </React.Fragment>
-          );
-        }}
-      />
+      <Field name="iconSet" component={IconPicker} />
       <Flex p="3">
         <Button onClick={closeWindow} ml="auto">
           Cancel

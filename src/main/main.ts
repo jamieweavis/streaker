@@ -1,42 +1,43 @@
 import url from 'url';
 import path from 'path';
 import AutoLaunch from 'auto-launch';
-import { fetchStats } from 'contribution';
+import { fetchStats, GitHubStats } from 'contribution';
 import { CronJob, CronTime } from 'cron';
 import {
   app,
   BrowserWindow,
   ipcMain,
   Notification,
-  shell,
   Tray,
   IpcMainEvent,
 } from 'electron';
 
-import { createMenu } from './menu';
-import icons from './icons';
-import store from '../common/store';
-import { PreferencesSavedValues } from '../common/types';
-import pjson from '../../package.json';
+import store from '@common/store';
+import { PreferencesSavedValues } from '@common/types';
+import { createMenu } from '@main/menu';
+import iconSets from '@main/icons';
 
 const bootstrap = (): void => {
-  const autoLaunch = new AutoLaunch({ name: 'Streaker' });
-  const tray = new Tray(icons[store.get('iconSet')].contributed);
-  let preferencesWindow: Electron.BrowserWindow | null = null;
+  const autoLaunch = new AutoLaunch({ name: 'Streaker', isHidden: true });
+  const tray = new Tray(iconSets[store.get('iconSet')].contributed);
+  const reminderNotificationJob = new CronJob({
+    cronTime: '0 0 20 * * *',
+    onTick: handleReminderNotification,
+  });
+
+  let preferencesWindow: Electron.BrowserWindow;
 
   const createPreferencesWindow = (): void => {
     preferencesWindow = new BrowserWindow({
       title: 'Streaker',
       width: 290,
-      height: 580,
+      height: 615,
       resizable: false,
       maximizable: false,
       minimizable: false,
       fullscreenable: false,
       show: false,
-      webPreferences: {
-        nodeIntegration: true,
-      },
+      webPreferences: { nodeIntegration: true },
     });
 
     if (process.env.NODE_ENV !== 'production') {
@@ -59,93 +60,65 @@ const bootstrap = (): void => {
     });
   };
 
-  const reminderNotificationJob = new CronJob({
-    cronTime: '0 0 20 * * *',
-    onTick: async (): Promise<void> => {
-      if (!Notification.isSupported()) {
-        return;
-      }
-      const stats = await fetchStats(store.get('username'));
-      if (stats.contributions.current === 0) {
-        new Notification({
-          title: "🔥 You haven't contributed today",
-          body:
-            "Don't forget to contribute today to continue your streak on GitHub!",
-        }).show();
-      }
-    },
-  });
-
-  const onPreferencesClick = (): void => {
-    if (preferencesWindow === null) {
-      return createPreferencesWindow();
-    }
-    preferencesWindow.focus();
-  };
-
-  const onAboutClick = (): Promise<void> => shell.openExternal(pjson.homepage);
-
-  const onProfileClick = (): Promise<void> =>
-    shell.openExternal(`https://github.com/${store.get('username')}`);
-
-  const onFeedbackClick = (): Promise<void> =>
-    shell.openExternal(pjson.bugs.url);
-
-  const onQuitClick = (): void => app.quit();
-
-  const setTrayMenu = (username?, stats?): void => {
+  const setTrayMenu = ({
+    username,
+    stats,
+    icon,
+  }: {
+    username?: string;
+    stats?: GitHubStats;
+    icon?: string;
+  }): void => {
     const menu = createMenu({
-      onPreferencesClick,
-      onAboutClick,
-      onQuitClick,
-      onProfileClick,
-      onFeedbackClick,
-      requestContributionData, // eslint-disable-line
-      stats,
       username,
+      stats,
+      requestContributionData,
+      preferencesWindow,
+      createPreferencesWindow,
+      app,
     });
     tray.setContextMenu(menu);
+    if (icon) tray.setImage(icon);
   };
 
   const requestContributionData = async (): Promise<void> => {
-    setTimeout(requestContributionData, 1000 * 60 * store.get('pollInterval'));
-    tray.setImage(icons[store.get('iconSet')].loading);
-
+    const iconSet = store.get('iconSet');
     const username = store.get('username');
+
     if (!username) {
-      tray.setImage(icons[store.get('iconSet')].error);
-      setTrayMenu();
+      const icon = iconSets[iconSet].error;
+      setTrayMenu({ icon });
       return;
     }
 
-    let stats;
+    tray.setImage(iconSets[iconSet].loading);
+
+    let stats: GitHubStats;
+    let icon = iconSets[iconSet].pending;
     try {
       stats = await fetchStats(username);
-      tray.setImage(
-        stats?.streak?.current > 0
-          ? icons[store.get('iconSet')].contributed
-          : icons[store.get('iconSet')].pending,
-      );
+      if (stats?.streak?.current > 0) icon = iconSets[iconSet].contributed;
     } catch (err) {
-      tray.setImage(icons[store.get('iconSet')].error);
+      icon = iconSets[iconSet].error;
     }
 
-    setTrayMenu(username, stats);
+    setTrayMenu({ username, stats, icon });
+    setTimeout(requestContributionData, 1000 * 60 * store.get('pollInterval'));
   };
 
   const onPreferencesSaved = (
     event: IpcMainEvent,
-    args: PreferencesSavedValues,
+    values: PreferencesSavedValues,
   ): void => {
-    if (args.launchAtLogin !== store.get('launchAtLogin')) {
-      args.launchAtLogin ? autoLaunch.enable() : autoLaunch.disable();
+    if (values.launchAtLogin !== store.get('launchAtLogin')) {
+      values.launchAtLogin ? autoLaunch.enable() : autoLaunch.disable();
     }
     if (
-      args.reminderEnabled !== store.get('reminderEnabled') ||
-      args.reminderTime !== store.get('reminderTime')
+      values.reminderEnabled !== store.get('reminderEnabled') ||
+      values.reminderTime !== store.get('reminderTime')
     ) {
-      if (args.reminderEnabled) {
-        const [hours, minutes] = args.reminderTime.split(':');
+      if (values.reminderEnabled) {
+        const [hours, minutes] = values.reminderTime.split(':');
         const cronTime = `0 ${minutes} ${hours} * * *`;
         reminderNotificationJob.setTime(new CronTime(cronTime));
         reminderNotificationJob.start();
@@ -153,7 +126,7 @@ const bootstrap = (): void => {
         reminderNotificationJob.stop();
       }
     }
-    store.set(args);
+    store.set(values);
     requestContributionData();
   };
 
@@ -169,31 +142,38 @@ const bootstrap = (): void => {
 
   ipcMain.on('preferences-saved', onPreferencesSaved);
 
-  app.on('window-all-closed', () => {
-    /* Keep open on macos */
-  });
+  // Keep app open if all windows are closed
+  app.on('window-all-closed', () => {}); // eslint-disable-line
 
-  if (process.platform === 'darwin') {
-    app.dock.hide();
-  }
+  // Hide dock icon on macOS
+  if (process.platform === 'darwin') app.dock.hide();
 
+  // Open preferences window if no username is set (probably initial launch)
   if (!store.get('username')) createPreferencesWindow();
 
+  // Initial request
   requestContributionData();
 
   process.on('uncaughtException', () => {
-    const menu = createMenu({
-      onPreferencesClick,
-      onAboutClick,
-      onQuitClick,
-      onProfileClick,
-      onFeedbackClick,
-      requestContributionData,
-      username: store.get('username'),
-    });
-    tray.setContextMenu(menu);
-    tray.setImage(icons[store.get('iconSet')].error);
+    const username = store.get('username');
+    const iconSet = store.get('iconSet');
+    const icon = iconSets[iconSet].error;
+
+    setTrayMenu({ username, icon });
   });
+};
+
+const handleReminderNotification = async (): Promise<void> => {
+  if (!Notification.isSupported()) return;
+  const username = store.get('username');
+  const stats = await fetchStats(username);
+  if (stats?.contributions?.current === 0) {
+    new Notification({
+      title: "🔥 You haven't contributed today",
+      body:
+        "Don't forget to contribute today to continue your streak on GitHub!",
+    }).show();
+  }
 };
 
 app.whenReady().then(bootstrap);

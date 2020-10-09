@@ -3,7 +3,13 @@
     "esModuleInterop": true,
     "resolveJsonModule": true,
     "outDir": "build",
-    "jsx": "react"
+    "jsx": "react",
+    "baseUrl": "src",
+    "paths": {
+      "@common/*": ["common/*"],
+      "@main/*": ["main/*"],
+      "@renderer/*": ["renderer/*"],
+    }
   },
   "include": ["src"]
 }
