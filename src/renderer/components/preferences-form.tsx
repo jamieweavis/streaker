@@ -24,7 +24,6 @@ const PreferencesForm = (): JSX.Element => (
   <Formik
     initialValues={{
       username: store.get('username'),
-      pollInterval: store.get('pollInterval'),
       launchAtLogin: store.get('launchAtLogin'),
       reminderEnabled: store.get('reminderEnabled'),
       reminderTime: store.get('reminderTime'),
@@ -69,31 +68,6 @@ const PreferencesForm = (): JSX.Element => (
           />
         )}
       />
-      <Text
-        fontWeight="bold"
-        fontSize="14px"
-        as="label"
-        htmlFor="sync-interval"
-        style={{ display: 'block' }}
-        mt="3"
-        mb="2"
-      >
-        Sync interval
-      </Text>
-      <Text fontSize="14px">Sync every </Text>
-      <Field
-        name="pollInterval"
-        as={(props): JSX.Element => (
-          <TextInput
-            id="sync-interval"
-            placeholder="15"
-            width={70}
-            type="number"
-            {...props}
-          />
-        )}
-      />
-      <Text fontSize="14px"> minutes</Text>
       <Text
         fontWeight="bold"
         fontSize="14px"

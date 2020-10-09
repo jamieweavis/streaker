@@ -5,21 +5,21 @@ import store from '@common/store';
 import pjson from '../../package.json';
 
 export interface CreateMenuOptions {
+  app: App;
   stats?: GitHubStats;
   username?: string;
   preferencesWindow: BrowserWindow;
-  requestContributionData: Function;
   createPreferencesWindow: Function;
-  app: App;
+  requestContributionData: Function;
 }
 
 export const createMenu = ({
+  app,
   stats,
   username,
   preferencesWindow,
-  requestContributionData,
   createPreferencesWindow,
-  app,
+  requestContributionData,
 }: CreateMenuOptions): Menu => {
   const onPreferencesClick = (): void => {
     if (!preferencesWindow) return createPreferencesWindow();
@@ -28,7 +28,7 @@ export const createMenu = ({
 
   return Menu.buildFromTemplate([
     {
-      label: username || 'Set username...',
+      label: username || 'Set GitHub username...',
       enabled: !username,
       click: (): void => onPreferencesClick(),
     },

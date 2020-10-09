@@ -1,42 +1,27 @@
 import url from 'url';
 import path from 'path';
 import AutoLaunch from 'auto-launch';
-import { fetchStats, GitHubStats } from 'contribution';
 import { CronJob, CronTime } from 'cron';
-import {
-  app,
-  BrowserWindow,
-  ipcMain,
-  Notification,
-  Tray,
-  IpcMainEvent,
-} from 'electron';
+import { fetchStats, GitHubStats } from 'contribution';
+import { app, BrowserWindow, ipcMain, Notification, Tray } from 'electron';
 
 import store from '@common/store';
-import { PreferencesSavedValues } from '@common/types';
-import { createMenu } from '@main/menu';
 import iconSets from '@main/icons';
+import { createMenu } from '@main/menu';
+import { PreferencesSavedValues } from '@common/types';
 
 const bootstrap = (): void => {
-  const autoLaunch = new AutoLaunch({ name: 'Streaker', isHidden: true });
-  const tray = new Tray(iconSets[store.get('iconSet')].contributed);
-  const reminderNotificationJob = new CronJob({
-    cronTime: '0 0 20 * * *',
-    onTick: handleReminderNotification,
-  });
-
   let preferencesWindow: Electron.BrowserWindow;
 
   const createPreferencesWindow = (): void => {
     preferencesWindow = new BrowserWindow({
-      title: 'Streaker',
       width: 290,
-      height: 615,
+      height: 535,
+      show: false,
       resizable: false,
       maximizable: false,
       minimizable: false,
       fullscreenable: false,
-      show: false,
       webPreferences: { nodeIntegration: true },
     });
 
@@ -70,12 +55,12 @@ const bootstrap = (): void => {
     icon?: string;
   }): void => {
     const menu = createMenu({
-      username,
+      app,
       stats,
-      requestContributionData,
+      username,
       preferencesWindow,
       createPreferencesWindow,
-      app,
+      requestContributionData,
     });
     tray.setContextMenu(menu);
     if (icon) tray.setImage(icon);
@@ -85,12 +70,7 @@ const bootstrap = (): void => {
     const iconSet = store.get('iconSet');
     const username = store.get('username');
 
-    if (!username) {
-      const icon = iconSets[iconSet].error;
-      setTrayMenu({ icon });
-      return;
-    }
-
+    if (!username) return setTrayMenu({ icon: iconSets[iconSet].error });
     tray.setImage(iconSets[iconSet].loading);
 
     let stats: GitHubStats;
@@ -103,13 +83,9 @@ const bootstrap = (): void => {
     }
 
     setTrayMenu({ username, stats, icon });
-    setTimeout(requestContributionData, 1000 * 60 * store.get('pollInterval'));
   };
 
-  const onPreferencesSaved = (
-    event: IpcMainEvent,
-    values: PreferencesSavedValues,
-  ): void => {
+  const onPreferencesSaved = (event, values: PreferencesSavedValues): void => {
     if (values.launchAtLogin !== store.get('launchAtLogin')) {
       values.launchAtLogin ? autoLaunch.enable() : autoLaunch.disable();
     }
@@ -119,51 +95,63 @@ const bootstrap = (): void => {
     ) {
       if (values.reminderEnabled) {
         const [hours, minutes] = values.reminderTime.split(':');
-        const cronTime = `0 ${minutes} ${hours} * * *`;
-        reminderNotificationJob.setTime(new CronTime(cronTime));
-        reminderNotificationJob.start();
+        const cronTime = new CronTime(`0 ${minutes} ${hours} * * *`);
+        reminderNotification.setTime(cronTime);
+        reminderNotification.start();
       } else {
-        reminderNotificationJob.stop();
+        reminderNotification.stop();
       }
     }
     store.set(values);
     requestContributionData();
   };
 
-  if (store.get('reminderEnabled')) {
-    const reminderTime = store.get('reminderTime');
-    const [hours, minutes] = reminderTime.split(':');
-    const cronTime = `0 ${minutes} ${hours} * * *`;
-    reminderNotificationJob.setTime(new CronTime(cronTime));
-    reminderNotificationJob.start();
-  }
-
+  // Setup tray
+  const tray = new Tray(iconSets[store.get('iconSet')].loading);
   tray.on('right-click', requestContributionData);
 
-  ipcMain.on('preferences-saved', onPreferencesSaved);
+  // Auto launch
+  const autoLaunch = new AutoLaunch({ name: 'Streaker', isHidden: true });
 
-  // Keep app open if all windows are closed
-  app.on('window-all-closed', () => {}); // eslint-disable-line
+  // Reminder notification
+  const reminderEnabled = store.get('reminderEnabled');
+  const reminderTime = store.get('reminderTime');
+  const [hours, minutes] = reminderTime.split(':');
+  const reminderNotification = new CronJob({
+    cronTime: `0 ${minutes} ${hours} * * *`,
+    onTick: triggerReminderNotification,
+  });
+  if (reminderEnabled) reminderNotification.start();
 
-  // Hide dock icon on macOS
-  if (process.platform === 'darwin') app.dock.hide();
-
-  // Open preferences window if no username is set (probably initial launch)
-  if (!store.get('username')) createPreferencesWindow();
-
-  // Initial request
+  // Initial request & cron sync every 15 minutes
   requestContributionData();
+  new CronJob({
+    cronTime: '*/15 * * * *',
+    onTick: requestContributionData,
+  }).start();
 
+  // Handle uncaught errors gracefully
   process.on('uncaughtException', () => {
     const username = store.get('username');
     const iconSet = store.get('iconSet');
     const icon = iconSets[iconSet].error;
-
     setTrayMenu({ username, icon });
   });
+
+  // Platform specific app handling
+  app.on('window-all-closed', () => {}); // eslint-disable-line
+  if (process.platform === 'darwin') app.dock.hide();
+
+  // Save preferences to store on renderer preferences save
+  ipcMain.on('preferences-saved', onPreferencesSaved);
+
+  // Open preferences window if no username is set (probably initial launch)
+  if (!store.get('username')) createPreferencesWindow();
+
+  createPreferencesWindow(); // TODO: Remove - debug only
 };
 
-const handleReminderNotification = async (): Promise<void> => {
+const triggerReminderNotification = async (): Promise<void> => {
   if (!Notification.isSupported()) return;
   const username = store.get('username');
   const stats = await fetchStats(username);
