@@ -2,20 +2,20 @@
 
 > 🐙 GitHub contribution streak & stat tracking menu bar app
 
-
-![Node.js CI](https://github.com/jamieweavis/streaker/workflows/Node.js%20CI/badge.svg)
-[![Downloads](https://img.shields.io/github/downloads/jamieweavis/streaker/total.svg)](https://github.com/jamieweavis/streaker/releases)
-[![Version](https://img.shields.io/github/release/jamieweavis/streaker.svg)](https://github.com/jamieweavis/streaker/releases)
-[![License](https://img.shields.io/badge/license-MIT-blue.svg)](https://github.com/jamieweavis/streaker/blob/master/LICENSE.md)
-[![Style](https://img.shields.io/badge/code_style-prettier-ff69b4.svg)](https://prettier.io/)
+![build](https://img.shields.io/github/workflow/status/jamieweavis/streaker/build)
+[![downloads](https://img.shields.io/github/downloads/jamieweavis/streaker/total.svg)](https://github.com/jamieweavis/streaker/releases)
+[![version](https://img.shields.io/github/release/jamieweavis/streaker.svg)](https://github.com/jamieweavis/streaker/releases)
+[![license](https://img.shields.io/badge/license-MIT-blue.svg)](https://github.com/jamieweavis/streaker/blob/master/LICENSE.md)
 
 ## Contents
 
+- [Contents](#contents)
 - [Installation](#installation)
 - [Features](#features)
 - [Screenshots](#screenshots)
 - [Menu Bar Icons](#menu-bar-icons)
 - [Related](#related)
+- [License](#license)
 
 ## Installation
 

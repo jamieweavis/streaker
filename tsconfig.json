@@ -1,0 +1,9 @@
+{
+  "compilerOptions": {
+    "esModuleInterop": true,
+    "resolveJsonModule": true,
+    "outDir": "build",
+    "jsx": "react"
+  },
+  "include": ["src"]
+}
