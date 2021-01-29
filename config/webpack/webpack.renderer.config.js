@@ -38,6 +38,14 @@ module.exports = merge.smart(baseConfig, {
         test: /\.js$/,
         loader: 'source-map-loader',
       },
+      {
+        test: /\.(png|jp(e*)g|svg|gif)$/,
+        use: [
+          {
+            loader: 'file-loader',
+          },
+        ],
+      },
     ],
   },
   plugins: [

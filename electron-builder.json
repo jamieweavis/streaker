@@ -5,7 +5,7 @@
   "files": ["build/**/*"],
   "directories": {
     "output": "dist/${version}",
-    "buildResources": "src/main/assets"
+    "buildResources": "src/main/icons"
   },
   "mac": {
     "category": "public.app-category.developer-tools"

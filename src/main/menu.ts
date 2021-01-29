@@ -1,26 +1,31 @@
-import { Menu } from 'electron';
+import { App, BrowserWindow, Menu, shell } from 'electron';
+import { GitHubStats } from 'contribution';
+
+import store from '@common/store';
+import pjson from '../../package.json';
 
 export interface CreateMenuOptions {
-  stats?: any;
-  username: string;
-  onPreferencesClick: Function;
-  onAboutClick: Function;
-  onProfileClick: Function;
-  onFeedbackClick: Function;
-  onQuitClick: Function;
+  stats?: GitHubStats;
+  username?: string;
+  preferencesWindow: BrowserWindow;
   requestContributionData: Function;
+  createPreferencesWindow: Function;
+  app: App;
 }
 
 export const createMenu = ({
   stats,
   username,
-  onPreferencesClick,
-  onAboutClick,
-  onProfileClick,
-  onFeedbackClick,
-  onQuitClick,
+  preferencesWindow,
   requestContributionData,
+  createPreferencesWindow,
+  app,
 }: CreateMenuOptions): Menu => {
+  const onPreferencesClick = (): void => {
+    if (!preferencesWindow) return createPreferencesWindow();
+    preferencesWindow.focus();
+  };
+
   return Menu.buildFromTemplate([
     {
       label: username || 'Set username...',
@@ -58,7 +63,8 @@ export const createMenu = ({
       label: 'Open GitHub Profile...',
       enabled: !!username,
       accelerator: 'CmdOrCtrl+O',
-      click: (): void => onProfileClick(),
+      click: (): Promise<void> =>
+        shell.openExternal(`https://github.com/${store.get('username')}`),
     },
     { type: 'separator' },
     {
@@ -68,17 +74,17 @@ export const createMenu = ({
     },
     {
       label: 'About Streaker...',
-      click: (): void => onAboutClick(),
+      click: (): Promise<void> => shell.openExternal(pjson.homepage),
     },
     {
       label: 'Feedback && Support...',
-      click: (): void => onFeedbackClick(),
+      click: (): Promise<void> => shell.openExternal(pjson.bugs.url),
     },
     { type: 'separator' },
     {
       label: 'Quit Streaker',
       accelerator: 'CmdOrCtrl+Q',
-      click: (): void => onQuitClick(),
+      click: (): void => app.quit(),
     },
   ]);
 };
