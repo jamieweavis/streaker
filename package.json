@@ -89,17 +89,6 @@
     "webpack-dev-server": "3.11.0",
     "webpack-merge": "4.2.2"
   },
-  "husky": {
-    "hooks": {
-      "pre-commit": "lint-staged"
-    }
-  },
-  "lint-staged": {
-    "*.{ts,tsx}": [
-      "prettier --write",
-      "eslint"
-    ]
-  },
   "keywords": [
     "contribution",
     "contribution-graph",
