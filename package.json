@@ -1,5 +1,6 @@
 {
   "name": "streaker",
+  "private": true,
   "description": "GitHub contribution streak & stat tracking menu bar app",
   "version": "1.4.3",
   "homepage": "https://github.com/jamieweavis/streaker#readme",
