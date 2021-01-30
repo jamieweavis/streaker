@@ -1,11 +1,17 @@
-# Streaker <img src="./screenshots/icon.svg" align="right">
+<p align="center">
+  <img widht=100 height=100 alt="Screenshot" src="./screenshots/icon.svg">
+</p>
 
-> 🐙 GitHub contribution streak & stat tracking menu bar app
+<h1 align="center">Streaker</h1>
 
-![build](https://img.shields.io/github/workflow/status/jamieweavis/streaker/build)
-[![downloads](https://img.shields.io/github/downloads/jamieweavis/streaker/total.svg)](https://github.com/jamieweavis/streaker/releases)
-[![version](https://img.shields.io/github/release/jamieweavis/streaker.svg)](https://github.com/jamieweavis/streaker/releases)
-[![license](https://img.shields.io/badge/license-MIT-blue.svg)](https://github.com/jamieweavis/streaker/blob/main/LICENSE.md)
+<p align="center">🔥 GitHub contribution streak & stat tracking menu bar app</p>
+
+<p align="center">
+  <a href="https://github.com/jamieweavis/streaker/actions"><img alt ="build" src="https://img.shields.io/github/workflow/status/jamieweavis/streaker/build"></a>
+  <a href="https://github.com/jamieweavis/streaker/releases"><img alt ="downloads" src="https://img.shields.io/github/downloads/jamieweavis/streaker/total.svg"></a>
+  <a href="https://github.com/jamieweavis/streaker/releases"><img alt ="version" src="https://img.shields.io/github/release/jamieweavis/streaker.svg"></a>
+  <a href="https://github.com/jamieweavis/streaker/blob/main/LICENSE.md"><img alt ="license" src="https://img.shields.io/badge/license-MIT-blue.svg"></a>
+</p>
 
 ## Contents
 
@@ -46,7 +52,7 @@ Streaker's menu bar icon changes depending on your current daily contribution st
 
 ## Related
 
-- [streaker-cli](https://github.com/jamieweavis/streaker-cli) - 🐙 GitHub contribution streak & stat tracking CLI app
+- [streaker-cli](https://github.com/jamieweavis/streaker-cli) - 🔥 GitHub contribution streak & stat tracking CLI app
 - [contribution](https://github.com/jamieweavis/contribution) - 🗓 GitHub contribution streak & stat fetcher with zero dependencies
 
 ## License
