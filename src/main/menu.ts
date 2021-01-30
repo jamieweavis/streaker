@@ -1,36 +1,36 @@
-import { App, BrowserWindow, Menu, shell } from 'electron';
+import { app, Menu, shell } from 'electron';
 import { GitHubStats } from 'contribution';
 
 import store from '@common/store';
 import pjson from '../../package.json';
 
 export interface CreateMenuOptions {
-  stats?: GitHubStats;
   username?: string;
-  preferencesWindow: BrowserWindow;
-  requestContributionData: Function;
-  createPreferencesWindow: Function;
-  app: App;
+  stats?: GitHubStats;
+  createPreferencesWindow: () => void;
+  requestContributionData: () => void;
+  isPreferencesWindowOpen: () => boolean;
+  focusPreferencesWindow: () => void;
 }
 
 export const createMenu = ({
-  stats,
   username,
-  preferencesWindow,
-  requestContributionData,
+  stats,
   createPreferencesWindow,
-  app,
+  requestContributionData,
+  isPreferencesWindowOpen,
+  focusPreferencesWindow,
 }: CreateMenuOptions): Menu => {
   const onPreferencesClick = (): void => {
-    if (!preferencesWindow) return createPreferencesWindow();
-    preferencesWindow.focus();
+    if (!isPreferencesWindowOpen()) return createPreferencesWindow();
+    focusPreferencesWindow();
   };
 
   return Menu.buildFromTemplate([
     {
-      label: username || 'Set username...',
+      label: username || 'Set GitHub username...',
       enabled: !username,
-      click: (): void => onPreferencesClick(),
+      click: onPreferencesClick,
     },
     { type: 'separator' },
     { label: 'Streak:', enabled: false },
@@ -57,7 +57,7 @@ export const createMenu = ({
       label: 'Reload',
       enabled: !!username,
       accelerator: 'CmdOrCtrl+R',
-      click: (): void => requestContributionData(),
+      click: requestContributionData,
     },
     {
       label: 'Open GitHub Profile...',
@@ -70,7 +70,7 @@ export const createMenu = ({
     {
       label: 'Preferences...',
       accelerator: 'CmdOrCtrl+,',
-      click: (): void => onPreferencesClick(),
+      click: onPreferencesClick,
     },
     {
       label: 'About Streaker...',

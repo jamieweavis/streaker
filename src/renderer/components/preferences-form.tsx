@@ -1,7 +1,7 @@
-import { remote, ipcRenderer } from 'electron';
 import React from 'react';
-import { MarkGithubIcon, ClockIcon } from '@primer/octicons-react';
 import { Formik, Field, Form } from 'formik';
+import { remote, ipcRenderer } from 'electron';
+import { MarkGithubIcon, ClockIcon } from '@primer/octicons-react';
 import {
   TextInput,
   Text,
@@ -24,7 +24,6 @@ const PreferencesForm = (): JSX.Element => (
   <Formik
     initialValues={{
       username: store.get('username'),
-      pollInterval: store.get('pollInterval'),
       launchAtLogin: store.get('launchAtLogin'),
       reminderEnabled: store.get('reminderEnabled'),
       reminderTime: store.get('reminderTime'),

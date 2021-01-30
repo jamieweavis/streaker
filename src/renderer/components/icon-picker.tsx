@@ -1,6 +1,6 @@
 import React from 'react';
-import { Text, BorderBox, FilterList } from '@primer/components';
 import { FieldProps } from 'formik';
+import { Text, BorderBox, FilterList } from '@primer/components';
 
 import { iconSets } from '@renderer/icons';
 
