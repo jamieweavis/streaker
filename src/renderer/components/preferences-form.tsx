@@ -39,6 +39,8 @@ const PreferencesForm = (): JSX.Element => (
         fontWeight="bold"
         fontSize="14px"
         as="label"
+        // eslint-disable-next-line
+        // @ts-ignore
         htmlFor="github-username"
         style={{ display: 'block' }}
         mt="2"
@@ -72,6 +74,35 @@ const PreferencesForm = (): JSX.Element => (
         fontWeight="bold"
         fontSize="14px"
         as="label"
+        // eslint-disable-next-line
+        // @ts-ignore
+        htmlFor="sync-interval"
+        style={{ display: 'block' }}
+        mt="3"
+        mb="2"
+      >
+        Sync interval
+      </Text>
+      <Text fontSize="14px">Sync every </Text>
+      <Field
+        name="pollInterval"
+        as={(props): JSX.Element => (
+          <TextInput
+            id="sync-interval"
+            placeholder="15"
+            width={70}
+            type="number"
+            {...props}
+          />
+        )}
+      />
+      <Text fontSize="14px"> minutes</Text>
+      <Text
+        fontWeight="bold"
+        fontSize="14px"
+        as="label"
+        // eslint-disable-next-line
+        // @ts-ignore
         htmlFor="launch-at-login"
         style={{ display: 'block' }}
         mt="3"
@@ -84,6 +115,8 @@ const PreferencesForm = (): JSX.Element => (
         fontWeight="bold"
         fontSize="14px"
         as="label"
+        // eslint-disable-next-line
+        // @ts-ignore
         htmlFor="notification-enabled"
         style={{ display: 'block' }}
         mt="3"
@@ -102,6 +135,8 @@ const PreferencesForm = (): JSX.Element => (
         fontWeight="bold"
         fontSize="14px"
         as="label"
+        // eslint-disable-next-line
+        // @ts-ignore
         htmlFor="reminder-time"
         style={{ display: 'block' }}
         mt="3"
