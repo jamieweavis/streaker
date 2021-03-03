@@ -158,6 +158,7 @@ const PreferencesForm = (): JSX.Element => (
             }
             value={field.value}
             disabled={!form.values.reminderEnabled}
+            pr="2"
             {...rest}
           />
         )}

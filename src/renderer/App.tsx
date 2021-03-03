@@ -10,6 +10,15 @@ const App = (): JSX.Element => {
     <BaseStyles>
       <Helmet title="Streaker - Preferences" />
       <PreferencesForm />
+      <style
+        dangerouslySetInnerHTML={{
+          __html: `
+            input[type="time"]::-webkit-calendar-picker-indicator {
+              display: none;
+            }
+          `,
+        }}
+      />
     </BaseStyles>
   );
 };
