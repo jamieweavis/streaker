@@ -1,5 +1,5 @@
 <p align="center">
-  <img widht=100 height=100 alt="Screenshot" src="./screenshots/icon.svg">
+  <img width=100 height=100 alt="Screenshot" src="./.github/icon.svg">
 </p>
 
 <h1 align="center">Streaker</h1>
