@@ -78,6 +78,8 @@ const bootstrap = (): void => {
     try {
       stats = await fetchStats(username);
       if (stats?.streak?.current > 0) icon = iconSets[iconSet].contributed;
+      if (stats?.streak?.current === stats?.streak?.best)
+        icon = iconSets[iconSet].streaking;
     } catch (err) {
       icon = iconSets[iconSet].error;
     }
