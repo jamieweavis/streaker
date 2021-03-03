@@ -19,7 +19,7 @@ Download the latest version of Streaker from the **[GitHub releases](https://git
 
 ## Features
 
-- Contributions stats from the menu bar
+- Contribution stats from the menu bar
   - Current streak
   - Best streak
   - Current contributions (today)
