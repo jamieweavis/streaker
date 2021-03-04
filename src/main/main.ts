@@ -77,17 +77,18 @@ const bootstrap = (): void => {
     let icon = iconThemes[iconTheme].pending;
     try {
       stats = await fetchStats(username);
-      stats = {
-        contributions: {
-          best: 42,
-          current: 13,
-          total: 1337,
-        },
-        streak: {
-          best: 69,
-          current: 5,
-        },
-      };
+      // For screenshots
+      // stats = {
+      //   contributions: {
+      //     best: 42,
+      //     current: 13,
+      //     total: 1337,
+      //   },
+      //   streak: {
+      //     best: 69,
+      //     current: 5,
+      //   },
+      // };
       if (stats?.streak?.current > 0) icon = iconThemes[iconTheme].contributed;
       if (stats?.streak?.current === stats?.streak?.best)
         icon = iconThemes[iconTheme].streaking;
