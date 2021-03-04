@@ -26,10 +26,10 @@ Coming soon, track progress in [#138](https://github.com/jamieweavis/streaker/is
 ## Features
 
 - Contribution stats from the menu bar 📈
-  - Current streak
   - Best streak
-  - Current contributions (today)
+  - Current streak
   - Best contributions (in a single day)
+  - Current contributions (today)
   - Total contributions (this year)
 - Menu bar icon changes depending on contribution status
   - Empty - You haven't contributed today, your streak is in danger 😱
