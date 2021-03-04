@@ -16,7 +16,7 @@ const bootstrap = (): void => {
   const createPreferencesWindow = (): void => {
     preferencesWindow = new BrowserWindow({
       width: 300,
-      height: 625,
+      height: 545,
       show: false,
       resizable: false,
       maximizable: false,

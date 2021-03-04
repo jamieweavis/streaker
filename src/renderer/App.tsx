@@ -13,6 +13,9 @@ const App = (): JSX.Element => {
       <style
         dangerouslySetInnerHTML={{
           __html: `
+            body {
+              overflow: hidden;
+            }
             input[type="time"]::-webkit-calendar-picker-indicator {
               display: none;
             }
