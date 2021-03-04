@@ -15,22 +15,34 @@
 
 ## Installation
 
+### Manual
+
 Download the latest version of Streaker from the **[GitHub releases](https://github.com/jamieweavis/streaker/releases)** page. (currently macOS & Windows only, track work for Linux support in [#2](https://github.com/jamieweavis/streaker/issues/2))
+
+### Homebrew Cask
+
+Coming soon, track progress in [#138](https://github.com/jamieweavis/streaker/issues/138)
 
 ## Features
 
-- Contribution stats from the menu bar
+- Contribution stats from the menu bar 📈
   - Current streak
   - Best streak
   - Current contributions (today)
   - Best contributions (in a single day)
   - Total contributions (this year)
-- Reminder notification so that you don't lose your streak
-- Different icon styles
+- Menu bar icon changes depending on contribution status
+  - Empty - You haven't contributed today, your streak is in danger 😱
+  - Filled - You have contributed today, your streak is secure 😊
+  - Crown - You're on your best streak! 🤩
+- Two different menu bar icon themes
+  - Flame 🔥
+  - Octocat 🐙
+- Reminder notification so you don't lose your streak ⏰
 
-## Screenshots
+## Screenshot
 
-tba
+<img width="716" alt="Screenshot" src=".github/screenshot.png">
 
 ## Built with
 
