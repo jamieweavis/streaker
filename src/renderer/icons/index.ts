@@ -1,7 +1,7 @@
 import octocatIcons from '@renderer/icons/octocat';
 import flameIcons from '@renderer/icons/flame';
 
-export interface IconSet {
+export interface IconTheme {
   name: string;
   displayName: string;
   icons: {
@@ -13,7 +13,7 @@ export interface IconSet {
   };
 }
 
-const iconSets: IconSet[] = [
+const iconThemes: IconTheme[] = [
   {
     name: 'octocat',
     displayName: 'Octocat',
@@ -26,4 +26,4 @@ const iconSets: IconSet[] = [
   },
 ];
 
-export { iconSets };
+export { iconThemes };

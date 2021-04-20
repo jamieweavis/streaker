@@ -2,11 +2,11 @@ import React from 'react';
 import { FieldProps } from 'formik';
 import { Text, BorderBox, FilterList } from '@primer/components';
 
-import { iconSets } from '@renderer/icons';
+import { iconThemes } from '@renderer/icons';
 
 const IconPicker: React.FC<FieldProps> = ({ field, form }): JSX.Element => {
-  const currentIconSet = iconSets.find(
-    (iconSet) => iconSet.name === field.value,
+  const currentIconTheme = iconThemes.find(
+    (iconTheme) => iconTheme.name === field.value,
   );
 
   return (
@@ -19,15 +19,15 @@ const IconPicker: React.FC<FieldProps> = ({ field, form }): JSX.Element => {
         mt="3"
         mb="2"
       >
-        Icon set
+        Icon theme
       </Text>
       <FilterList>
-        {iconSets.map(({ name, displayName, icons }) => (
+        {iconThemes.map(({ name, displayName, icons }) => (
           <FilterList.Item
             key={name}
             mr="3"
             selected={name === field.value}
-            onClick={(): void => form.setFieldValue('iconSet', name)}
+            onClick={(): void => form.setFieldValue('iconTheme', name)}
           >
             <img
               src={icons.contributed}
@@ -63,17 +63,20 @@ const IconPicker: React.FC<FieldProps> = ({ field, form }): JSX.Element => {
           </tr>
           <tr>
             <td style={{ textAlign: 'center' }}>
-              <img src={currentIconSet.icons.pending} style={{ height: 16 }} />
-            </td>
-            <td style={{ textAlign: 'center' }}>
               <img
-                src={currentIconSet.icons.contributed}
+                src={currentIconTheme.icons.pending}
                 style={{ height: 16 }}
               />
             </td>
             <td style={{ textAlign: 'center' }}>
               <img
-                src={currentIconSet.icons.streaking}
+                src={currentIconTheme.icons.contributed}
+                style={{ height: 16 }}
+              />
+            </td>
+            <td style={{ textAlign: 'center' }}>
+              <img
+                src={currentIconTheme.icons.streaking}
                 style={{ height: 16 }}
               />
             </td>

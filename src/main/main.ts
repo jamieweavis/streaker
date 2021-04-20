@@ -6,7 +6,7 @@ import { fetchStats, GitHubStats } from 'contribution';
 import { app, BrowserWindow, ipcMain, Notification, Tray } from 'electron';
 
 import store from '@common/store';
-import iconSets from '@main/icons';
+import iconThemes from '@main/icons';
 import { createMenu } from '@main/menu';
 import { PreferencesSavedValues } from '@common/types';
 
@@ -67,21 +67,21 @@ const bootstrap = (): void => {
   };
 
   const requestContributionData = async (): Promise<void> => {
-    const iconSet = store.get('iconSet');
+    const iconTheme = store.get('iconTheme');
     const username = store.get('username');
 
-    if (!username) return setTrayMenu({ icon: iconSets[iconSet].error });
-    tray.setImage(iconSets[iconSet].loading);
+    if (!username) return setTrayMenu({ icon: iconThemes[iconTheme].error });
+    tray.setImage(iconThemes[iconTheme].loading);
 
     let stats: GitHubStats;
-    let icon = iconSets[iconSet].pending;
+    let icon = iconThemes[iconTheme].pending;
     try {
       stats = await fetchStats(username);
-      if (stats?.streak?.current > 0) icon = iconSets[iconSet].contributed;
+      if (stats?.streak?.current > 0) icon = iconThemes[iconTheme].contributed;
       if (stats?.streak?.current === stats?.streak?.best)
-        icon = iconSets[iconSet].streaking;
+        icon = iconThemes[iconTheme].streaking;
     } catch (err) {
-      icon = iconSets[iconSet].error;
+      icon = iconThemes[iconTheme].error;
     }
 
     setTrayMenu({ username, stats, icon });
@@ -109,7 +109,7 @@ const bootstrap = (): void => {
   };
 
   // Setup tray
-  const tray = new Tray(iconSets[store.get('iconSet')].loading);
+  const tray = new Tray(iconThemes[store.get('iconTheme')].loading);
   tray.on('right-click', requestContributionData);
 
   // Auto launch
@@ -135,8 +135,8 @@ const bootstrap = (): void => {
   // Handle uncaught errors gracefully
   process.on('uncaughtException', () => {
     const username = store.get('username');
-    const iconSet = store.get('iconSet');
-    const icon = iconSets[iconSet].error;
+    const iconTheme = store.get('iconTheme');
+    const icon = iconThemes[iconTheme].error;
     setTrayMenu({ username, icon });
   });
 

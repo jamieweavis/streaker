@@ -6,7 +6,7 @@ const store = new Store({
     launchAtLogin: false,
     reminderEnabled: false,
     reminderTime: '20:00',
-    iconSet: 'flame',
+    iconTheme: 'flame',
   },
 });
 

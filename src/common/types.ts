@@ -3,5 +3,5 @@ export interface PreferencesSavedValues {
   launchAtLogin: boolean;
   reminderEnabled: boolean;
   reminderTime: string;
-  iconSet: string;
+  iconTheme: string;
 }

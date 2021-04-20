@@ -1,6 +1,6 @@
 import { join } from 'path';
 
-export interface IconSet {
+export interface IconTheme {
   contributed: string;
   error: string;
   loading: string;
@@ -8,15 +8,15 @@ export interface IconSet {
   streaking: string;
 }
 
-export interface IconSets {
-  [iconSet: string]: IconSet;
+export interface IconThemes {
+  [iconTheme: string]: IconTheme;
 }
 
-let iconSets: IconSets;
+let iconThemes: IconThemes;
 
 switch (process.platform) {
   case 'darwin':
-    iconSets = {
+    iconThemes = {
       octocat: {
         contributed: join(
           __dirname,
@@ -43,7 +43,7 @@ switch (process.platform) {
     };
     break;
   case 'win32':
-    iconSets = {
+    iconThemes = {
       octocat: {
         contributed: join(__dirname, 'icons/win32/octocat/contributed.ico'),
         error: join(__dirname, 'icons/win32/octocat/error.ico'),
@@ -62,9 +62,11 @@ switch (process.platform) {
     break;
   // case 'linux':
   //   break;
-  default:
-    console.error(`Platform "${process.platform}" is not currently supported!`);
-    break;
+  default: {
+    throw new Error(
+      `Platform "${process.platform}" is not currently supported!`,
+    );
+  }
 }
 
-export default iconSets;
+export default iconThemes;

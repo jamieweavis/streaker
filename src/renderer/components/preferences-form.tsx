@@ -27,7 +27,7 @@ const PreferencesForm = (): JSX.Element => (
       launchAtLogin: store.get('launchAtLogin'),
       reminderEnabled: store.get('reminderEnabled'),
       reminderTime: store.get('reminderTime'),
-      iconSet: store.get('iconSet'),
+      iconTheme: store.get('iconTheme'),
     }}
     onSubmit={async (values: PreferencesSavedValues): Promise<void> => {
       await ipcRenderer.send('preferences-saved', values);
@@ -163,7 +163,7 @@ const PreferencesForm = (): JSX.Element => (
           />
         )}
       />
-      <Field name="iconSet" component={IconPicker} />
+      <Field name="iconTheme" component={IconPicker} />
       <Flex p="3">
         <Button onClick={closeWindow} ml="auto">
           Cancel
