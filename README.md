@@ -32,11 +32,13 @@ Download the latest version of Streaker from the **[GitHub releases](https://git
 
 tba
 
+## Built with
+
+- [TypeScript](https://github.com/microsoft/TypeScript)
+- [Electron](https://github.com/electron/electron)
+- [React](https://github.com/facebook/react)
+
 ## Related
 
 - [streaker-cli](https://github.com/jamieweavis/streaker-cli) - 🔥 GitHub contribution streak & stat tracking CLI app
 - [contribution](https://github.com/jamieweavis/contribution) - 🗓 GitHub contribution streak & stat fetcher with zero dependencies
-
-## License
-
-This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md) file for details.
