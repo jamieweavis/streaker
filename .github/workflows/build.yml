@@ -32,9 +32,6 @@ jobs:
       - name: Lint
         run: npm run lint
 
-      # - name: Test
-      #   run: npm run test
-
   deploy:
     needs: [test]
     runs-on: ubuntu-latest
@@ -48,7 +45,7 @@ jobs:
       - name: Build
         run: npm run build
 
-      # - name: Release
-      #   env:
-      #     GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      #   run: npx semantic-release
+      - name: Release
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: npx semantic-release
