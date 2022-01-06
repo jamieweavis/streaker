@@ -1,12 +1,9 @@
 {
-  "extends": [
-    "config:base"
-  ],
+  "extends": ["config:base"],
   "packageRules": [
     {
-      "packagePatterns": [
-        "*"
-      ],
+      "baseBranches": ["dev"],
+      "packagePatterns": ["*"],
       "minor": {
         "groupName": "all non-major dependencies",
         "groupSlug": "all-minor-patch"
@@ -14,4 +11,3 @@
     }
   ]
 }
-
