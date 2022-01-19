@@ -31,7 +31,7 @@
     "format": "prettier --write 'src/**/*.{ts,tsx}'",
     "lint": "eslint --fix 'src/**/*.{ts,tsx}'",
     "predist": "npm run build",
-    "dist": "electron-builder -m -c.mac.identity=null",
+    "dist": "electron-builder -mw -c.mac.identity=null",
     "pack": "electron-builder --dir -c.mac.identity=null"
   },
   "dependencies": {
