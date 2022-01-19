@@ -2,7 +2,7 @@ name: build
 
 on:
   push:
-    branches: [main]
+    branches: [main, dev]
   pull_request:
     branches: [main, dev]
 
@@ -32,20 +32,12 @@ jobs:
       - name: Lint
         run: npm run lint
 
-  deploy:
-    needs: [test]
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v2
-
-      - name: Install Dependencies
-        run: npm install
-
-      - name: Build
-        run: npm run build
+      - name: Test
+        id: test
+        run: npm run test
 
       - name: Release
+        if: steps.test.conclusion == 'success' && github.ref == 'refs/heads/main'
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: npx semantic-release

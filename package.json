@@ -26,6 +26,7 @@
     "build": "npm run build:main && npm run build:renderer",
     "build:main": "cross-env NODE_ENV=production webpack --config config/webpack/webpack.main.prod.config.js",
     "build:renderer": "cross-env NODE_ENV=production webpack --config config/webpack/webpack.renderer.prod.config.js",
+    "test": "echo \"No tests yet.\" && exit 0",
     "clean": "rimraf build && rimraf dist",
     "format": "prettier --write 'src/**/*.{ts,tsx}'",
     "lint": "eslint --fix 'src/**/*.{ts,tsx}'",
