@@ -6,11 +6,7 @@
   "homepage": "https://github.com/jamieweavis/streaker#readme",
   "license": "MIT",
   "main": "build/main.js",
-  "author": {
-    "name": "Jamie Weavis",
-    "email": "jamie.weavis@gmail.com",
-    "url": "https://jamieweavis.dev"
-  },
+  "author": "Jamie Weavis",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/jamieweavis/streaker.git"
