@@ -7,7 +7,7 @@
 <p align="center">🔥 GitHub contribution streak & stat tracking menu bar app</p>
 
 <p align="center">
-  <a href="https://github.com/jamieweavis/streaker/actions"><img alt ="build" src="https://img.shields.io/github/workflow/status/jamieweavis/streaker/build"></a>
+  <a href="https://github.com/jamieweavis/streaker/actions"><img alt ="build" src="https://github.com/jamieweavis/streaker/actions/workflows/build.yml/badge.svg?branch=dev"></a>
   <a href="https://github.com/jamieweavis/streaker/releases"><img alt ="downloads" src="https://img.shields.io/github/downloads/jamieweavis/streaker/total.svg"></a>
   <a href="https://github.com/jamieweavis/streaker/releases"><img alt ="version" src="https://img.shields.io/github/release/jamieweavis/streaker.svg"></a>
   <a href="https://github.com/jamieweavis/streaker/blob/main/LICENSE.md"><img alt ="license" src="https://img.shields.io/badge/license-MIT-blue.svg"></a>
