@@ -69,7 +69,7 @@
     "@typescript-eslint/eslint-plugin": "4.33.0",
     "@typescript-eslint/parser": "4.33.0",
     "babel-loader": "8.2.3",
-    "commitizen": "4.2.4",
+    "commitizen": "4.3.0",
     "commitlint": "12.1.4",
     "copy-webpack-plugin": "5.1.2",
     "cross-env": "7.0.3",
