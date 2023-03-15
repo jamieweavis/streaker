@@ -22,7 +22,7 @@ const bootstrap = (): void => {
       maximizable: false,
       minimizable: false,
       fullscreenable: false,
-      webPreferences: { nodeIntegration: true },
+      webPreferences: { nodeIntegration: true, enableRemoteModule: true },
     });
 
     if (process.env.NODE_ENV !== 'production') {
@@ -170,8 +170,7 @@ const triggerReminderNotification = async (): Promise<void> => {
   if (stats?.contributions?.current === 0) {
     new Notification({
       title: "🔥 You haven't contributed today",
-      body:
-        "Don't forget to contribute today to continue your streak on GitHub!",
+      body: "Don't forget to contribute today to continue your streak on GitHub!",
     }).show();
   }
 };
