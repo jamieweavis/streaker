@@ -1,4 +1,5 @@
 declare module '*.svg' {
-  const content: any; // eslint-disable-line
+  // rome-ignore lint: yolo
+  const content: any;
   export default content;
 }

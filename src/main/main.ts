@@ -26,7 +26,7 @@ const bootstrap = (): void => {
     });
 
     if (process.env.NODE_ENV !== 'production') {
-      preferencesWindow.loadURL(`http://localhost:3000`);
+      preferencesWindow.loadURL('http://localhost:3000');
     } else {
       const pathname = path.join(__dirname, 'index.html');
       preferencesWindow.loadURL(

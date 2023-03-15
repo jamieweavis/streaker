@@ -11,6 +11,7 @@ const App = (): JSX.Element => {
       <Helmet title="Streaker - Preferences" />
       <PreferencesForm />
       <style
+        // rome-ignore lint: yolo
         dangerouslySetInnerHTML={{
           __html: `
             body {

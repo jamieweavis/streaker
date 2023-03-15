@@ -1,6 +1,6 @@
 {
-  "*.{ts,tsx}": [
-    "prettier --write",
-    "eslint --fix"
+  "*.ts": [
+    "rome format --write",
+    "rome check --apply-suggested"
   ]
 }

@@ -30,6 +30,7 @@ const IconPicker: React.FC<FieldProps> = ({ field, form }): JSX.Element => {
             onClick={(): void => form.setFieldValue('iconTheme', name)}
           >
             <img
+              alt="icon"
               src={icons.contributed}
               style={{
                 height: 16,
@@ -64,18 +65,21 @@ const IconPicker: React.FC<FieldProps> = ({ field, form }): JSX.Element => {
           <tr>
             <td style={{ textAlign: 'center' }}>
               <img
+                alt="pending icon"
                 src={currentIconTheme.icons.pending}
                 style={{ height: 16 }}
               />
             </td>
             <td style={{ textAlign: 'center' }}>
               <img
+                alt="contributed icon"
                 src={currentIconTheme.icons.contributed}
                 style={{ height: 16 }}
               />
             </td>
             <td style={{ textAlign: 'center' }}>
               <img
+                alt="streaking icon"
                 src={currentIconTheme.icons.streaking}
                 style={{ height: 16 }}
               />
