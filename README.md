@@ -52,5 +52,5 @@ Coming soon, track progress in [#138](https://github.com/jamieweavis/streaker/is
 
 ## Related
 
-- [streaker-cli](https://github.com/jamieweavis/streaker-cli) - 🔥 GitHub contribution streak & stat tracking CLI app
-- [contribution](https://github.com/jamieweavis/contribution) - 🗓 GitHub contribution streak & stat fetcher with zero dependencies
+- [Streaker CLI](https://github.com/jamieweavis/streaker-cli) - 🔥 GitHub contribution streak & stat tracking CLI app
+- [Contribution](https://github.com/jamieweavis/contribution) - 🗓 GitHub contribution streak & stat fetcher with zero dependencies
