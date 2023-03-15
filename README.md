@@ -21,7 +21,7 @@ Download the latest version of Streaker from the **[GitHub releases](https://git
 
 ### Homebrew Cask
 
-Coming soon, track progress in [#138](https://github.com/jamieweavis/streaker/issues/138)
+Coming soon™, track progress in [#138](https://github.com/jamieweavis/streaker/issues/138)
 
 ## Features
 
