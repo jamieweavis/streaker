@@ -1,3 +1,11 @@
+## [1.5.1](https://github.com/jamieweavis/streaker/compare/v1.5.0...v1.5.1) (2023-03-15)
+
+
+### Bug Fixes
+
+* enable remote window module ([d36f3df](https://github.com/jamieweavis/streaker/commit/d36f3df42ec82e0c6af2ab9b93b91d59829c3547))
+* update contribution to fix stat counts ([8405c6e](https://github.com/jamieweavis/streaker/commit/8405c6e8db0bb73a56bb5e128233562fb95c5e96))
+
 # [1.5.0](https://github.com/jamieweavis/streaker/compare/v1.4.3...v1.5.0) (2022-01-06)
 
 
