@@ -1,3 +1,10 @@
+# [1.6.0](https://github.com/jamieweavis/streaker/compare/v1.5.1...v1.6.0) (2023-03-24)
+
+
+### Features
+
+* add streak count to notification and only show if streaking ([6669aae](https://github.com/jamieweavis/streaker/commit/6669aaeb541483d73c63b54f12221b255f377084)), closes [#263](https://github.com/jamieweavis/streaker/issues/263)
+
 ## [1.5.1](https://github.com/jamieweavis/streaker/compare/v1.5.0...v1.5.1) (2023-03-15)
 
 
