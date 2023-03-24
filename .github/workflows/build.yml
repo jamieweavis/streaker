@@ -40,4 +40,4 @@ jobs:
         if: steps.test.conclusion == 'success' && github.ref == 'refs/heads/main'
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: npx semantic-release
+        run: HUSKY=0 npx semantic-release
