@@ -167,10 +167,10 @@ const triggerReminderNotification = async (): Promise<void> => {
   if (!Notification.isSupported()) return;
   const username = store.get('username');
   const stats = await fetchStats(username);
-  if (stats?.contributions?.current === 0) {
+  if (stats?.contributions?.current === 0 && stats?.streak?.current > 0) {
     new Notification({
-      title: "🔥 You haven't contributed today",
-      body: "Don't forget to contribute today to continue your streak on GitHub!",
+      title: `🔥 Don't lose your streak!`,
+      body: `Contribute today to continue your ${stats.streak.current} day streak on GitHub`,
     }).show();
   }
 };
