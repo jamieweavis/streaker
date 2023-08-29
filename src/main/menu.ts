@@ -34,22 +34,22 @@ export const createMenu = ({
     },
     { type: 'separator' },
     { label: 'Streak:', enabled: false },
-    { label: `    Best: ${stats?.streak?.best || 0}`, enabled: false },
+    { label: `    Best: ${stats.streak.best}`, enabled: false },
     {
-      label: `    Current: ${stats?.streak?.current || 0}`,
+      label: `    Current: ${stats.streak.current}`,
       enabled: false,
     },
     { label: 'Contributions:', enabled: false },
     {
-      label: `    Best: ${stats?.contributions?.best || 0}`,
+      label: `    Best: ${stats.contributions.best}`,
       enabled: false,
     },
     {
-      label: `    Current: ${stats?.contributions?.current || 0}`,
+      label: `    Current: ${stats.contributions.current}`,
       enabled: false,
     },
     {
-      label: `    Total: ${stats?.contributions?.total || 0}`,
+      label: `    Total: ${stats.contributions.total}`,
       enabled: false,
     },
     { type: 'separator' },

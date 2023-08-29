@@ -17,9 +17,9 @@
 
 ### Manual
 
-Download the latest version of Streaker from the **[GitHub releases](https://github.com/jamieweavis/streaker/releases)** page. (currently macOS & Windows only, track work for Linux support in [#2](https://github.com/jamieweavis/streaker/issues/2))
+Download the latest version of Streaker from the **[GitHub releases](https://github.com/jamieweavis/streaker/releases)** page. (currently macOS & Windows only, track Linux support in [#2](https://github.com/jamieweavis/streaker/issues/2))
 
-### Homebrew Cask
+### Homebrew
 
 Coming soon™, track progress in [#138](https://github.com/jamieweavis/streaker/issues/138)
 

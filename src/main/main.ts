@@ -75,23 +75,15 @@ const bootstrap = (): void => {
 
     let stats: GitHubStats;
     let icon = iconThemes[iconTheme].pending;
+
     try {
       stats = await fetchStats(username);
-      // For screenshots
-      // stats = {
-      //   contributions: {
-      //     best: 42,
-      //     current: 13,
-      //     total: 1337,
-      //   },
-      //   streak: {
-      //     best: 69,
-      //     current: 5,
-      //   },
-      // };
-      if (stats?.streak?.current > 0) icon = iconThemes[iconTheme].contributed;
-      if (stats?.streak?.current === stats?.streak?.best)
+      if (stats.streak.current > 0) {
+        icon = iconThemes[iconTheme].contributed;
+      }
+      if (stats.streak.current === stats.streak.best) {
         icon = iconThemes[iconTheme].streaking;
+      }
     } catch (err) {
       icon = iconThemes[iconTheme].error;
     }
@@ -153,7 +145,7 @@ const bootstrap = (): void => {
   });
 
   // Platform specific app handling
-  app.on('window-all-closed', () => {}); // eslint-disable-line
+  app.on('window-all-closed', () => {});
   if (process.platform === 'darwin') app.dock.hide();
 
   // Save preferences to store on renderer preferences save
@@ -167,10 +159,10 @@ const triggerReminderNotification = async (): Promise<void> => {
   if (!Notification.isSupported()) return;
   const username = store.get('username');
   const stats = await fetchStats(username);
-  if (stats?.contributions?.current === 0 && stats?.streak?.current > 0) {
+  if (stats.streak.isAtRisk) {
     new Notification({
       title: `🔥 Don't lose your streak!`,
-      body: `Contribute today to continue your ${stats.streak.current} day streak on GitHub`,
+      body: `Contribute today to continue your ${stats.streak.previous} day streak on GitHub`,
     }).show();
   }
 };

@@ -39,7 +39,6 @@ const PreferencesForm = (): JSX.Element => (
         fontWeight="bold"
         fontSize="14px"
         as="label"
-        // eslint-disable-next-line
         // @ts-ignore
         htmlFor="github-username"
         style={{ display: 'block' }}
@@ -74,7 +73,6 @@ const PreferencesForm = (): JSX.Element => (
         fontWeight="bold"
         fontSize="14px"
         as="label"
-        // eslint-disable-next-line
         // @ts-ignore
         htmlFor="launch-at-login"
         style={{ display: 'block' }}
@@ -88,7 +86,6 @@ const PreferencesForm = (): JSX.Element => (
         fontWeight="bold"
         fontSize="14px"
         as="label"
-        // eslint-disable-next-line
         // @ts-ignore
         htmlFor="notification-enabled"
         style={{ display: 'block' }}
@@ -108,7 +105,6 @@ const PreferencesForm = (): JSX.Element => (
         fontWeight="bold"
         fontSize="14px"
         as="label"
-        // eslint-disable-next-line
         // @ts-ignore
         htmlFor="reminder-time"
         style={{ display: 'block' }}
