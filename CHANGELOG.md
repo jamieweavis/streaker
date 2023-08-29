@@ -1,3 +1,10 @@
+## [1.6.1](https://github.com/jamieweavis/streaker/compare/v1.6.0...v1.6.1) (2023-08-29)
+
+
+### Bug Fixes
+
+* streak notification message ([ceec31e](https://github.com/jamieweavis/streaker/commit/ceec31ec8c77ecd0a72130fd373d96a9584425d4))
+
 # [1.6.0](https://github.com/jamieweavis/streaker/compare/v1.5.1...v1.6.0) (2023-03-24)
 
 
