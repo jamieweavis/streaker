@@ -1,44 +1,38 @@
-<p align="center">
-  <img width=100 height=100 alt="Screenshot" src="./.github/icon.svg">
-</p>
 
-<h1 align="center">Streaker</h1>
 
-<p align="center">🔥 GitHub contribution streak & stat tracking menu bar app</p>
+# Streaker <img alt="Streaker Logo" align="right" width=40 height=40 alt="Screenshot" src="./.github/icon.svg">
 
-<p align="center">
-  <a href="https://github.com/jamieweavis/streaker/actions"><img alt ="build" src="https://github.com/jamieweavis/streaker/actions/workflows/build.yml/badge.svg?branch=dev"></a>
-  <a href="https://github.com/jamieweavis/streaker/releases"><img alt ="downloads" src="https://img.shields.io/github/downloads/jamieweavis/streaker/total.svg"></a>
-  <a href="https://github.com/jamieweavis/streaker/releases"><img alt ="version" src="https://img.shields.io/github/release/jamieweavis/streaker.svg"></a>
-  <a href="https://github.com/jamieweavis/streaker/blob/main/LICENSE.md"><img alt ="license" src="https://img.shields.io/badge/license-MIT-blue.svg"></a>
-</p>
+> 🔥 GitHub contribution streak & stat tracking menu bar app</p>
 
-## Installation
+[![build](https://github.com/jamieweavis/streaker/actions/workflows/build.yml/badge.svg?branch=dev)](https://github.com/jamieweavis/streaker/actions)
+[![downloads](https://img.shields.io/github/downloads/jamieweavis/streaker/total.svg)](https://github.com/jamieweavis/streaker/releases)
+[![version](https://img.shields.io/github/release/jamieweavis/streaker.svg)](https://github.com/jamieweavis/streaker/releases)
+[![license](https://img.shields.io/badge/license-MIT-blue.svg)](https://github.com/jamieweavis/streaker/blob/main/LICENSE)
 
-### Manual
+## Install
 
-Download the latest version of Streaker from the **[GitHub releases](https://github.com/jamieweavis/streaker/releases)** page. (currently macOS & Windows only, track Linux support in [#2](https://github.com/jamieweavis/streaker/issues/2))
-
-### Homebrew
-
-Coming soon™, track progress in [#138](https://github.com/jamieweavis/streaker/issues/138)
+Download the latest version of Streaker from the **[GitHub releases](https://github.com/jamieweavis/streaker/releases)** page. (currently macOS & Windows only)
 
 ## Features
 
-- Contribution stats from the menu bar 📈
-  - Best streak
-  - Current streak
-  - Best contributions (in a single day)
-  - Current contributions (today)
-  - Total contributions (this year)
+- Menu bar contribution stats 📊
+  - Streak
+    - Best
+    - Current
+    - Previous
+  - Contributions
+    - Most (day)
+    - Today
+    - Total (year)
 - Menu bar icon changes depending on contribution status
   - Empty - You haven't contributed today, your streak is in danger 😱
-  - Filled - You have contributed today, your streak is secure 😊
-  - Crown - You're on your best streak! 🤩
-- Two different menu bar icon themes
+  - Filled - You've contributed today, your streak is secure 😊
+  - Crown - You're currently on your best streak! 🤩
+- Three different menu bar icon themes
   - Flame 🔥
+  - Tile 🔲
   - Octocat 🐙
-- Reminder notification so you don't lose your streak ⏰
+- Reminder notification so you don't lose your streak 🔔
 
 ## Screenshot
 
@@ -48,7 +42,7 @@ Coming soon™, track progress in [#138](https://github.com/jamieweavis/streaker
 
 - [TypeScript](https://github.com/microsoft/TypeScript)
 - [Electron](https://github.com/electron/electron)
-- [React](https://github.com/facebook/react)
+- [Electron Forge](https://github.com/electron/forge)
 
 ## Related
 

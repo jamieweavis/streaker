@@ -1,90 +1,107 @@
-import { app, Menu, shell } from 'electron';
-import { GitHubStats } from 'contribution';
+import { Menu, app } from 'electron';
+import type { BrowserWindow, MenuItemConstructorOptions } from 'electron';
 
-import store from '@common/store';
-import pjson from '../../package.json';
-
-export interface CreateMenuOptions {
-  username?: string;
-  stats?: GitHubStats;
-  createPreferencesWindow: () => void;
-  requestContributionData: () => void;
-  isPreferencesWindowOpen: () => boolean;
-  focusPreferencesWindow: () => void;
+interface DarwinMenuItemConstructorOptions extends MenuItemConstructorOptions {
+  selector?: string;
+  submenu?: DarwinMenuItemConstructorOptions[] | Menu;
 }
 
-export const createMenu = ({
-  username,
-  stats,
-  createPreferencesWindow,
-  requestContributionData,
-  isPreferencesWindowOpen,
-  focusPreferencesWindow,
-}: CreateMenuOptions): Menu => {
-  const onPreferencesClick = (): void => {
-    if (!isPreferencesWindowOpen()) return createPreferencesWindow();
-    focusPreferencesWindow();
-  };
+export default class MenuBuilder {
+  mainWindow: BrowserWindow;
 
-  return Menu.buildFromTemplate([
-    {
-      label: username || 'Set GitHub username...',
-      enabled: !username,
-      click: onPreferencesClick,
-    },
-    { type: 'separator' },
-    { label: 'Streak:', enabled: false },
-    { label: `    Best: ${stats.streak.best}`, enabled: false },
-    {
-      label: `    Current: ${stats.streak.current}`,
-      enabled: false,
-    },
-    { label: 'Contributions:', enabled: false },
-    {
-      label: `    Best: ${stats.contributions.best}`,
-      enabled: false,
-    },
-    {
-      label: `    Current: ${stats.contributions.current}`,
-      enabled: false,
-    },
-    {
-      label: `    Total: ${stats.contributions.total}`,
-      enabled: false,
-    },
-    { type: 'separator' },
-    {
-      label: 'Reload',
-      enabled: !!username,
-      accelerator: 'CmdOrCtrl+R',
-      click: requestContributionData,
-    },
-    {
-      label: 'Open GitHub Profile...',
-      enabled: !!username,
-      accelerator: 'CmdOrCtrl+O',
-      click: (): Promise<void> =>
-        shell.openExternal(`https://github.com/${store.get('username')}`),
-    },
-    { type: 'separator' },
-    {
-      label: 'Preferences...',
-      accelerator: 'CmdOrCtrl+,',
-      click: onPreferencesClick,
-    },
-    {
-      label: 'About Streaker...',
-      click: (): Promise<void> => shell.openExternal(pjson.homepage),
-    },
-    {
-      label: 'Feedback && Support...',
-      click: (): Promise<void> => shell.openExternal(pjson.bugs.url),
-    },
-    { type: 'separator' },
-    {
-      label: 'Quit Streaker',
-      accelerator: 'CmdOrCtrl+Q',
-      click: (): void => app.quit(),
-    },
-  ]);
-};
+  constructor(mainWindow: BrowserWindow) {
+    this.mainWindow = mainWindow;
+  }
+
+  buildMenu(): Menu {
+    if (
+      process.env.NODE_ENV === 'development' ||
+      process.env.DEBUG_PROD === 'true'
+    ) {
+      this.setupDevelopmentEnvironment();
+    }
+
+    const template =
+      process.platform === 'darwin'
+        ? this.buildDarwinTemplate()
+        : this.buildDefaultTemplate();
+
+    const menu = Menu.buildFromTemplate(template);
+    Menu.setApplicationMenu(menu);
+
+    return menu;
+  }
+
+  setupDevelopmentEnvironment(): void {
+    this.mainWindow.webContents.on('context-menu', (_, props) => {
+      const { x, y } = props;
+
+      Menu.buildFromTemplate([
+        {
+          label: 'Inspect element',
+          click: () => {
+            this.mainWindow.webContents.inspectElement(x, y);
+          },
+        },
+      ]).popup({ window: this.mainWindow });
+    });
+  }
+
+  buildDarwinTemplate(): MenuItemConstructorOptions[] {
+    const subMenuAbout: DarwinMenuItemConstructorOptions = {
+      label: 'Streaker',
+      submenu: [
+        {
+          label: 'About Streaker',
+          selector: 'orderFrontStandardAboutPanel:',
+        },
+        { type: 'separator' },
+        {
+          label: 'Quit',
+          accelerator: 'Command+Q',
+          click: () => {
+            app.quit();
+          },
+        },
+      ],
+    };
+
+    const subMenuEdit: DarwinMenuItemConstructorOptions = {
+      label: 'Edit',
+      submenu: [
+        { label: 'Undo', accelerator: 'Command+Z', selector: 'undo:' },
+        { label: 'Redo', accelerator: 'Shift+Command+Z', selector: 'redo:' },
+        { type: 'separator' },
+        { label: 'Cut', accelerator: 'Command+X', selector: 'cut:' },
+        { label: 'Copy', accelerator: 'Command+C', selector: 'copy:' },
+        { label: 'Paste', accelerator: 'Command+V', selector: 'paste:' },
+        {
+          label: 'Select All',
+          accelerator: 'Command+A',
+          selector: 'selectAll:',
+        },
+      ],
+    };
+
+    return [subMenuAbout, subMenuEdit];
+  }
+
+  buildDefaultTemplate() {
+    const templateDefault = [
+      {
+        label: '&File',
+        submenu: [
+          {
+            label: '&Close',
+            accelerator: 'Ctrl+W',
+            click: () => {
+              this.mainWindow.close();
+            },
+          },
+        ],
+      },
+    ];
+
+    return templateDefault;
+  }
+}

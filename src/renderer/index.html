@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="UTF-8" />
+  <title>Streaker Preferences</title>
+  <link href="./output.css" rel="stylesheet">
+</head>
+
+
+<body class="text-neutral-800 dark:bg-neutral-800 dark:text-neutral-100 select-none">
+  <h1 class="text-xs font-semibold p-4 text-neutral-500 dark:text-neutral-300 text-center "
+    style="-webkit-app-region: drag;">
+    Streaker Preferences
+  </h1>
+
+  <div class="px-4">
+    <div class="mb-4">
+      <label for="github-username" class="font-bold text-sm">GitHub Username</label>
+      <input autofocus id="github-username" type="text"
+        class="outline-none mt-2 border-3 border-neutral-300 dark:border-neutral-700 dark:bg-neutral-900 rounded-md px-2 py-1 w-full focus:border-blue-500 font-mono bg-gray-50" />
+    </div>
+
+    <div class="mb-4">
+      <label class="font-bold text-sm" for="launch-at-login">
+        Launch at Login <input id="launch-at-login" type="checkbox"
+          class="outline-none focus:ring-blue-500 focus:ring-2 ml-2">
+      </label>
+    </div>
+
+    <div class="mb-4">
+      <label class="font-bold text-sm" for="reminder-notification">
+        Reminder Notification <input id="reminder-notification" type="checkbox"
+          class="outline-none focus:ring-blue-500 focus:ring-2 ml-2" />
+      </label>
+      <span class="text-neutral-500 dark:text-neutral-400 text-sm block mt-2">Get a reminder so you don't lose your
+        streak!
+        🔥</span>
+    </div>
+
+    <div class="mb-4">
+      <label for="reminder-time" class="font-bold text-sm">Reminder Time</label>
+      <input id="reminder-time" type="time"
+        class="ppearance-none outline-none mt-2 border-3 border-neutral-300 dark:border-neutral-700 dark:bg-neutral-900 rounded-md px-2 py-1 w-full focus:border-blue-500 font-mono bg-gray-50" />
+    </div>
+
+    <div class="mb-6">
+      <label for="icon-theme" class="font-bold text-sm">Icon Theme</label>
+      <select id="icon-theme" type="text"
+        class="appearance-none outline-none mt-2 border-3 border-neutral-300 dark:border-neutral-700 dark:bg-neutral-900 rounded-md px-2 py-1 w-full focus:border-blue-500 font-mono bg-gray-50">
+        <option value="flame">Flame</option>
+        <option value="tile">Tile</option>
+        <option value="octocat">Octocat</option>
+      </select>
+    </div>
+
+    <div class="flex justify-between">
+      <button id="cancel-button"
+        class="outline-none bg-neutral-200 text-black py-2 px-4 rounded-md dark:bg-neutral-600 dark:text-white dark:hover:bg-neutral-500 cursor-pointer focus:ring-2 focus:ring-blue-500">
+        Cancel
+      </button>
+      <button id="save-button"
+        class="outline-none bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-400 cursor-pointer focus:ring-2 focus:ring-blue-500">
+        Save
+      </button>
+    </div>
+  </div>
+</body>
+
+</html>

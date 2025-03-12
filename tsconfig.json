@@ -1,15 +1,19 @@
 {
   "compilerOptions": {
+    "target": "ES6",
+    "allowJs": true,
+    "module": "commonjs",
+    "skipLibCheck": true,
     "esModuleInterop": true,
+    "noImplicitAny": true,
+    "sourceMap": true,
+    "baseUrl": ".",
+    "outDir": "dist",
+    "moduleResolution": "node",
     "resolveJsonModule": true,
-    "outDir": "build",
-    "jsx": "react",
-    "baseUrl": "src",
     "paths": {
-      "@common/*": ["common/*"],
-      "@main/*": ["main/*"],
-      "@renderer/*": ["renderer/*"],
+      "*": ["node_modules/*"]
     }
   },
-  "include": ["src"]
+  "include": ["src/**/*"]
 }

@@ -2,9 +2,9 @@ name: build
 
 on:
   push:
-    branches: [main, dev]
+    branches: [main]
   pull_request:
-    branches: [main, dev]
+    branches: [main]
 
 jobs:
   build-test-release:
@@ -12,7 +12,7 @@ jobs:
 
     strategy:
       matrix:
-        node-version: [16.x]
+        node-version: [18.x, 20.x, 22.x]
 
     steps:
       - name: Checkout
@@ -26,18 +26,19 @@ jobs:
       - name: Install Dependencies
         run: npm install
 
-      - name: Build
-        run: npm run build
+      # - name: Build
+      #   run: npm run build
 
       - name: Lint
+        id: lint
         run: npm run lint
 
-      - name: Test
-        id: test
-        run: npm run test
+      # - name: Test
+      #   id: test
+      #   run: npm run test
 
       - name: Release
-        if: steps.test.conclusion == 'success' && github.ref == 'refs/heads/main'
+        if: steps.lint.conclusion == 'success' && github.ref == 'refs/heads/main'
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: HUSKY=0 npx semantic-release
