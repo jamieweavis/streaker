@@ -1,3 +1,13 @@
+# [2.0.0](https://github.com/jamieweavis/streaker/compare/v1.6.1...v2.0.0) (2025-03-13)
+
+
+* refactor!: upgrade node & tooling, add electron forge, remove react ([2895318](https://github.com/jamieweavis/streaker/commit/2895318cff8996a2e808d9a37fe305bc42e92813))
+
+
+### BREAKING CHANGES
+
+* Upgrade Node.js to LTS (22)
+
 ## [1.6.1](https://github.com/jamieweavis/streaker/compare/v1.6.0...v1.6.1) (2023-08-29)
 
 
