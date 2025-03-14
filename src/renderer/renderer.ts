@@ -1,4 +1,4 @@
-import './output.css';
+import './styles.css';
 
 const gitHubUsername = document.getElementById(
   'github-username',
