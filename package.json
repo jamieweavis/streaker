@@ -74,7 +74,7 @@
     "@semantic-release/npm": "12.0.1",
     "@semantic-release/release-notes-generator": "14.0.3",
     "@types/auto-launch": "^5.0.5",
-    "@vercel/webpack-asset-relocator-loader": "^1.7.3",
+    "@vercel/webpack-asset-relocator-loader": "^1.7.4",
     "css-loader": "^7.1.2",
     "electron": "35.0.1",
     "fork-ts-checker-webpack-plugin": "^9.0.2",
