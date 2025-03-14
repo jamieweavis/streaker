@@ -47,7 +47,7 @@ export const createTrayMenu = ({
     },
     { label: 'Contributions:', enabled: false },
     {
-      label: `    Best:\t\t${stats?.contributions?.best || 0}`,
+      label: `    Most:\t\t${stats?.contributions?.best || 0}`,
       enabled: false,
     },
     {
