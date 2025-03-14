@@ -1,3 +1,16 @@
+# [2.1.0](https://github.com/jamieweavis/streaker/compare/v2.0.0...v2.1.0) (2025-03-14)
+
+
+### Bug Fixes
+
+* always refetch contribution stats on preferences save ([e17c4b4](https://github.com/jamieweavis/streaker/commit/e17c4b4bcdd99aa0d9338db76297480a2a3bb187))
+* rename contributions best to most ([e61278f](https://github.com/jamieweavis/streaker/commit/e61278f02e659a4b418301033bbab3c61c960030))
+
+
+### Features
+
+* improve tile icon theme ([12917d5](https://github.com/jamieweavis/streaker/commit/12917d5bd03d0c9295fc0a6f4a9814617669602e))
+
 # [2.0.0](https://github.com/jamieweavis/streaker/compare/v1.6.1...v2.0.0) (2025-03-13)
 
 
