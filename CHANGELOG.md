@@ -1,3 +1,10 @@
+## [2.1.1](https://github.com/jamieweavis/streaker/compare/v2.1.0...v2.1.1) (2025-03-14)
+
+
+### Bug Fixes
+
+* tidy tooltip & reduce window width ([f22e54a](https://github.com/jamieweavis/streaker/commit/f22e54a4b1d837c8a03ed4ccef82e7d970b8a341))
+
 # [2.1.0](https://github.com/jamieweavis/streaker/compare/v2.0.0...v2.1.0) (2025-03-14)
 
 
