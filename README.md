@@ -42,6 +42,7 @@ Download the latest version of Streaker from the **[GitHub releases](https://git
 
 - [TypeScript](https://github.com/microsoft/TypeScript)
 - [Electron](https://github.com/electron/electron)
+- [Tailwind CSS](https://github.com/tailwindlabs/tailwindcss)
 - [Electron Forge](https://github.com/electron/forge)
 
 ## Related
