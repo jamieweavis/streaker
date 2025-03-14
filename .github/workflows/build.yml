@@ -41,6 +41,14 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v2
 
+      - name: Use Node.js 22.x
+        uses: actions/setup-node@v2
+        with:
+          node-version: 22.x
+
+      - name: Install Dependencies
+        run: npm install
+
       - name: Release
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
