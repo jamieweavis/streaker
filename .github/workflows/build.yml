@@ -7,7 +7,7 @@ on:
     branches: [main]
 
 jobs:
-  build-test-release:
+  build:
     runs-on: ubuntu-latest
 
     strategy:
@@ -26,19 +26,22 @@ jobs:
       - name: Install Dependencies
         run: npm install
 
-      # - name: Build
-      #   run: npm run build
+      - name: Build
+        run: npm run package
 
       - name: Lint
         id: lint
         run: npm run lint
 
-      # - name: Test
-      #   id: test
-      #   run: npm run test
+  release:
+    needs: build
+    runs-on: ubuntu-latest
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
 
       - name: Release
-        if: steps.lint.conclusion == 'success' && github.ref == 'refs/heads/main'
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: HUSKY=0 npx semantic-release
