@@ -193,12 +193,7 @@ const bootstrap = (): void => {
   ipcMain.on('savePreferences', (event, preferences: Preferences) => {
     const oldUsername = store.get('username');
     savePreferences(preferences);
-
-    // Fetch data if username has changed
-    if (oldUsername !== preferences.username) {
-      console.info('Username changed, fetching contribution stats');
-      fetchContributionStats();
-    }
+    fetchContributionStats();
   });
 
   // Set up reminder notification
@@ -217,7 +212,7 @@ const bootstrap = (): void => {
     isHidden: true,
   });
 
-  // Open preferences window autonatically if username is not (most likely fresh install)
+  // Open preferences window automatically if username is not (most likely fresh install)
   const username = store.get('username');
   if (!username || isDev) {
     createPreferencesWindow();
