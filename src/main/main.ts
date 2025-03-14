@@ -60,7 +60,10 @@ const bootstrap = (): void => {
     menuBuilder.buildMenu();
 
     preferencesWindow.on('ready-to-show', () => {
-      if (preferencesWindow) preferencesWindow.show();
+      if (preferencesWindow) {
+        preferencesWindow.show();
+        if (isDev) preferencesWindow.webContents.openDevTools();
+      }
       if (process.platform === 'darwin') app.dock.show();
     });
 
@@ -74,8 +77,6 @@ const bootstrap = (): void => {
       shell.openExternal(edata.url);
       return { action: 'deny' };
     });
-
-    if (isDev) preferencesWindow.webContents.openDevTools();
   };
 
   const createTray = ({
