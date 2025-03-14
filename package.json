@@ -37,9 +37,7 @@
     "prepare": "husky"
   },
   "release": {
-    "branches": [
-      "main"
-    ],
+    "branches": ["main"],
     "plugins": [
       "@semantic-release/changelog",
       "@semantic-release/commit-analyzer",
@@ -50,15 +48,10 @@
     ]
   },
   "lint-staged": {
-    "*.ts": [
-      "biome format --write",
-      "biome lint --write"
-    ]
+    "*.ts": ["biome format --write", "biome lint --write"]
   },
   "commitlint": {
-    "extends": [
-      "@commitlint/config-conventional"
-    ]
+    "extends": ["@commitlint/config-conventional"]
   },
   "devDependencies": {
     "@biomejs/biome": "^1.9.4",
@@ -82,18 +75,18 @@
     "@semantic-release/release-notes-generator": "14.0.3",
     "@types/auto-launch": "^5.0.5",
     "@vercel/webpack-asset-relocator-loader": "^1.7.3",
-    "css-loader": "^6.11.0",
+    "css-loader": "^7.1.2",
     "electron": "35.0.1",
     "fork-ts-checker-webpack-plugin": "^7.3.0",
     "husky": "^9.1.7",
-    "lint-staged": "^15.4.3",
+    "lint-staged": "^15.5.0",
     "node-loader": "^2.1.0",
     "postcss-loader": "^8.1.1",
     "semantic-release": "24.2.3",
-    "style-loader": "^3.3.4",
+    "style-loader": "^4.0.0",
     "ts-loader": "^9.5.2",
     "ts-node": "^10.9.2",
-    "typescript": "~4.5.4"
+    "typescript": "^4.9.5"
   },
   "dependencies": {
     "@tailwindcss/postcss": "^4.0.14",
@@ -101,7 +94,7 @@
     "contribution": "^6.0.0",
     "cron": "^4.1.0",
     "electron-squirrel-startup": "^1.0.1",
-    "electron-store": "7.0.3",
+    "electron-store": "^8.2.0",
     "postcss": "^8.5.3"
   }
 }
