@@ -37,9 +37,7 @@
     "prepare": "husky"
   },
   "release": {
-    "branches": [
-      "main"
-    ],
+    "branches": ["main"],
     "plugins": [
       "@semantic-release/changelog",
       "@semantic-release/commit-analyzer",
@@ -50,15 +48,10 @@
     ]
   },
   "lint-staged": {
-    "*.ts": [
-      "biome format --write",
-      "biome lint --write"
-    ]
+    "*.ts": ["biome format --write", "biome lint --write"]
   },
   "commitlint": {
-    "extends": [
-      "@commitlint/config-conventional"
-    ]
+    "extends": ["@commitlint/config-conventional"]
   },
   "devDependencies": {
     "@biomejs/biome": "^1.9.4",
