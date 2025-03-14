@@ -1,3 +1,10 @@
+## [2.1.2](https://github.com/jamieweavis/streaker/compare/v2.1.1...v2.1.2) (2025-03-14)
+
+
+### Bug Fixes
+
+* add missing light mode button styles ([e27e2cb](https://github.com/jamieweavis/streaker/commit/e27e2cbb8310aefad2e40cf2cf376abade65ac0f))
+
 ## [2.1.1](https://github.com/jamieweavis/streaker/compare/v2.1.0...v2.1.1) (2025-03-14)
 
 
