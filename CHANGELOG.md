@@ -1,3 +1,10 @@
+## [2.1.3](https://github.com/jamieweavis/streaker/compare/v2.1.2...v2.1.3) (2025-03-14)
+
+
+### Bug Fixes
+
+* dev tools auto open in dev mode ([25f634c](https://github.com/jamieweavis/streaker/commit/25f634c309898ecfda9385262a3c54fb01f7a71c))
+
 ## [2.1.2](https://github.com/jamieweavis/streaker/compare/v2.1.1...v2.1.2) (2025-03-14)
 
 

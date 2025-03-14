@@ -3,7 +3,7 @@
   "productName": "Streaker",
   "private": true,
   "description": "GitHub contribution streak & stat tracking menu bar app",
-  "version": "2.1.2",
+  "version": "2.1.3",
   "homepage": "https://github.com/jamieweavis/streaker#readme",
   "license": "MIT",
   "main": ".webpack/main",
@@ -37,7 +37,9 @@
     "prepare": "husky"
   },
   "release": {
-    "branches": ["main"],
+    "branches": [
+      "main"
+    ],
     "plugins": [
       "@semantic-release/changelog",
       "@semantic-release/commit-analyzer",
@@ -48,10 +50,15 @@
     ]
   },
   "lint-staged": {
-    "*.ts": ["biome format --write", "biome lint --write"]
+    "*.ts": [
+      "biome format --write",
+      "biome lint --write"
+    ]
   },
   "commitlint": {
-    "extends": ["@commitlint/config-conventional"]
+    "extends": [
+      "@commitlint/config-conventional"
+    ]
   },
   "devDependencies": {
     "@biomejs/biome": "^1.9.4",
