@@ -1,5 +1,3 @@
-
-
 # Streaker <img alt="Streaker Logo" align="right" width=40 height=40 alt="Screenshot" src="./.github/icon.svg">
 
 > 🔥 GitHub contribution streak & stat tracking menu bar app</p>
@@ -11,11 +9,11 @@
 
 ## Install
 
-Download the latest version of Streaker from the **[GitHub releases](https://github.com/jamieweavis/streaker/releases)** page. (currently macOS & Windows only)
+Download the latest version of Streaker from the **[GitHub releases](https://github.com/jamieweavis/streaker/releases)** page.
 
 ## Features
 
-- Menu bar contribution stats 📊
+- Menu bar contribution stats
   - Streak
     - Best
     - Current
