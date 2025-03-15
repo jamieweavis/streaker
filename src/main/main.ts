@@ -33,7 +33,7 @@ const bootstrap = (): void => {
   let preferencesWindow: BrowserWindow | null = null;
   const iconTheme = store.get('iconTheme') as keyof typeof icons;
   const tray = new Tray(icons[iconTheme].pending);
-  let lastStats: GitHubStats | undefined;
+  let lastFetchedStats: GitHubStats | undefined;
 
   const createPreferencesWindow = () => {
     preferencesWindow = new BrowserWindow({
@@ -110,8 +110,10 @@ const bootstrap = (): void => {
     let icon = icons[iconTheme].pending;
     try {
       stats = await fetchStats(username);
-      lastStats = stats;
       console.info('Fetched contribution stats', stats);
+
+      lastFetchedStats = stats;
+
       if (stats.streak.current > 0) {
         icon = icons[iconTheme].contributed;
       }
@@ -166,13 +168,13 @@ const bootstrap = (): void => {
       console.error('Notification not supported');
       return;
     }
-    if (!lastStats.streak.isAtRisk) {
+    if (!lastFetchedStats.streak.isAtRisk) {
       console.info('Notification cancelled, streak not at risk');
       return;
     }
     new Notification({
       title: `🔥 Don't lose your streak!`,
-      body: `Contribute today to continue your ${lastStats.streak.previous} day streak on GitHub`,
+      body: `Contribute today to continue your ${lastFetchedStats.streak.previous} day streak on GitHub`,
     }).show();
   };
 
