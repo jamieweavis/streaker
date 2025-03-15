@@ -1,3 +1,10 @@
+# [2.3.0](https://github.com/jamieweavis/streaker/compare/v2.2.0...v2.3.0) (2025-03-15)
+
+
+### Features
+
+* add auto update via github releases ([95b7958](https://github.com/jamieweavis/streaker/commit/95b79581277a74abd815d6dee8206645aac72c81))
+
 # [2.2.0](https://github.com/jamieweavis/streaker/compare/v2.1.3...v2.2.0) (2025-03-15)
 
 
