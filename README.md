@@ -7,9 +7,11 @@
 [![version](https://img.shields.io/github/release/jamieweavis/streaker.svg)](https://github.com/jamieweavis/streaker/releases)
 [![license](https://img.shields.io/badge/license-MIT-blue.svg)](https://github.com/jamieweavis/streaker/blob/main/LICENSE)
 
+<img width="716" alt="Screenshot" src=".github/screenshot.png">
+
 ## Install
 
-Download the latest version of Streaker from the **[GitHub releases](https://github.com/jamieweavis/streaker/releases)** page.
+Download the latest version of Streaker from the **[GitHub releases](https://github.com/jamieweavis/streaker/releases)** page. Or see the **[Building Locally](#building-locally)** section to build it yourself.
 
 ## Features
 
@@ -31,10 +33,6 @@ Download the latest version of Streaker from the **[GitHub releases](https://git
   - Tile
   - Octocat
 - Reminder notification so you don't lose your streak
-
-## Screenshot
-
-<img width="716" alt="Screenshot" src=".github/screenshot.png">
 
 ## Building Locally
 
