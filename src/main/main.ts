@@ -9,7 +9,6 @@ import {
   app,
   dialog,
   ipcMain,
-  shell,
 } from 'electron';
 
 import { icons } from '../icons';
@@ -70,12 +69,6 @@ const bootstrap = (): void => {
     preferencesWindow.on('closed', () => {
       preferencesWindow = null;
       if (process.platform === 'darwin') app.dock.hide();
-    });
-
-    // Open urls in the user's browser
-    preferencesWindow.webContents.setWindowOpenHandler((edata) => {
-      shell.openExternal(edata.url);
-      return { action: 'deny' };
     });
   };
 
