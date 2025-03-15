@@ -60,7 +60,7 @@ jobs:
   publish-linux:
     needs: release
     runs-on: ubuntu-latest
-    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    if: github.event_name == 'push' && startsWith(github.ref, 'refs/tags/v')
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -73,7 +73,7 @@ jobs:
       - name: Install Dependencies
         run: npm install --include=dev
 
-      - name: Publish
+      - name: Publish Linux
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: npm run publish
@@ -81,7 +81,7 @@ jobs:
   publish-mac:
     needs: release
     runs-on: macos-latest
-    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    if: github.event_name == 'push' && startsWith(github.ref, 'refs/tags/v')
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -94,7 +94,7 @@ jobs:
       - name: Install Dependencies
         run: npm install --include=dev
 
-      - name: Publish
+      - name: Publish Mac
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: npm run publish
@@ -102,7 +102,7 @@ jobs:
   publish-windows:
     needs: release
     runs-on: windows-latest
-    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    if: github.event_name == 'push' && startsWith(github.ref, 'refs/tags/v')
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -115,7 +115,7 @@ jobs:
       - name: Install Dependencies
         run: npm install --include=dev
 
-      - name: Publish
+      - name: Publish Windows
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: npm run publish
