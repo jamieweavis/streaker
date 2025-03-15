@@ -1,3 +1,10 @@
+## [2.3.2](https://github.com/jamieweavis/streaker/compare/v2.3.1...v2.3.2) (2025-03-15)
+
+
+### Bug Fixes
+
+* executable name capitalisation ([8ac19b6](https://github.com/jamieweavis/streaker/commit/8ac19b6049c335901567874f28492fd5c56702dc))
+
 ## [2.3.1](https://github.com/jamieweavis/streaker/compare/v2.3.0...v2.3.1) (2025-03-15)
 
 
