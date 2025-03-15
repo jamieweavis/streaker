@@ -1,3 +1,10 @@
+## [2.3.3](https://github.com/jamieweavis/streaker/compare/v2.3.2...v2.3.3) (2025-03-15)
+
+
+### Bug Fixes
+
+* test executable name fix for linux ([9dfd176](https://github.com/jamieweavis/streaker/commit/9dfd176119a54de2f8682abd540f2263a33646e2))
+
 ## [2.3.2](https://github.com/jamieweavis/streaker/compare/v2.3.1...v2.3.2) (2025-03-15)
 
 
