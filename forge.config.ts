@@ -27,6 +27,17 @@ const config: ForgeConfig = {
     new MakerDeb({}),
     new MakerDMG({}, ['darwin']),
   ],
+  publishers: [
+    {
+      name: '@electron-forge/publisher-github',
+      config: {
+        repository: {
+          owner: 'jamieweavis',
+          name: 'streaker',
+        },
+      },
+    },
+  ],
   plugins: [
     new AutoUnpackNativesPlugin({}),
     new WebpackPlugin({
