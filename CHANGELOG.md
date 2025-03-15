@@ -1,3 +1,10 @@
+## [2.3.4](https://github.com/jamieweavis/streaker/compare/v2.3.3...v2.3.4) (2025-03-15)
+
+
+### Bug Fixes
+
+* test release publish version ([3d4b6bf](https://github.com/jamieweavis/streaker/commit/3d4b6bfb7ef4a6312972e529cab31bccf1bddc25))
+
 ## [2.3.3](https://github.com/jamieweavis/streaker/compare/v2.3.2...v2.3.3) (2025-03-15)
 
 
