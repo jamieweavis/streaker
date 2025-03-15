@@ -1,3 +1,10 @@
+## [2.3.1](https://github.com/jamieweavis/streaker/compare/v2.3.0...v2.3.1) (2025-03-15)
+
+
+### Bug Fixes
+
+* add initial linux icons ([cdda1aa](https://github.com/jamieweavis/streaker/commit/cdda1aadebb4002e98ee0e85be2efedb446e4e69))
+
 # [2.3.0](https://github.com/jamieweavis/streaker/compare/v2.2.0...v2.3.0) (2025-03-15)
 
 
