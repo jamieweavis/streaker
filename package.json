@@ -105,6 +105,7 @@
     "electron-squirrel-startup": "^1.0.1",
     "electron-store": "^8.2.0",
     "postcss": "^8.5.3",
-    "tailwindcss": "4.0.14"
+    "tailwindcss": "4.0.14",
+    "update-electron-app": "^3.1.1"
   }
 }

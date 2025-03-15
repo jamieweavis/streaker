@@ -3,6 +3,7 @@ import { type GitHubStats, fetchStats } from 'contribution';
 import { CronJob, CronTime } from 'cron';
 import type { NativeImage } from 'electron';
 import { BrowserWindow, Notification, Tray, app, ipcMain } from 'electron';
+import { UpdateSourceType, updateElectronApp } from 'update-electron-app';
 
 import { icons } from '../icons';
 import { logger } from './logger';
@@ -212,6 +213,16 @@ const bootstrap = (): void => {
   const autoLaunch = new AutoLaunch({
     name: 'Streaker',
     isHidden: true,
+  });
+
+  // Set up auto updater
+  updateElectronApp({
+    updateSource: {
+      type: UpdateSourceType.ElectronPublicUpdateService,
+      repo: 'jamieweavis/streaker',
+    },
+    updateInterval: '1 hour',
+    logger: logger,
   });
 
   // Open preferences window automatically if username is not (most likely fresh install)
