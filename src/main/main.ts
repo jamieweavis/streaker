@@ -2,19 +2,12 @@ import AutoLaunch from 'auto-launch';
 import { type GitHubStats, fetchStats } from 'contribution';
 import { CronJob, CronTime } from 'cron';
 import type { NativeImage } from 'electron';
-import {
-  BrowserWindow,
-  Notification,
-  Tray,
-  app,
-  dialog,
-  ipcMain,
-} from 'electron';
+import { BrowserWindow, Notification, Tray, app, ipcMain } from 'electron';
 
 import { icons } from '../icons';
+import { logger } from './logger';
 import MenuBuilder from './menu';
 import { store } from './store';
-import { logger } from './logger';
 import { createTrayMenu } from './tray-menu';
 
 declare const MAIN_WINDOW_WEBPACK_ENTRY: string;
@@ -132,31 +125,39 @@ const bootstrap = (): void => {
     logger.info('Saving preferences', preferences);
 
     // Update auto launch
-    if (preferences.launchAtLogin !== store.get('launchAtLogin')) {
-      if (preferences.launchAtLogin) {
-        autoLaunch.enable();
-        logger.info('Auto launch enabled');
-      } else {
-        autoLaunch.disable();
-        logger.info('Auto launch disabled');
+    try {
+      if (preferences.launchAtLogin !== store.get('launchAtLogin')) {
+        if (preferences.launchAtLogin) {
+          autoLaunch.enable();
+          logger.info('Auto launch enabled');
+        } else {
+          autoLaunch.disable();
+          logger.info('Auto launch disabled');
+        }
       }
+    } catch (error) {
+      logger.error('Error enabling auto launch', error);
     }
 
     // Update reminder notification
-    if (
-      preferences.reminderEnabled !== store.get('reminderEnabled') ||
-      preferences.reminderTime !== store.get('reminderTime')
-    ) {
-      if (preferences.reminderEnabled) {
-        const [hours, minutes] = preferences.reminderTime.split(':');
-        const cronTime = new CronTime(`${minutes} ${hours} * * *`);
-        reminderNotification.setTime(cronTime);
-        reminderNotification.start();
-        logger.info('Reminder notification enabled');
-      } else {
-        reminderNotification.stop();
-        logger.info('Reminder notification disabled');
+    try {
+      if (
+        preferences.reminderEnabled !== store.get('reminderEnabled') ||
+        preferences.reminderTime !== store.get('reminderTime')
+      ) {
+        if (preferences.reminderEnabled) {
+          const [hours, minutes] = preferences.reminderTime.split(':');
+          const cronTime = new CronTime(`${minutes} ${hours} * * *`);
+          reminderNotification.setTime(cronTime);
+          reminderNotification.start();
+          logger.info('Reminder notification enabled');
+        } else {
+          reminderNotification.stop();
+          logger.info('Reminder notification disabled');
+        }
       }
+    } catch (error) {
+      logger.error('Error enabling reminder notification', error);
     }
 
     // Save preferences
@@ -165,18 +166,23 @@ const bootstrap = (): void => {
 
   const showReminderNotification = () => {
     logger.info('Triggering reminder notification');
-    if (!Notification.isSupported()) {
-      logger.error('Notification not supported');
-      return;
+
+    try {
+      if (!Notification.isSupported()) {
+        logger.error('Notification not supported');
+        return;
+      }
+      if (!lastFetchedStats.streak.isAtRisk) {
+        logger.info('Notification cancelled, streak not at risk');
+        return;
+      }
+      new Notification({
+        title: `🔥 Don't lose your streak!`,
+        body: `Contribute today to continue your ${lastFetchedStats.streak.previous} day streak on GitHub`,
+      }).show();
+    } catch (error) {
+      logger.error('Error showing reminder notification', error);
     }
-    if (!lastFetchedStats.streak.isAtRisk) {
-      logger.info('Notification cancelled, streak not at risk');
-      return;
-    }
-    new Notification({
-      title: `🔥 Don't lose your streak!`,
-      body: `Contribute today to continue your ${lastFetchedStats.streak.previous} day streak on GitHub`,
-    }).show();
   };
 
   app.on('window-all-closed', () => {});
@@ -188,7 +194,6 @@ const bootstrap = (): void => {
 
   // Handle saving preferences
   ipcMain.on('savePreferences', (event, preferences: Preferences) => {
-    const oldUsername = store.get('username');
     savePreferences(preferences);
     fetchContributionStats();
   });
@@ -221,5 +226,4 @@ app
   .then(bootstrap)
   .catch((error) => {
     logger.error('An error occurred', error);
-    dialog.showErrorBox('An error occurred', error.message);
   });
