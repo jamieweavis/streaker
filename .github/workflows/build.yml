@@ -54,6 +54,13 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Fetch and Pull Latest Changes
+        run: |
+          git fetch origin
+          git pull origin main
 
       - name: Use Node.js 22.x
         uses: actions/setup-node@v4
@@ -75,6 +82,13 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Fetch and Pull Latest Changes
+        run: |
+          git fetch origin
+          git pull origin main
 
       - name: Use Node.js 22.x
         uses: actions/setup-node@v4
@@ -96,6 +110,13 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Fetch and Pull Latest Changes
+        run: |
+          git fetch origin
+          git pull origin main
 
       - name: Use Node.js 22.x
         uses: actions/setup-node@v4
