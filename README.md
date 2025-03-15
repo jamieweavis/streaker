@@ -38,6 +38,29 @@ Download the latest version of Streaker from the **[GitHub releases](https://git
 
 <img width="716" alt="Screenshot" src=".github/screenshot.png">
 
+## Building Locally
+
+The app is built & deployed for all platforms via GitHub Actions automatically, but you can build it locally for your platform with the following steps:
+
+Clone the repository
+```bash
+git clone https://github.com/jamieweavis/streaker.git
+
+cd streaker
+```
+
+Install npm dependencies (recommended to use Node.js v22)
+```bash
+npm install
+```
+
+Package the app for your current platform
+```bash
+npm run package
+```
+
+The packaged app will be in the `out/` directory
+
 ## Built with
 
 - [TypeScript](https://github.com/microsoft/TypeScript)
