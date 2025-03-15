@@ -1,3 +1,11 @@
+# [2.2.0](https://github.com/jamieweavis/streaker/compare/v2.1.3...v2.2.0) (2025-03-15)
+
+
+### Features
+
+* add better error handling & logging ([4f4ab7c](https://github.com/jamieweavis/streaker/commit/4f4ab7c8b21a473a14af6fa49c10a507ff6a9e38))
+* add logging with electron-log ([6e026ee](https://github.com/jamieweavis/streaker/commit/6e026eef4f43e0cf4eae2e447fd7d7b3bb7ec09a))
+
 ## [2.1.3](https://github.com/jamieweavis/streaker/compare/v2.1.2...v2.1.3) (2025-03-14)
 
 
