@@ -2,7 +2,6 @@ name: publish
 
 on:
   push:
-    branches: [main]
     tags:
       - v*
 
@@ -11,6 +10,7 @@ permissions:
 
 jobs:
   publish-linux:
+    if: ${{ github.ref == 'refs/heads/main' }}
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -30,6 +30,7 @@ jobs:
         run: npm run publish
 
   publish-mac:
+    if: ${{ github.ref == 'refs/heads/main' }}
     runs-on: macos-latest
     steps:
       - name: Checkout
@@ -49,6 +50,7 @@ jobs:
         run: npm run publish
 
   publish-windows:
+    if: ${{ github.ref == 'refs/heads/main' }}
     runs-on: windows-latest
     steps:
       - name: Checkout
