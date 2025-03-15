@@ -14,6 +14,7 @@ import {
 import { icons } from '../icons';
 import MenuBuilder from './menu';
 import { store } from './store';
+import { logger } from './logger';
 import { createTrayMenu } from './tray-menu';
 
 declare const MAIN_WINDOW_WEBPACK_ENTRY: string;
@@ -110,7 +111,7 @@ const bootstrap = (): void => {
     let icon = icons[iconTheme].pending;
     try {
       stats = await fetchStats(username);
-      console.info('Fetched contribution stats', stats);
+      logger.info('Fetched contribution stats', stats);
 
       lastFetchedStats = stats;
 
@@ -128,16 +129,16 @@ const bootstrap = (): void => {
   };
 
   const savePreferences = (preferences: Preferences) => {
-    console.info('Saving preferences', preferences);
+    logger.info('Saving preferences', preferences);
 
     // Update auto launch
     if (preferences.launchAtLogin !== store.get('launchAtLogin')) {
       if (preferences.launchAtLogin) {
         autoLaunch.enable();
-        console.info('Auto launch enabled');
+        logger.info('Auto launch enabled');
       } else {
         autoLaunch.disable();
-        console.info('Auto launch disabled');
+        logger.info('Auto launch disabled');
       }
     }
 
@@ -151,10 +152,10 @@ const bootstrap = (): void => {
         const cronTime = new CronTime(`${minutes} ${hours} * * *`);
         reminderNotification.setTime(cronTime);
         reminderNotification.start();
-        console.info('Reminder notification enabled');
+        logger.info('Reminder notification enabled');
       } else {
         reminderNotification.stop();
-        console.info('Reminder notification disabled');
+        logger.info('Reminder notification disabled');
       }
     }
 
@@ -163,13 +164,13 @@ const bootstrap = (): void => {
   };
 
   const showReminderNotification = () => {
-    console.info('Triggering reminder notification');
+    logger.info('Triggering reminder notification');
     if (!Notification.isSupported()) {
-      console.error('Notification not supported');
+      logger.error('Notification not supported');
       return;
     }
     if (!lastFetchedStats.streak.isAtRisk) {
-      console.info('Notification cancelled, streak not at risk');
+      logger.info('Notification cancelled, streak not at risk');
       return;
     }
     new Notification({
@@ -219,6 +220,6 @@ app
   .whenReady()
   .then(bootstrap)
   .catch((error) => {
-    console.error('An error occurred', error);
+    logger.error('An error occurred', error);
     dialog.showErrorBox('An error occurred', error.message);
   });
