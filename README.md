@@ -25,14 +25,14 @@ Download the latest version of Streaker from the **[GitHub releases](https://git
     - Today
     - Total (year)
 - Menu bar icon changes depending on contribution status
-  - Empty - You haven't contributed today, your streak is in danger 😱
-  - Filled - You've contributed today, your streak is secure 😊
-  - Crown - You're currently on your best streak! 🤩
+  - Empty - you haven't contributed today
+  - Filled - you have contributed today
+  - Crown / Star - you're currently on your best streak
 - Three different menu bar icon themes
-  - Flame 🔥
-  - Tile 🔲
-  - Octocat 🐙
-- Reminder notification so you don't lose your streak 🔔
+  - Flame
+  - Tile
+  - Octocat
+- Reminder notification so you don't lose your streak
 
 ## Screenshot
 
