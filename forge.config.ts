@@ -18,7 +18,7 @@ const config: ForgeConfig = {
     icon: './src/icons/app/icon',
     appCategoryType: 'public.app-category.developer-tools',
     extraResource: ['./src/'],
-    executableName: 'Streaker',
+    executableName: 'streaker',
   },
   rebuildConfig: {},
   makers: [
