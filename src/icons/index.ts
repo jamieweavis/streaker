@@ -159,8 +159,28 @@ switch (process.platform) {
       },
     };
     break;
-  // case 'linux':
-  //   break;
+  case 'linux':
+    icons = {
+      flame: {
+        contributed: macosFlameContributed,
+        error: macosFlameError,
+        pending: macosFlamePending,
+        streaking: macosFlameStreaking,
+      },
+      tile: {
+        contributed: macosTileContributed,
+        error: macosTileError,
+        pending: macosTilePending,
+        streaking: macosTileStreaking,
+      },
+      octocat: {
+        contributed: macosOctocatContributed,
+        error: macosOctocatError,
+        pending: macosOctocatPending,
+        streaking: macosOctocatStreaking,
+      },
+    };
+    break;
   default: {
     throw new Error(
       `Platform "${process.platform}" is not currently supported!`,
