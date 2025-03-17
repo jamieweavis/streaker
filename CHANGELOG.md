@@ -1,3 +1,10 @@
+## [2.4.1](https://github.com/jamieweavis/streaker/compare/v2.4.0...v2.4.1) (2025-03-17)
+
+
+### Bug Fixes
+
+* tile icon theme alpha issue ([abc3797](https://github.com/jamieweavis/streaker/commit/abc37978d2b36856ae8eab5216682e07519309e3))
+
 # [2.4.0](https://github.com/jamieweavis/streaker/compare/v2.3.3...v2.4.0) (2025-03-17)
 
 
