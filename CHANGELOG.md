@@ -1,3 +1,10 @@
+# [2.4.0](https://github.com/jamieweavis/streaker/compare/v2.3.3...v2.4.0) (2025-03-17)
+
+
+### Features
+
+* improve tile icon theme to be simpler & clearer ([ed5e361](https://github.com/jamieweavis/streaker/commit/ed5e361aac4f299402d7ce4131dcaa6673cc9dc6))
+
 ## [2.3.3](https://github.com/jamieweavis/streaker/compare/v2.3.2...v2.3.3) (2025-03-15)
 
 
