@@ -68,3 +68,7 @@ The packaged app will be in the `out/` directory
 
 - [Streaker CLI](https://github.com/jamieweavis/streaker-cli) - 🔥 GitHub contribution streak & stat tracking command line app
 - [Contribution](https://github.com/jamieweavis/contribution) - 🗓 GitHub contribution streak & stat fetcher with zero dependencies
+
+## License
+
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
