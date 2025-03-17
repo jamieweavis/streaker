@@ -40,17 +40,17 @@ Download the latest version of Streaker from the **[GitHub releases](https://git
 
 | State       | Flame                                                                                  | Tile                                                                                 | Octocat                                                                                    |
 | ----------- | -------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------ |
-| Empty       | <img width="20" alt="Flame Empty" src=".github/icons/pending-flame-mac.svg">           | <img width="20" alt="Tile Empty" src=".github/icons/pending-tile-mac.svg">           | <img width="20" alt="Octocat Empty" src=".github/icons/pending-octocat-mac.svg">           |
+| Pending     | <img width="20" alt="Flame Empty" src=".github/icons/pending-flame-mac.svg">           | <img width="20" alt="Tile Empty" src=".github/icons/pending-tile-mac.svg">           | <img width="20" alt="Octocat Empty" src=".github/icons/pending-octocat-mac.svg">           |
 | Contributed | <img width="20" alt="Flame Contributed" src=".github/icons/contributed-flame-mac.svg"> | <img width="20" alt="Tile Contributed" src=".github/icons/contributed-tile-mac.svg"> | <img width="20" alt="Octocat Contributed" src=".github/icons/contributed-octocat-mac.svg"> |
-| Crown       | <img width="20" alt="Flame Crown" src=".github/icons/streaking-flame-mac.svg">         | <img width="20" alt="Tile Streaking" src=".github/icons/streaking-tile-mac.svg">     | <img width="20" alt="Octocat Streaking" src=".github/icons/streaking-octocat-mac.svg">     |
+| Streaking   | <img width="20" alt="Flame Crown" src=".github/icons/streaking-flame-mac.svg">         | <img width="20" alt="Tile Streaking" src=".github/icons/streaking-tile-mac.svg">     | <img width="20" alt="Octocat Streaking" src=".github/icons/streaking-octocat-mac.svg">     |
 
 #### Dark Mode
 
 | State       | Flame                                                                                        | Tile                                                                                       | Octocat                                                                                          |
 | ----------- | -------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------ |
-| Empty       | <img width="20" alt="Flame Empty" src=".github/icons/pending-flame-mac-white.svg">           | <img width="20" alt="Tile Empty" src=".github/icons/pending-tile-mac-white.svg">           | <img width="20" alt="Octocat Empty" src=".github/icons/pending-octocat-mac-white.svg">           |
+| Pending     | <img width="20" alt="Flame Empty" src=".github/icons/pending-flame-mac-white.svg">           | <img width="20" alt="Tile Empty" src=".github/icons/pending-tile-mac-white.svg">           | <img width="20" alt="Octocat Empty" src=".github/icons/pending-octocat-mac-white.svg">           |
 | Contributed | <img width="20" alt="Flame Contributed" src=".github/icons/contributed-flame-mac-white.svg"> | <img width="20" alt="Tile Contributed" src=".github/icons/contributed-tile-mac-white.svg"> | <img width="20" alt="Octocat Contributed" src=".github/icons/contributed-octocat-mac-white.svg"> |
-| Crown       | <img width="20" alt="Flame Crown" src=".github/icons/streaking-flame-mac-white.svg">         | <img width="20" alt="Tile Streaking" src=".github/icons/streaking-tile-mac-white.svg">     | <img width="20" alt="Octocat Streaking" src=".github/icons/streaking-octocat-mac-white.svg">     |
+| Streaking   | <img width="20" alt="Flame Crown" src=".github/icons/streaking-flame-mac-white.svg">         | <img width="20" alt="Tile Streaking" src=".github/icons/streaking-tile-mac-white.svg">     | <img width="20" alt="Octocat Streaking" src=".github/icons/streaking-octocat-mac-white.svg">     |
 
 ## Building Locally
 
