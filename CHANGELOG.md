@@ -1,3 +1,10 @@
+## [2.4.2](https://github.com/jamieweavis/streaker/compare/v2.4.1...v2.4.2) (2025-03-18)
+
+
+### Bug Fixes
+
+* add linux specific tray icons ([673d9b0](https://github.com/jamieweavis/streaker/commit/673d9b0eaa31eff51182dfb4d8481a6fa5c0e3e3))
+
 ## [2.4.1](https://github.com/jamieweavis/streaker/compare/v2.4.0...v2.4.1) (2025-03-17)
 
 
