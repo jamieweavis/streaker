@@ -73,7 +73,16 @@ Package the app for your current platform
 npm run package
 ```
 
-The packaged app will be in the `out/` directory
+The packaged app will now be in the `out/` directory
+
+## Development
+
+Run the app in development mode
+```bash
+npm run start
+```
+
+*Only the renderer process currently supports hot reloading, changes in `src/main/` will require a restart*
 
 ## Built with
 
