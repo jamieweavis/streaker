@@ -1,3 +1,10 @@
+## [2.4.3](https://github.com/jamieweavis/streaker/compare/v2.4.2...v2.4.3) (2025-03-18)
+
+
+### Bug Fixes
+
+* increase preferences window width to avoid line wrap which causes scroll ([775c716](https://github.com/jamieweavis/streaker/commit/775c716f783c5cf4f9ab8a1fdc75a16609b34d56))
+
 ## [2.4.2](https://github.com/jamieweavis/streaker/compare/v2.4.1...v2.4.2) (2025-03-18)
 
 
