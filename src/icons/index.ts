@@ -10,7 +10,7 @@ export interface Icon {
 
 export interface Icons {
   flame: Icon;
-  tile?: Icon;
+  tile: Icon;
   octocat: Icon;
 }
 
@@ -114,6 +114,48 @@ const windowsOctocatStreaking = nativeImage.createFromPath(
   join(appPath, 'src/icons/windows/octocat/streaking.ico'),
 );
 
+// Linux Flame
+const linuxFlameContributed = nativeImage.createFromPath(
+  join(appPath, 'src/icons/linux/flame/contributed.png'),
+);
+const linuxFlameError = nativeImage.createFromPath(
+  join(appPath, 'src/icons/linux/flame/error.png'),
+);
+const linuxFlamePending = nativeImage.createFromPath(
+  join(appPath, 'src/icons/linux/flame/pending.png'),
+);
+const linuxFlameStreaking = nativeImage.createFromPath(
+  join(appPath, 'src/icons/linux/flame/streaking.png'),
+);
+
+// Linux Tile
+const linuxTileContributed = nativeImage.createFromPath(
+  join(appPath, 'src/icons/linux/tile/contributed.png'),
+);
+const linuxTileError = nativeImage.createFromPath(
+  join(appPath, 'src/icons/linux/tile/error.png'),
+);
+const linuxTilePending = nativeImage.createFromPath(
+  join(appPath, 'src/icons/linux/tile/pending.png'),
+);
+const linuxTileStreaking = nativeImage.createFromPath(
+  join(appPath, 'src/icons/linux/tile/streaking.png'),
+);
+
+// Linux Octocat
+const linuxOctocatContributed = nativeImage.createFromPath(
+  join(appPath, 'src/icons/linux/octocat/contributed.png'),
+);
+const linuxOctocatError = nativeImage.createFromPath(
+  join(appPath, 'src/icons/linux/octocat/error.png'),
+);
+const linuxOctocatPending = nativeImage.createFromPath(
+  join(appPath, 'src/icons/linux/octocat/pending.png'),
+);
+const linuxOctocatStreaking = nativeImage.createFromPath(
+  join(appPath, 'src/icons/linux/octocat/streaking.png'),
+);
+
 switch (process.platform) {
   case 'darwin':
     icons = {
@@ -162,22 +204,22 @@ switch (process.platform) {
   case 'linux':
     icons = {
       flame: {
-        contributed: macosFlameContributed,
-        error: macosFlameError,
-        pending: macosFlamePending,
-        streaking: macosFlameStreaking,
+        contributed: linuxFlameContributed,
+        error: linuxFlameError,
+        pending: linuxFlamePending,
+        streaking: linuxFlameStreaking,
       },
       tile: {
-        contributed: macosTileContributed,
-        error: macosTileError,
-        pending: macosTilePending,
-        streaking: macosTileStreaking,
+        contributed: linuxTileContributed,
+        error: linuxTileError,
+        pending: linuxTilePending,
+        streaking: linuxTileStreaking,
       },
       octocat: {
-        contributed: macosOctocatContributed,
-        error: macosOctocatError,
-        pending: macosOctocatPending,
-        streaking: macosOctocatStreaking,
+        contributed: linuxOctocatContributed,
+        error: linuxOctocatError,
+        pending: linuxOctocatPending,
+        streaking: linuxOctocatStreaking,
       },
     };
     break;
