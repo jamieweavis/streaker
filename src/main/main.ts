@@ -25,10 +25,12 @@ export interface Preferences {
 const isDev = process.env.NODE_ENV === 'development';
 
 const bootstrap = (): void => {
+  const { username, iconTheme, reminderTime, reminderEnabled } = store.store;
+
   let preferencesWindow: BrowserWindow | null = null;
-  const iconTheme = store.get('iconTheme') as keyof typeof icons;
-  const tray = new Tray(icons[iconTheme].pending);
   let lastFetchedStats: GitHubStats | undefined;
+
+  const tray = new Tray(icons[iconTheme].pending);
 
   const createPreferencesWindow = () => {
     preferencesWindow = new BrowserWindow({
@@ -93,16 +95,16 @@ const bootstrap = (): void => {
   };
 
   const fetchContributionStats = async () => {
-    let stats: GitHubStats | undefined;
-
-    const username = store.get('username') as string;
-    const iconTheme = store.get('iconTheme') as keyof typeof icons;
+    const username = store.get('username');
+    const iconTheme = store.get('iconTheme');
 
     if (!username) {
       return createTray({ icon: icons[iconTheme].error });
     }
 
+    let stats: GitHubStats | undefined;
     let icon = icons[iconTheme].pending;
+
     try {
       stats = await fetchStats(username);
       logger.info('Fetched contribution stats', stats);
@@ -208,13 +210,11 @@ const bootstrap = (): void => {
   });
 
   // Set up reminder notification
-  const reminderTime = store.get('reminderTime');
   const [hours, minutes] = reminderTime.split(':');
   const reminderNotification = new CronJob(
     `${minutes} ${hours} * * *`,
     showReminderNotification,
   );
-  const reminderEnabled = store.get('reminderEnabled');
   if (reminderEnabled) reminderNotification.start();
 
   // Set up auto launch
@@ -234,10 +234,7 @@ const bootstrap = (): void => {
   });
 
   // Open preferences window automatically if username is not (most likely fresh install)
-  const username = store.get('username');
-  if (!username || isDev) {
-    createPreferencesWindow();
-  }
+  if (!username || isDev) createPreferencesWindow();
 };
 
 app

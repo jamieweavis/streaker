@@ -9,9 +9,7 @@ export interface Icon {
 }
 
 export interface Icons {
-  flame: Icon;
-  tile: Icon;
-  octocat: Icon;
+  [theme: string]: Icon;
 }
 
 export let icons: Icons;
