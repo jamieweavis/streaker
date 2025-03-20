@@ -1,3 +1,10 @@
+# [2.5.0](https://github.com/jamieweavis/streaker/compare/v2.4.3...v2.5.0) (2025-03-20)
+
+
+### Features
+
+* open preferences window when app is reopened and already running ([d00b086](https://github.com/jamieweavis/streaker/commit/d00b086372b43aeb635fe31b989dd520a8f3c1c0))
+
 ## [2.4.3](https://github.com/jamieweavis/streaker/compare/v2.4.2...v2.4.3) (2025-03-18)
 
 
