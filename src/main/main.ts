@@ -123,7 +123,7 @@ const bootstrap = (): void => {
   };
 
   const savePreferences = (preferences: Preferences) => {
-    logger.info('Saving preferences', preferences);
+    logger.info('Saving preferences:', preferences);
 
     // Update auto launch
     try {
@@ -151,7 +151,10 @@ const bootstrap = (): void => {
           const cronTime = new CronTime(`${minutes} ${hours} * * *`);
           reminderNotification.setTime(cronTime);
           reminderNotification.start();
-          logger.info('Reminder notification enabled');
+          logger.info(
+            'Reminder notification enabled:',
+            preferences.reminderTime,
+          );
         } else {
           reminderNotification.stop();
           logger.info('Reminder notification disabled');
@@ -163,6 +166,7 @@ const bootstrap = (): void => {
 
     // Save preferences
     store.set(preferences);
+    logger.info('Preferences saved');
   };
 
   const showReminderNotification = () => {
@@ -174,7 +178,7 @@ const bootstrap = (): void => {
         return;
       }
       if (!lastFetchedStats.streak.isAtRisk) {
-        logger.info('Notification cancelled, streak not at risk');
+        logger.info('Streak not at risk, skipping reminder notification');
         return;
       }
       new Notification({

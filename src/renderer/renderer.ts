@@ -47,3 +47,5 @@ reminderNotification.checked =
   initialPreferences.reminderNotification === 'true';
 reminderTime.value = initialPreferences.reminderTime;
 iconTheme.value = initialPreferences.iconTheme;
+
+console.log('Preferences:', initialPreferences);
