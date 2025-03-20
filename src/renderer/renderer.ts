@@ -43,8 +43,7 @@ const initialPreferences = window.streaker.initialPreferences();
 
 gitHubUsername.value = initialPreferences.username || '';
 launchAtLogin.checked = initialPreferences.launchAtLogin === 'true';
-reminderNotification.checked =
-  initialPreferences.reminderNotification === 'true';
+reminderNotification.checked = initialPreferences.reminderEnabled === 'true';
 reminderTime.value = initialPreferences.reminderTime;
 iconTheme.value = initialPreferences.iconTheme;
 
