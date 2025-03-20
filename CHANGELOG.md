@@ -1,3 +1,10 @@
+## [2.5.1](https://github.com/jamieweavis/streaker/compare/v2.5.0...v2.5.1) (2025-03-20)
+
+
+### Bug Fixes
+
+* reminder notification checkbox default state ([83b0de8](https://github.com/jamieweavis/streaker/commit/83b0de885aa87a63422a6b2f5c5c930d655d5729))
+
 # [2.5.0](https://github.com/jamieweavis/streaker/compare/v2.4.3...v2.5.0) (2025-03-20)
 
 
