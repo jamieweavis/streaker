@@ -189,6 +189,10 @@ const bootstrap = (): void => {
   app.on('window-all-closed', () => {});
   if (process.platform === 'darwin') app.dock.hide();
 
+  app.on('activate', () => {
+    if (!preferencesWindow) createPreferencesWindow();
+  });
+
   // Fetch data on app start and every minute
   fetchContributionStats();
   new CronJob('* * * * *', fetchContributionStats, null, true);
