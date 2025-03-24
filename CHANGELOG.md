@@ -1,3 +1,10 @@
+## [2.5.2](https://github.com/jamieweavis/streaker/compare/v2.5.1...v2.5.2) (2025-03-24)
+
+
+### Bug Fixes
+
+* upgrade to contribution v7 ([3aa7144](https://github.com/jamieweavis/streaker/commit/3aa7144309394f028d8cce8e429ee4b641127151))
+
 ## [2.5.1](https://github.com/jamieweavis/streaker/compare/v2.5.0...v2.5.1) (2025-03-20)
 
 
