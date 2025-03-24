@@ -5,7 +5,7 @@ import pjson from '../../package.json';
 
 export interface CreateTrayMenuOptions {
   username?: string;
-  stats?: GitHubStats;
+  gitHubStats?: GitHubStats;
   createPreferencesWindow: () => void;
   requestContributionData: () => void;
   isPreferencesWindowOpen: () => boolean;
@@ -14,7 +14,7 @@ export interface CreateTrayMenuOptions {
 
 export const createTrayMenu = ({
   username,
-  stats,
+  gitHubStats,
   createPreferencesWindow,
   requestContributionData,
   isPreferencesWindowOpen,
@@ -34,28 +34,28 @@ export const createTrayMenu = ({
     { type: 'separator' },
     { label: 'Streak:', enabled: false },
     {
-      label: `    Best:\t\t${stats?.streak?.best || 0}`,
+      label: `    Best:\t\t${gitHubStats?.bestStreak || 0}`,
       enabled: false,
     },
     {
-      label: `    Current:\t${stats?.streak?.current || 0}`,
+      label: `    Current:\t${gitHubStats?.currentStreak || 0}`,
       enabled: false,
     },
     {
-      label: `    Previous:\t${stats?.streak?.previous || 0}`,
+      label: `    Previous:\t${gitHubStats?.previousStreak || 0}`,
       enabled: false,
     },
     { label: 'Contributions:', enabled: false },
     {
-      label: `    Most:\t\t${stats?.contributions?.best || 0}`,
+      label: `    Most:\t\t${gitHubStats?.mostContributions || 0}`,
       enabled: false,
     },
     {
-      label: `    Today:\t\t${stats?.contributions?.current || 0}`,
+      label: `    Today:\t\t${gitHubStats?.todaysContributions || 0}`,
       enabled: false,
     },
     {
-      label: `    Total:\t\t${stats?.contributions?.total || 0}`,
+      label: `    Total:\t\t${gitHubStats?.totalContributions || 0}`,
       enabled: false,
     },
     { type: 'separator' },

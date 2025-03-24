@@ -1,5 +1,5 @@
 import AutoLaunch from 'auto-launch';
-import { type GitHubStats, fetchStats } from 'contribution';
+import { type GitHubStats, fetchGitHubStats } from 'contribution';
 import { CronJob, CronTime } from 'cron';
 import type { NativeImage } from 'electron';
 import { BrowserWindow, Notification, Tray, app, ipcMain } from 'electron';
@@ -71,16 +71,16 @@ const bootstrap = (): void => {
 
   const createTray = ({
     username,
-    stats,
+    gitHubStats,
     icon,
   }: {
     username?: string;
-    stats?: GitHubStats;
+    gitHubStats?: GitHubStats;
     icon?: NativeImage;
   }) => {
     const trayMenu = createTrayMenu({
       username,
-      stats,
+      gitHubStats,
       createPreferencesWindow: createPreferencesWindow,
       requestContributionData: fetchContributionStats,
       isPreferencesWindowOpen: () => !!preferencesWindow,
@@ -102,26 +102,26 @@ const bootstrap = (): void => {
       return createTray({ icon: icons[iconTheme].error });
     }
 
-    let stats: GitHubStats | undefined;
+    let gitHubStats: GitHubStats | undefined;
     let icon = icons[iconTheme].pending;
 
     try {
-      stats = await fetchStats(username);
-      logger.info('Fetched contribution stats', stats);
+      gitHubStats = await fetchGitHubStats(username);
+      logger.info('Fetched contribution stats', gitHubStats);
 
-      lastFetchedStats = stats;
+      lastFetchedStats = gitHubStats;
 
-      if (stats.streak.current > 0) {
+      if (gitHubStats.currentStreak > 0) {
         icon = icons[iconTheme].contributed;
       }
-      if (stats.streak.current === stats.streak.best) {
+      if (gitHubStats.currentStreak === gitHubStats.bestStreak) {
         icon = icons[iconTheme].streaking;
       }
     } catch (err) {
       icon = icons[iconTheme].error;
     }
 
-    createTray({ username, stats, icon });
+    createTray({ username, gitHubStats, icon });
   };
 
   const savePreferences = (preferences: Preferences) => {
@@ -179,13 +179,13 @@ const bootstrap = (): void => {
         logger.error('Notification not supported');
         return;
       }
-      if (!lastFetchedStats.streak.isAtRisk) {
+      if (!lastFetchedStats.isStreakAtRisk) {
         logger.info('Streak not at risk, skipping reminder notification');
         return;
       }
       new Notification({
         title: `🔥 Don't lose your streak!`,
-        body: `Contribute today to continue your ${lastFetchedStats.streak.previous} day streak on GitHub`,
+        body: `Contribute today to continue your ${lastFetchedStats.previousStreak} day streak on GitHub`,
       }).show();
     } catch (error) {
       logger.error('Error showing reminder notification', error);
