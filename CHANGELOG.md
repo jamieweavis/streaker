@@ -1,3 +1,10 @@
+# [2.6.0](https://github.com/jamieweavis/streaker/compare/v2.5.2...v2.6.0) (2025-03-29)
+
+
+### Features
+
+* add at risk indicator to previous streak menu item ([3c2571d](https://github.com/jamieweavis/streaker/commit/3c2571d67a6c5d8297d9fad0f6a33a4cf362ceda))
+
 ## [2.5.2](https://github.com/jamieweavis/streaker/compare/v2.5.1...v2.5.2) (2025-03-24)
 
 
