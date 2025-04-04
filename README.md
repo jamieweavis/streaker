@@ -1,6 +1,6 @@
 # Streaker <img alt="Streaker Logo" align="right" width=40 height=40 alt="Screenshot" src="./.github/icons/icon.svg">
 
-> 🔥 GitHub contribution streak & stat tracking menu bar app</p>
+> 🔥 GitHub contribution streak & stat tracking menu bar app
 
 [![build](https://github.com/jamieweavis/streaker/actions/workflows/build.yml/badge.svg?branch=main)](https://github.com/jamieweavis/streaker/actions)
 [![downloads](https://img.shields.io/github/downloads/jamieweavis/streaker/total.svg)](https://github.com/jamieweavis/streaker/releases)
