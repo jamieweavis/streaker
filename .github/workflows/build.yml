@@ -28,68 +28,8 @@ jobs:
     needs: build
     runs-on: ubuntu-latest
     if: github.event_name == 'push' && github.ref == 'refs/heads/main'
-    outputs:
-      new_release_published: ${{ steps.release.outputs.new_release_published }}
     steps:
       - uses: actions/checkout@v4
-      - id: release
-        uses: cycjimmy/semantic-release-action@v4
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
-  publish-linux:
-    needs: release
-    if: ${{ needs.release.outputs.new_release_published == 'true' }}
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
-      - run: |
-          git fetch origin
-          git pull origin main
-      - uses: actions/setup-node@v4
-        with:
-          node-version: 22.x
-      - run: npm ci --include=dev
-      - run: npm run publish
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
-  publish-mac:
-    needs: release
-    if: ${{ needs.release.outputs.new_release_published == 'true' }}
-    runs-on: macos-latest
-    steps:
-      - uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
-      - run: |
-          git fetch origin
-          git pull origin main
-      - uses: actions/setup-node@v4
-        with:
-          node-version: 22.x
-      - run: npm ci --include=dev
-      - run: npm run publish
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
-  publish-windows:
-    needs: release
-    if: ${{ needs.release.outputs.new_release_published == 'true' }}
-    runs-on: windows-latest
-    steps:
-      - uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
-      - run: |
-          git fetch origin
-          git pull origin main
-      - uses: actions/setup-node@v4
-        with:
-          node-version: 22.x
-      - run: npm ci --include=dev
-      - run: npm run publish
+      - uses: cycjimmy/semantic-release-action@v4
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
