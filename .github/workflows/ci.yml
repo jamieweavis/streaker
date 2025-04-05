@@ -37,7 +37,6 @@ jobs:
           node-version: 22.x
       - run: npm clean-install
       - run: npm audit signatures
-      - run: npm run build
       - run: npx semantic-release
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
