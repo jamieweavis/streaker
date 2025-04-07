@@ -233,7 +233,7 @@ const bootstrap = (): void => {
     logger: logger,
   });
 
-  // Open preferences window automatically if username is not (most likely fresh install)
+  // Open preferences window automatically if username is not set (most likely fresh install)
   if (!username || isDev) createPreferencesWindow();
 };
 
