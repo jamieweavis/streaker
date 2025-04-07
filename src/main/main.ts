@@ -204,7 +204,7 @@ const bootstrap = (): void => {
   new CronJob('* * * * *', fetchContributionStats, null, true);
 
   // Handle saving preferences
-  ipcMain.on('savePreferences', (event, preferences: Preferences) => {
+  ipcMain.on('savePreferences', (_, preferences: Preferences) => {
     savePreferences(preferences);
     fetchContributionStats();
   });
