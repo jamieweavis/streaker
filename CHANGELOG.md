@@ -1,3 +1,10 @@
+## [2.6.1](https://github.com/jamieweavis/streaker/compare/v2.6.0...v2.6.1) (2025-04-14)
+
+
+### Bug Fixes
+
+* update description ([36ce895](https://github.com/jamieweavis/streaker/commit/36ce8952587f1879ca7dfbb44ab74ceeab92a8d8))
+
 # [2.6.0](https://github.com/jamieweavis/streaker/compare/v2.5.2...v2.6.0) (2025-03-29)
 
 
