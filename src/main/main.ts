@@ -1,8 +1,8 @@
 import AutoLaunch from 'auto-launch';
-import { type GitHubStats, fetchGitHubStats } from 'contribution';
+import { fetchGitHubStats, type GitHubStats } from 'contribution';
 import { CronJob, CronTime } from 'cron';
 import type { NativeImage } from 'electron';
-import { BrowserWindow, Notification, Tray, app, ipcMain } from 'electron';
+import { app, BrowserWindow, ipcMain, Notification, Tray } from 'electron';
 import { UpdateSourceType, updateElectronApp } from 'update-electron-app';
 
 import { icons } from '../icons';
@@ -117,7 +117,7 @@ const bootstrap = (): void => {
       if (gitHubStats.currentStreak === gitHubStats.bestStreak) {
         icon = icons[iconTheme].streaking;
       }
-    } catch (err) {
+    } catch (_err) {
       icon = icons[iconTheme].error;
     }
 

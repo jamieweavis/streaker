@@ -1,5 +1,5 @@
 import type { GitHubStats } from 'contribution';
-import { Menu, app, shell } from 'electron';
+import { app, Menu, shell } from 'electron';
 
 import pjson from '../../package.json';
 

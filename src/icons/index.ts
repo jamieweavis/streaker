@@ -1,5 +1,5 @@
 import { join } from 'node:path';
-import { type NativeImage, app, nativeImage } from 'electron';
+import { app, type NativeImage, nativeImage } from 'electron';
 
 export interface Icon {
   contributed: NativeImage;
