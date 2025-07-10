@@ -31,9 +31,9 @@
     "make": "electron-forge make",
     "publish": "electron-forge publish",
     "lint": "biome check src",
-    "lint:fix": "npm run lint -- --write",
+    "lint:fix": "pnpm lint -- --write",
     "format": "biome format src",
-    "format:write": "npm run format --  --write",
+    "format:write": "pnpm format -- --write",
     "prepare": "husky"
   },
   "release": {
