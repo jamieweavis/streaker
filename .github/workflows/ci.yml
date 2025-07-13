@@ -42,7 +42,7 @@ jobs:
         with:
           version: 10.13.1
       - run: pnpm install --frozen-lockfile
-      - run: pnpm audit --audit-level moderate
+      - run: pnpm audit --audit-level high
       - run: pnpm dlx semantic-release
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
