@@ -16,7 +16,7 @@ const iconTheme = document.getElementById('icon-theme') as HTMLSelectElement;
 
 const closeWindow = () => window.close();
 const savePreferences = () => {
-  // @ts-ignore see preload.ts
+  // @ts-expect-error see preload.ts
   window.streaker.savePreferences({
     username: gitHubUsername.value,
     launchAtLogin: launchAtLogin.checked,
@@ -38,7 +38,7 @@ document
   .getElementById('save-button')
   .addEventListener('click', () => savePreferences());
 
-// @ts-ignore see preload.ts
+// @ts-expect-error see preload.ts
 const initialPreferences = window.streaker.initialPreferences();
 
 gitHubUsername.value = initialPreferences.username || '';
