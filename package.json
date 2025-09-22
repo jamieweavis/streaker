@@ -30,10 +30,8 @@
     "package": "electron-forge package",
     "make": "electron-forge make",
     "publish": "electron-forge publish",
-    "lint": "biome check src",
-    "lint:fix": "pnpm lint -- --write",
-    "format": "biome format src",
-    "format:write": "pnpm format -- --write",
+    "check": "biome check src",
+    "check:write": "pnpm check -- --write",
     "prepare": "husky"
   },
   "release": {
