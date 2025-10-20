@@ -12,68 +12,68 @@ importers:
         specifier: 4.1.15
         version: 4.1.15
       auto-launch:
-        specifier: ^5.0.6
+        specifier: 5.0.6
         version: 5.0.6
       contribution:
-        specifier: ^7.1.2
+        specifier: 7.1.2
         version: 7.1.2
       cron:
-        specifier: ^4.3.3
+        specifier: 4.3.3
         version: 4.3.3
       electron-log:
-        specifier: ^5.4.3
+        specifier: 5.4.3
         version: 5.4.3
       electron-squirrel-startup:
-        specifier: ^1.0.1
+        specifier: 1.0.1
         version: 1.0.1
       electron-store:
-        specifier: ^8.2.0
+        specifier: 8.2.0
         version: 8.2.0
       postcss:
-        specifier: ^8.5.6
+        specifier: 8.5.6
         version: 8.5.6
       tailwindcss:
         specifier: 4.1.15
         version: 4.1.15
       update-electron-app:
-        specifier: ^3.1.1
+        specifier: 3.1.1
         version: 3.1.1
     devDependencies:
       '@biomejs/biome':
-        specifier: ^2.2.6
+        specifier: 2.2.6
         version: 2.2.6
       '@electron-forge/cli':
-        specifier: ^7.10.2
+        specifier: 7.10.2
         version: 7.10.2(encoding@0.1.13)
       '@electron-forge/maker-deb':
-        specifier: ^7.10.2
+        specifier: 7.10.2
         version: 7.10.2
       '@electron-forge/maker-dmg':
-        specifier: ^7.10.2
+        specifier: 7.10.2
         version: 7.10.2
       '@electron-forge/maker-rpm':
-        specifier: ^7.10.2
+        specifier: 7.10.2
         version: 7.10.2
       '@electron-forge/maker-squirrel':
-        specifier: ^7.10.2
+        specifier: 7.10.2
         version: 7.10.2
       '@electron-forge/maker-zip':
-        specifier: ^7.10.2
+        specifier: 7.10.2
         version: 7.10.2
       '@electron-forge/plugin-auto-unpack-natives':
-        specifier: ^7.10.2
+        specifier: 7.10.2
         version: 7.10.2
       '@electron-forge/plugin-fuses':
-        specifier: ^7.10.2
+        specifier: 7.10.2
         version: 7.10.2(@electron/fuses@2.0.0)
       '@electron-forge/plugin-webpack':
-        specifier: ^7.10.2
+        specifier: 7.10.2
         version: 7.10.2
       '@electron-forge/publisher-github':
-        specifier: ^7.10.2
+        specifier: 7.10.2
         version: 7.10.2
       '@electron/fuses':
-        specifier: ^2.0.0
+        specifier: 2.0.0
         version: 2.0.0
       '@semantic-release/changelog':
         specifier: 6.0.3
@@ -94,40 +94,40 @@ importers:
         specifier: 14.1.0
         version: 14.1.0(semantic-release@25.0.1(typescript@5.9.3))
       '@types/auto-launch':
-        specifier: ^5.0.5
+        specifier: 5.0.5
         version: 5.0.5
       '@vercel/webpack-asset-relocator-loader':
-        specifier: ^1.10.0
+        specifier: 1.10.0
         version: 1.10.0(encoding@0.1.13)
       css-loader:
-        specifier: ^7.1.2
+        specifier: 7.1.2
         version: 7.1.2(webpack@5.100.0)
       electron:
         specifier: 38.3.0
         version: 38.3.0
       fork-ts-checker-webpack-plugin:
-        specifier: ^9.1.0
+        specifier: 9.1.0
         version: 9.1.0(typescript@5.9.3)(webpack@5.100.0)
       node-loader:
-        specifier: ^2.1.0
+        specifier: 2.1.0
         version: 2.1.0(webpack@5.100.0)
       postcss-loader:
-        specifier: ^8.2.0
+        specifier: 8.2.0
         version: 8.2.0(postcss@8.5.6)(typescript@5.9.3)(webpack@5.100.0)
       semantic-release:
         specifier: 25.0.1
         version: 25.0.1(typescript@5.9.3)
       style-loader:
-        specifier: ^4.0.0
+        specifier: 4.0.0
         version: 4.0.0(webpack@5.100.0)
       ts-loader:
-        specifier: ^9.5.4
+        specifier: 9.5.4
         version: 9.5.4(typescript@5.9.3)(webpack@5.100.0)
       ts-node:
-        specifier: ^10.9.2
+        specifier: 10.9.2
         version: 10.9.2(@types/node@24.0.13)(typescript@5.9.3)
       typescript:
-        specifier: ^5.9.3
+        specifier: 5.9.3
         version: 5.9.3
 
 packages:
@@ -1748,10 +1748,6 @@ packages:
   end-of-stream@1.4.5:
     resolution: {integrity: sha512-ooEGc6HP26xXq/N+GCGOT0JKCLDGrq2bQUZrQ7gyrJiZANJ/8YDTxTpQBXGMn+WbIQXNVpyWymm7KYVICQnyOg==}
 
-  enhanced-resolve@5.18.2:
-    resolution: {integrity: sha512-6Jw4sE1maoRJo3q8MsSIn2onJFbLTOjY9hlx4DZXmOKvLRd1Ok2kXmAGXaafL2+ijsJZ1ClYbl/pmqr9+k4iUQ==}
-    engines: {node: '>=10.13.0'}
-
   enhanced-resolve@5.18.3:
     resolution: {integrity: sha512-d4lC8xfavMeBjzGr2vECC3fsGXziXZQyJxD868h2M/mBI3PwAuODxAkLkq5HYuvrPYcUtiLzsTo8U3PgX3Ocww==}
     engines: {node: '>=10.13.0'}
@@ -2526,10 +2522,6 @@ packages:
   jest-worker@27.5.1:
     resolution: {integrity: sha512-7vuh85V5cdDofPyxn58nrPjBktZo0u9x1g8WtjQol+jZDaE+fhN+cIvTj11GndBnMnyfrUOG1sZQxCdjKh+DKg==}
     engines: {node: '>= 10.13.0'}
-
-  jiti@2.4.2:
-    resolution: {integrity: sha512-rg9zJN+G4n2nfJl5MW3BMygZX56zKPNVEYYqq7adpmMh4Jn2QNEwhvQlFy6jPVdcod7txZtKHWnyZiA3a0zP7A==}
-    hasBin: true
 
   jiti@2.6.1:
     resolution: {integrity: sha512-ekilCSN1jwRvIbgeg/57YFh8qQDNbwDb9xT/qu2DAHbFFZUicIl4ygVaAvzveMhMVr3LnpSKTNnwt8PoOfmKhQ==}
@@ -4598,7 +4590,7 @@ snapshots:
       global-dirs: 3.0.1
       got: 11.8.6
       interpret: 3.1.1
-      jiti: 2.4.2
+      jiti: 2.6.1
       listr2: 7.0.2
       lodash: 4.17.21
       log-symbols: 4.1.0
@@ -5108,7 +5100,7 @@ snapshots:
   '@jridgewell/trace-mapping@0.3.9':
     dependencies:
       '@jridgewell/resolve-uri': 3.1.2
-      '@jridgewell/sourcemap-codec': 1.5.4
+      '@jridgewell/sourcemap-codec': 1.5.5
 
   '@leichtgewicht/ip-codec@2.0.5': {}
 
@@ -6595,11 +6587,6 @@ snapshots:
     dependencies:
       once: 1.4.0
 
-  enhanced-resolve@5.18.2:
-    dependencies:
-      graceful-fs: 4.2.11
-      tapable: 2.2.2
-
   enhanced-resolve@5.18.3:
     dependencies:
       graceful-fs: 4.2.11
@@ -7454,8 +7441,6 @@ snapshots:
       '@types/node': 24.0.13
       merge-stream: 2.0.0
       supports-color: 8.1.1
-
-  jiti@2.4.2: {}
 
   jiti@2.6.1: {}
 
@@ -8929,7 +8914,7 @@ snapshots:
   ts-loader@9.5.4(typescript@5.9.3)(webpack@5.100.0):
     dependencies:
       chalk: 4.1.2
-      enhanced-resolve: 5.18.2
+      enhanced-resolve: 5.18.3
       micromatch: 4.0.8
       semver: 7.7.2
       source-map: 0.7.4
@@ -9145,7 +9130,7 @@ snapshots:
       acorn-import-phases: 1.0.3(acorn@8.15.0)
       browserslist: 4.25.1
       chrome-trace-event: 1.0.4
-      enhanced-resolve: 5.18.2
+      enhanced-resolve: 5.18.3
       es-module-lexer: 1.7.0
       eslint-scope: 5.1.1
       events: 3.3.0
