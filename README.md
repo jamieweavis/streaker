@@ -1,6 +1,6 @@
 # Streaker <img alt="Streaker Logo" align="right" width=40 height=40 alt="Screenshot" src="./.github/icons/icon.svg">
 
-Cross-platform GitHub contribution streak/statistic tracking menu bar application with reminder notification
+Cross-platform GitHub contribution streak and statistic tracking menu bar application with reminder notification
 
 [![ci](https://github.com/jamieweavis/streaker/actions/workflows/ci.yml/badge.svg)](https://github.com/jamieweavis/streaker/actions)
 [![downloads](https://img.shields.io/github/downloads/jamieweavis/streaker/total.svg)](https://github.com/jamieweavis/streaker/releases)
@@ -11,7 +11,7 @@ Cross-platform GitHub contribution streak/statistic tracking menu bar applicatio
 
 ## Install
 
-Download the latest version of Streaker from the **[GitHub releases](https://github.com/jamieweavis/streaker/releases)** page. Or see the **[Building Locally](#building-locally)** section to build it yourself.
+Download the latest version of Streaker from the **[GitHub releases](https://github.com/jamieweavis/streaker/releases)** page (or see the **[Development](#development)** section to build it yourself).
 
 ## Features
 
@@ -52,50 +52,38 @@ Download the latest version of Streaker from the **[GitHub releases](https://git
 | Contributed | <img width="20" alt="Flame Contributed" src=".github/icons/contributed-flame-mac-white.svg"> | <img width="20" alt="Tile Contributed" src=".github/icons/contributed-tile-mac-white.svg"> | <img width="20" alt="Octocat Contributed" src=".github/icons/contributed-octocat-mac-white.svg"> |
 | Streaking | <img width="20" alt="Flame Crown" src=".github/icons/streaking-flame-mac-white.svg"> | <img width="20" alt="Tile Streaking" src=".github/icons/streaking-tile-mac-white.svg"> | <img width="20" alt="Octocat Streaking" src=".github/icons/streaking-octocat-mac-white.svg"> |
 
-## Building Locally
+## Development
 
-The app is built & deployed for all platforms via GitHub Actions automatically, but you can build it locally for your platform with the following steps:
+### Prerequisites
 
-Clone the repository
-```bash
+- [Node.js](https://github.com/nodejs/node) (22.x.x)
+- [pnpm](https://github.com/pnpm/pnpm) (10.x.x)
+
+Clone the repository and install dependencies:
+
+```sh
 git clone https://github.com/jamieweavis/streaker.git
 
 cd streaker
+
+pnpm install
 ```
 
-Install npm dependencies (recommended to use Node.js v22)
+Package the app for your current platform:
 ```bash
-npm install
+pnpm package
 ```
 
-Package the app for your current platform
+_The packaged app will now be in the `out/` directory_
+
+Run the app in development mode:
 ```bash
-npm run package
-```
-
-The packaged app will now be in the `out/` directory
-
-## Development
-
-Run the app in development mode
-```bash
-npm run start
+pnpm start
 ```
 
 *Only the renderer process currently supports hot reloading, changes in `src/main/` will require a restart*
 
-## Built with
-
-- [TypeScript](https://github.com/microsoft/TypeScript)
-- [Electron](https://github.com/electron/electron)
-- [Tailwind CSS](https://github.com/tailwindlabs/tailwindcss)
-- [Electron Forge](https://github.com/electron/forge)
-
 ## Related
 
-- [Streaker CLI](https://github.com/jamieweavis/streaker-cli) - GitHub contribution streak/statistic tracking command line application with ASCII contribution graph
-- [Contribution](https://github.com/jamieweavis/contribution) - GitHub contribution graph parser - contribution streak & statistic calculator with zero dependencies
-
-## License
-
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+- [Streaker CLI](https://github.com/jamieweavis/streaker-cli) - GitHub contribution streak & statistic tracking command line application with ASCII contribution graph
+- [Contribution](https://github.com/jamieweavis/contribution) - GitHub contribution graph parser calculates contribution streak and commit statistics from a user's GitHub contribution graph page

@@ -2,7 +2,7 @@
   "name": "streaker",
   "productName": "Streaker",
   "private": true,
-  "description": "Cross-platform GitHub contribution streak/statistic tracking menu bar application with reminder notification",
+  "description": "Cross-platform GitHub contribution streak and statistic tracking menu bar application with reminder notification",
   "version": "2.6.1",
   "homepage": "https://github.com/jamieweavis/streaker#readme",
   "license": "MIT",
