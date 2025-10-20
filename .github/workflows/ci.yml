@@ -18,8 +18,6 @@ jobs:
         with:
           node-version: 22.x
       - uses: pnpm/action-setup@v4
-        with:
-          version: 10.13.1
       - run: pnpm install --frozen-lockfile
       - run: pnpm check
       - run: pnpm package # build and package
@@ -39,8 +37,6 @@ jobs:
         with:
           node-version: 22.x
       - uses: pnpm/action-setup@v4
-        with:
-          version: 10.13.1
       - run: pnpm install --frozen-lockfile
       - run: pnpm dlx semantic-release
         env:

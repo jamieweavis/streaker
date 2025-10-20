@@ -8,6 +8,7 @@
   "license": "MIT",
   "main": ".webpack/main",
   "author": "Jamie Weavis",
+  "packageManager": "pnpm@10.18.3",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/jamieweavis/streaker.git"
