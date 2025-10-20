@@ -59,6 +59,8 @@ Download the latest version of Streaker from the **[GitHub releases](https://git
 - [Node.js](https://github.com/nodejs/node) (22.x.x)
 - [pnpm](https://github.com/pnpm/pnpm) (10.x.x)
 
+### Getting Started
+
 Clone the repository and install dependencies:
 
 ```sh
