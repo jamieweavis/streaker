@@ -18,7 +18,7 @@ jobs:
         with:
           node-version: 22.x
       - uses: pnpm/action-setup@v4
-      - run: pnpm install --frozen-lockfile
+      - run: pnpm install
       - run: pnpm check
       - run: pnpm package # build and package
 
@@ -37,7 +37,7 @@ jobs:
         with:
           node-version: 22.x
       - uses: pnpm/action-setup@v4
-      - run: pnpm install --frozen-lockfile
+      - run: pnpm install
       - run: pnpm dlx semantic-release
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

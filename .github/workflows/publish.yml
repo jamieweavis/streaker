@@ -15,7 +15,7 @@ jobs:
         with:
           node-version: 22.x
       - uses: pnpm/action-setup@v4
-      - run: pnpm install --frozen-lockfile
+      - run: pnpm install
       - run: pnpm run publish
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -28,7 +28,7 @@ jobs:
         with:
           node-version: 22.x
       - uses: pnpm/action-setup@v4
-      - run: pnpm install --frozen-lockfile
+      - run: pnpm install
       - run: pnpm run publish
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -41,7 +41,7 @@ jobs:
         with:
           node-version: 22.x
       - uses: pnpm/action-setup@v4
-      - run: pnpm install --frozen-lockfile
+      - run: pnpm install
       - run: pnpm run publish
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
