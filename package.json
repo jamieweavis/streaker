@@ -9,10 +9,7 @@
   "main": ".webpack/main",
   "author": "Jamie Weavis",
   "packageManager": "pnpm@10.18.3",
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/jamieweavis/streaker.git"
-  },
+  "repository": "github:jamieweavis/streaker",
   "bugs": {
     "url": "https://github.com/jamieweavis/streaker/issues"
   },
@@ -34,18 +31,17 @@
     "check": "biome check src",
     "check:write": "pnpm check -- --write"
   },
-  "release": {
-    "branches": [
-      "main"
-    ],
-    "plugins": [
-      "@semantic-release/changelog",
-      "@semantic-release/commit-analyzer",
-      "@semantic-release/npm",
-      "@semantic-release/git",
-      "@semantic-release/github",
-      "@semantic-release/release-notes-generator"
-    ]
+  "dependencies": {
+    "@tailwindcss/postcss": "4.1.15",
+    "auto-launch": "5.0.6",
+    "contribution": "7.1.2",
+    "cron": "4.3.3",
+    "electron-log": "5.4.3",
+    "electron-squirrel-startup": "1.0.1",
+    "electron-store": "8.2.0",
+    "postcss": "8.5.6",
+    "tailwindcss": "4.1.15",
+    "update-electron-app": "3.1.1"
   },
   "devDependencies": {
     "@biomejs/biome": "2.2.6",
@@ -79,16 +75,17 @@
     "ts-node": "10.9.2",
     "typescript": "5.9.3"
   },
-  "dependencies": {
-    "@tailwindcss/postcss": "4.1.15",
-    "auto-launch": "5.0.6",
-    "contribution": "7.1.2",
-    "cron": "4.3.3",
-    "electron-log": "5.4.3",
-    "electron-squirrel-startup": "1.0.1",
-    "electron-store": "8.2.0",
-    "postcss": "8.5.6",
-    "tailwindcss": "4.1.15",
-    "update-electron-app": "3.1.1"
+  "release": {
+    "branches": [
+      "main"
+    ],
+    "plugins": [
+      "@semantic-release/changelog",
+      "@semantic-release/commit-analyzer",
+      "@semantic-release/npm",
+      "@semantic-release/git",
+      "@semantic-release/github",
+      "@semantic-release/release-notes-generator"
+    ]
   }
 }
