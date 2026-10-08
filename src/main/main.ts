@@ -2,7 +2,14 @@ import AutoLaunch from 'auto-launch';
 import { fetchGitHubStats, type GitHubStats } from 'contribution';
 import { CronJob, CronTime } from 'cron';
 import type { NativeImage } from 'electron';
-import { app, BrowserWindow, ipcMain, Notification, Tray } from 'electron';
+import {
+  app,
+  BrowserWindow,
+  ipcMain,
+  Notification,
+  nativeTheme,
+  Tray,
+} from 'electron';
 import { UpdateSourceType, updateElectronApp } from 'update-electron-app';
 
 import { icons } from '../icons';
@@ -32,11 +39,21 @@ const bootstrap = (): void => {
 
   const tray = new Tray(icons[iconTheme].pending);
 
+  // Match the renderer's body background (white / neutral-800) so the native
+  // window doesn't flash white before paint or while closing.
+  const windowBackgroundColor = () =>
+    nativeTheme.shouldUseDarkColors ? '#262626' : '#ffffff';
+
+  nativeTheme.on('updated', () => {
+    preferencesWindow?.setBackgroundColor(windowBackgroundColor());
+  });
+
   const createPreferencesWindow = () => {
     preferencesWindow = new BrowserWindow({
       width: 310,
       height: 485,
       show: false,
+      backgroundColor: windowBackgroundColor(),
       resizable: false,
       maximizable: false,
       minimizable: false,
