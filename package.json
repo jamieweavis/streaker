@@ -29,6 +29,7 @@
     "make": "electron-forge make",
     "publish": "electron-forge publish",
     "check": "biome check src",
+    "typecheck": "tsc --noEmit",
     "check:write": "pnpm check -- --write"
   },
   "dependencies": {
@@ -66,13 +67,12 @@
     "@vercel/webpack-asset-relocator-loader": "1.11.0",
     "css-loader": "7.1.5",
     "electron": "44.7.0",
-    "fork-ts-checker-webpack-plugin": "9.1.0",
+    "esbuild-loader": "4.5.0",
     "node-loader": "2.1.0",
     "postcss-loader": "8.2.1",
     "semantic-release": "25.0.9",
     "style-loader": "4.0.0",
-    "ts-loader": "9.6.2",
-    "typescript": "5.9.3"
+    "typescript": "7.0.2"
   },
   "release": {
     "branches": [

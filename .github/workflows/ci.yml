@@ -20,6 +20,7 @@ jobs:
       - uses: pnpm/action-setup@v6
       - run: pnpm install
       - run: pnpm check
+      - run: pnpm typecheck
       - run: pnpm package # build and package
 
   release:
