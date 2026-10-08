@@ -13,11 +13,11 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
+      - uses: actions/checkout@v7
+      - uses: actions/setup-node@v7
         with:
-          node-version: 22.x
-      - uses: pnpm/action-setup@v4
+          node-version: 24.x
+      - uses: pnpm/action-setup@v6
       - run: pnpm install
       - run: pnpm check
       - run: pnpm package # build and package
@@ -32,11 +32,11 @@ jobs:
       pull-requests: write # to be able to comment on released pull requests
       id-token: write # to enable use of OIDC for npm provenance
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
+      - uses: actions/checkout@v7
+      - uses: actions/setup-node@v7
         with:
-          node-version: 22.x
-      - uses: pnpm/action-setup@v4
+          node-version: 24.x
+      - uses: pnpm/action-setup@v6
       - run: pnpm install
       - run: pnpm dlx semantic-release
         env:
