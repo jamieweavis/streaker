@@ -1,3 +1,10 @@
+## [2.6.4](https://github.com/jamieweavis/streaker/compare/v2.6.3...v2.6.4) (2026-10-08)
+
+
+### Bug Fixes
+
+* **macos:** focus preferences window when opened ([7c249cb](https://github.com/jamieweavis/streaker/commit/7c249cba8699b2b932f2eba4b1b7bee2ac8beaee))
+
 ## [2.6.3](https://github.com/jamieweavis/streaker/compare/v2.6.2...v2.6.3) (2026-10-08)
 
 
