@@ -1,3 +1,4 @@
+import { execSync } from 'node:child_process';
 import type { ForgeConfig } from '@electron-forge/shared-types';
 import { MakerSquirrel } from '@electron-forge/maker-squirrel';
 import { MakerZIP } from '@electron-forge/maker-zip';
@@ -22,6 +23,17 @@ const config: ForgeConfig = {
     executableName: process.platform === 'linux' ? 'streaker' : 'Streaker',
   },
   rebuildConfig: {},
+  hooks: {
+    // Without a Developer ID the app is only ad-hoc signed, and packaging
+    // invalidates that signature, so macOS reports the app as "damaged".
+    // Re-sign the final bundle so users can use "Open Anyway" instead.
+    postPackage: async (_config, { platform, outputPaths }) => {
+      if (platform !== 'darwin') return;
+      for (const outputPath of outputPaths) {
+        execSync(`codesign --force --deep --sign - "${outputPath}/Streaker.app"`);
+      }
+    },
+  },
   makers: [
     new MakerSquirrel({}),
     new MakerZIP({}, ['darwin']),
