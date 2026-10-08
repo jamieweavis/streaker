@@ -1,3 +1,10 @@
+## [2.6.3](https://github.com/jamieweavis/streaker/compare/v2.6.2...v2.6.3) (2026-10-08)
+
+
+### Bug Fixes
+
+* match native window background to theme to prevent white flash ([14175af](https://github.com/jamieweavis/streaker/commit/14175afb0832b88eceb3fb78acf87bda17692832))
+
 ## [2.6.2](https://github.com/jamieweavis/streaker/compare/v2.6.1...v2.6.2) (2026-10-08)
 
 

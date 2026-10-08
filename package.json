@@ -3,7 +3,7 @@
   "productName": "Streaker",
   "private": true,
   "description": "Cross-platform GitHub contribution streak and statistic tracking menu bar application with reminder notification",
-  "version": "2.6.2",
+  "version": "2.6.3",
   "homepage": "https://github.com/jamieweavis/streaker#readme",
   "license": "MIT",
   "main": ".webpack/main/index.cjs",
