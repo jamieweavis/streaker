@@ -1,3 +1,11 @@
+## [2.6.2](https://github.com/jamieweavis/streaker/compare/v2.6.1...v2.6.2) (2026-10-08)
+
+
+### Bug Fixes
+
+* re-sign macOS app bundle after packaging ([1fcf094](https://github.com/jamieweavis/streaker/commit/1fcf09403c818231eca49dab802294c0fd8ba9fa))
+* use capitalised executable name on macOS and Windows ([74ccdbd](https://github.com/jamieweavis/streaker/commit/74ccdbdea198976aee0f13b2a9d11ac1c50633ab))
+
 ## [2.6.1](https://github.com/jamieweavis/streaker/compare/v2.6.0...v2.6.1) (2025-04-14)
 
 
