@@ -18,7 +18,8 @@ const config: ForgeConfig = {
     icon: './src/icons/app/icon',
     appCategoryType: 'public.app-category.developer-tools',
     extraResource: ['./src/'],
-    executableName: 'streaker',
+    // Lowercase on Linux: the deb/rpm makers expect the binary to match package.json `name`
+    executableName: process.platform === 'linux' ? 'streaker' : 'Streaker',
   },
   rebuildConfig: {},
   makers: [
