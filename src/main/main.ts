@@ -48,6 +48,15 @@ const bootstrap = (): void => {
     preferencesWindow?.setBackgroundColor(windowBackgroundColor());
   });
 
+  const focusPreferencesWindow = () => {
+    if (!preferencesWindow) return;
+    if (preferencesWindow.isMinimized()) preferencesWindow.restore();
+    // As a tray app we're never the active app on macOS, so showing or
+    // focusing the window alone leaves it behind the frontmost app.
+    if (process.platform === 'darwin') app.focus({ steal: true });
+    preferencesWindow.focus();
+  };
+
   const createPreferencesWindow = () => {
     preferencesWindow = new BrowserWindow({
       width: 310,
@@ -73,11 +82,12 @@ const bootstrap = (): void => {
     menuBuilder.buildMenu();
 
     preferencesWindow.on('ready-to-show', () => {
+      if (process.platform === 'darwin') app.dock.show();
       if (preferencesWindow) {
         preferencesWindow.show();
+        focusPreferencesWindow();
         if (isDev) preferencesWindow.webContents.openDevTools();
       }
-      if (process.platform === 'darwin') app.dock.show();
     });
 
     preferencesWindow.on('closed', () => {
@@ -101,11 +111,7 @@ const bootstrap = (): void => {
       createPreferencesWindow: createPreferencesWindow,
       requestContributionData: fetchContributionStats,
       isPreferencesWindowOpen: () => !!preferencesWindow,
-      focusPreferencesWindow: () => {
-        if (!preferencesWindow) return;
-        if (preferencesWindow.isMinimized()) preferencesWindow.restore();
-        preferencesWindow.focus();
-      },
+      focusPreferencesWindow,
     });
     tray.setContextMenu(trayMenu);
     if (icon) tray.setImage(icon);
