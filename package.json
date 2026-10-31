@@ -66,7 +66,7 @@
     "@types/auto-launch": "5.0.5",
     "@vercel/webpack-asset-relocator-loader": "1.11.0",
     "css-loader": "7.1.5",
-    "electron": "44.7.0",
+    "electron": "44.9.1",
     "esbuild-loader": "4.5.0",
     "node-loader": "2.1.0",
     "postcss-loader": "8.2.1",
