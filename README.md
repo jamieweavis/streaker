@@ -1,91 +1,97 @@
-# Streaker <img alt="Streaker Logo" align="right" width=40 height=40 alt="Screenshot" src="./.github/icons/icon.svg">
+<div align="center">
+
+<img src="assets/app/icon.png" alt="Streaker icon" width="128" height="128">
+
+# Streaker
 
 Cross-platform GitHub contribution streak and statistic tracking menu bar application with reminder notification
 
-[![ci](https://github.com/jamieweavis/streaker/actions/workflows/ci.yml/badge.svg)](https://github.com/jamieweavis/streaker/actions)
-[![downloads](https://img.shields.io/github/downloads/jamieweavis/streaker/total.svg)](https://github.com/jamieweavis/streaker/releases)
-[![version](https://img.shields.io/github/release/jamieweavis/streaker.svg)](https://github.com/jamieweavis/streaker/releases)
-[![license](https://img.shields.io/badge/license-MIT-blue.svg)](https://github.com/jamieweavis/streaker/blob/main/LICENSE)
+[![Build](https://github.com/jamieweavis/streaker/actions/workflows/build.yml/badge.svg)](https://github.com/jamieweavis/streaker/actions/workflows/build.yml)
+[![Latest release](https://img.shields.io/github/v/release/jamieweavis/streaker?label=release&color=f97316)](https://github.com/jamieweavis/streaker/releases/latest)
+[![Downloads](https://img.shields.io/github/downloads/jamieweavis/streaker/total?color=f97316)](https://github.com/jamieweavis/streaker/releases)
+[![License: MIT](https://img.shields.io/badge/license-MIT-blue)](LICENSE)
+![Platforms](https://img.shields.io/badge/platform-macOS%20%7C%20Windows%20%7C%20Linux-lightgrey)
+![Rust](https://img.shields.io/badge/rust-1.88%2B-orange)
 
-<img width="716" alt="Screenshot" src=".github/icons/screenshot.png">
+[**Download**](#download) · [Features](#features) · [Usage](#usage) · [Development](#development) · [Changelog](CHANGELOG.md)
 
-## Install
+<img src="docs/screenshot.png" alt="Streaker screenshot" width="600">
 
-Download the latest version of Streaker from the **[GitHub releases](https://github.com/jamieweavis/streaker/releases)** page (or see the **[Development](#development)** section to build it yourself).
+</div>
+
+---
 
 ## Features
 
-- Menu bar contribution stats
-  - Streak
-    - Best
-    - Current
-    - Previous
-  - Contributions
-    - Most (day)
-    - Today
-    - Total (year)
-- Menu bar icon changes depending on contribution status
-  - Empty - you haven't contributed today
-  - Filled - you have contributed today
-  - Crown - you're currently on your best streak
-- Three different menu bar icon themes
-  - Flame
-  - Tile
-  - Octocat
-- Reminder notification so you don't lose your streak
+- **Streak at a glance**: a menu bar icon that changes as you contribute, so you know where you stand without opening a browser
+- **Contribution stats**: your best, current and previous streak, plus your most, today's and total contributions, one click away
+- **Streak reminders**: an optional daily notification at a time you choose, sent only if your streak is at risk
+- **Icon themes**: pick a **Flame**, **Tile** or **Octocat** menu bar icon
+- **Launch at login**: set it once and forget about it
+- **No sign-in needed**: just your GitHub username, no tokens or OAuth
+- **Native and lightweight**: a single small Rust binary for macOS, Windows and Linux
 
-### Menu Bar Icons
+## Download
 
-#### Light Mode
+Grab the latest build for your platform from the [**releases page**](https://github.com/jamieweavis/streaker/releases/latest):
 
-| State | Flame | Tile | Octocat |
-| ----- | ----- | ---- | ------- |
-| Pending | <img width="20" alt="Flame Empty" src=".github/icons/pending-flame-mac.svg"> | <img width="20" alt="Tile Empty" src=".github/icons/pending-tile-mac.svg"> | <img width="20" alt="Octocat Empty" src=".github/icons/pending-octocat-mac.svg"> |
-| Contributed | <img width="20" alt="Flame Contributed" src=".github/icons/contributed-flame-mac.svg"> | <img width="20" alt="Tile Contributed" src=".github/icons/contributed-tile-mac.svg"> | <img width="20" alt="Octocat Contributed" src=".github/icons/contributed-octocat-mac.svg"> |
-| Streaking | <img width="20" alt="Flame Crown" src=".github/icons/streaking-flame-mac.svg"> | <img width="20" alt="Tile Streaking" src=".github/icons/streaking-tile-mac.svg"> | <img width="20" alt="Octocat Streaking" src=".github/icons/streaking-octocat-mac.svg"> |
+| Platform | File |
+| --- | --- |
+| **macOS** (Apple Silicon & Intel, 11.0+) | `Streaker-<version>-macos-universal.dmg` |
+| **Windows** (x64) | `Streaker-<version>-windows-x64-setup.exe` installer, or the portable `Streaker-<version>-windows-x64.exe` |
+| **Linux** (x86_64 / aarch64) | `Streaker-<version>-linux-<arch>.deb`, or the `.tar.gz` binary |
 
-#### Dark Mode
+> [!NOTE]
+> The macOS app is ad-hoc signed but not notarised, so Gatekeeper will block it the first time. Right-click Streaker.app and choose **Open**, or run:
+>
+> ```sh
+> xattr -dr com.apple.quarantine /Applications/Streaker.app
+> ```
 
-| State | Flame | Tile | Octocat |
-| ----- | ----- | ---- | ------- |
-| Pending | <img width="20" alt="Flame Empty" src=".github/icons/pending-flame-mac-white.svg"> | <img width="20" alt="Tile Empty" src=".github/icons/pending-tile-mac-white.svg"> | <img width="20" alt="Octocat Empty" src=".github/icons/pending-octocat-mac-white.svg"> |
-| Contributed | <img width="20" alt="Flame Contributed" src=".github/icons/contributed-flame-mac-white.svg"> | <img width="20" alt="Tile Contributed" src=".github/icons/contributed-tile-mac-white.svg"> | <img width="20" alt="Octocat Contributed" src=".github/icons/contributed-octocat-mac-white.svg"> |
-| Streaking | <img width="20" alt="Flame Crown" src=".github/icons/streaking-flame-mac-white.svg"> | <img width="20" alt="Tile Streaking" src=".github/icons/streaking-tile-mac-white.svg"> | <img width="20" alt="Octocat Streaking" src=".github/icons/streaking-octocat-mac-white.svg"> |
+## Usage
+
+1. Launch **Streaker**. It lives in your menu bar (or system tray), not the Dock or taskbar.
+2. Click the icon and choose **Set GitHub username...**
+3. Enter your username, adjust the settings to taste and hit **Save**.
+
+That's it. Your stats appear in the menu and the icon updates as you contribute.
 
 ## Development
 
-### Prerequisites
+Requires stable Rust via [rustup](https://rustup.rs).
 
-- [Node.js](https://github.com/nodejs/node) (>=22.x.x)
-- [pnpm](https://github.com/pnpm/pnpm) (>=10.x.x)
-
-### Getting Started
-
-Clone the repository and install dependencies:
+Common commands are in the [`justfile`](justfile). Install [just](https://github.com/casey/just):
 
 ```sh
-git clone https://github.com/jamieweavis/streaker.git
-
-cd streaker
-
-pnpm install
+brew install just        # or: cargo install just
 ```
 
-Package the app for your current platform:
-```bash
-pnpm package
+Then run `just` to list them (`just run`, `just check`, `just install`, ...). Or use cargo directly:
+
+```sh
+cargo run                # run the app
+cargo test               # run all tests
+cargo clippy --all-targets
+cargo build --release
 ```
 
-_The packaged app will now be in the `out/` directory_
+Preferences are stored as JSON and logs are written to the platform's standard directories (e.g. `~/Library/Application Support/com.jamieweavis.Streaker` on macOS).
 
-Run the app in development mode:
-```bash
-pnpm start
+### Packaging
+
+The crate carries [`cargo-bundle`](https://github.com/burtonageo/cargo-bundle) metadata:
+
+```sh
+cargo install cargo-bundle
+cargo bundle --release   # run from the repo root: .app/.dmg on macOS, .deb on Linux
 ```
 
-*Only the renderer process currently supports hot reloading, changes in `src/main/` will require a restart*
+
+## Rust rewrite
+
+Streaker v3 is a rewrite in Rust. Up to v2 it was an Electron app (see [v2.6.4](https://github.com/jamieweavis/streaker/tree/v2.6.4)), which meant shipping a whole copy of Chromium just to show one preferences window. The Rust version has the same features, with downloads up to 20x smaller and about a third of the memory use. See [the Rust rewrite doc](docs/rust-rewrite.md) for the motivation and the numbers.
 
 ## Related
 
-- [Streaker CLI](https://github.com/jamieweavis/streaker-cli) - GitHub contribution streak & statistic tracking command line application with ASCII contribution graph
-- [Contribution](https://github.com/jamieweavis/contribution) - GitHub contribution graph parser calculates contribution streak and commit statistics from a user's GitHub contribution graph page
+* [Streaker CLI](https://github.com/jamieweavis/streaker-cli) - GitHub contribution streak & statistic tracking command line application with ASCII contribution graph
+* [Contribution](https://github.com/jamieweavis/contribution) - GitHub contribution graph parser calculates contribution streak and commit statistics from a user's GitHub contribution graph page

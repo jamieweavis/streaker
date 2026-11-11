@@ -1,0 +1,250 @@
+name: build
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+permissions:
+  contents: read
+
+env:
+  CARGO_TERM_COLOR: always
+
+concurrency:
+  group: build-${{ github.event.pull_request.number || github.sha }}
+  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
+
+jobs:
+  check:
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, macos-latest, windows-latest]
+    runs-on: ${{ matrix.os }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v6
+
+      - name: Install Rust
+        uses: dtolnay/rust-toolchain@stable
+        with:
+          components: clippy, rustfmt
+
+      - name: Cache Rust
+        uses: Swatinem/rust-cache@v2
+        with:
+          save-if: ${{ github.ref == 'refs/heads/main' }}
+
+      - name: Check formatting
+        if: ${{ matrix.os == 'ubuntu-latest' }}
+        run: cargo fmt --all --check
+
+      - name: Lint
+        run: cargo clippy --all-targets -- -D warnings
+
+      - name: Test
+        run: cargo test
+
+      - name: Build
+        if: ${{ matrix.os == 'windows-latest' }}
+        run: cargo build
+
+      - name: Build installer
+        if: ${{ matrix.os == 'windows-latest' }}
+        shell: pwsh
+        run: scripts/build-installer.ps1 0.0.0 target/installer target/debug/Streaker.exe
+
+      - name: Cache cargo-bundle
+        id: cargo-bundle-cache
+        if: ${{ matrix.os == 'ubuntu-latest' }}
+        uses: actions/cache@v4
+        with:
+          path: ~/.cargo/bin/cargo-bundle
+          key: cargo-bundle-0.12.0-${{ runner.os }}-${{ runner.arch }}
+
+      - name: Install cargo-bundle
+        if: ${{ matrix.os == 'ubuntu-latest' && steps.cargo-bundle-cache.outputs.cache-hit != 'true' }}
+        run: cargo install cargo-bundle --debug --locked --version 0.12.0
+
+      - name: Build deb
+        if: ${{ matrix.os == 'ubuntu-latest' }}
+        run: cargo bundle --format deb
+
+  release-pr:
+    if: ${{ github.event_name == 'push' && github.repository_owner == 'jamieweavis' }}
+    needs: check
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      pull-requests: write
+    concurrency:
+      group: release-plz-${{ github.ref }}
+      cancel-in-progress: false
+    steps:
+      - &checkout-release-plz
+        name: Checkout
+        uses: actions/checkout@v6
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+          token: ${{ secrets.RELEASE_PLZ_TOKEN }}
+
+      - &install-rust
+        name: Install Rust
+        uses: dtolnay/rust-toolchain@stable
+
+      - name: Open release PR
+        uses: release-plz/action@v0.5
+        with:
+          command: release-pr
+        env:
+          GITHUB_TOKEN: ${{ secrets.RELEASE_PLZ_TOKEN }}
+
+  release:
+    if: ${{ github.event_name == 'push' && github.repository_owner == 'jamieweavis' }}
+    needs: check
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      pull-requests: read
+    outputs:
+      created: ${{ steps.release-plz.outputs.releases_created }}
+      tag: ${{ fromJSON(steps.release-plz.outputs.releases || '[{}]')[0].tag }}
+      version: ${{ fromJSON(steps.release-plz.outputs.releases || '[{}]')[0].version }}
+    steps:
+      - *checkout-release-plz
+
+      - *install-rust
+
+      - name: Create release
+        id: release-plz
+        uses: release-plz/action@v0.5
+        with:
+          command: release
+        env:
+          GITHUB_TOKEN: ${{ secrets.RELEASE_PLZ_TOKEN }}
+
+  package-macos:
+    needs: release
+    if: ${{ needs.release.outputs.created == 'true' }}
+    runs-on: macos-latest
+    permissions:
+      contents: write
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v6
+        with:
+          persist-credentials: false
+
+      - name: Install Rust
+        uses: dtolnay/rust-toolchain@stable
+        with:
+          targets: aarch64-apple-darwin, x86_64-apple-darwin
+
+      - name: Cache Rust
+        uses: Swatinem/rust-cache@v2
+
+      - name: Build
+        run: |
+          cargo build --release --target aarch64-apple-darwin
+          cargo build --release --target x86_64-apple-darwin
+
+      - name: Build dmg
+        run: |
+          scripts/build-dmg.sh "${{ needs.release.outputs.version }}" target/dmg \
+            target/aarch64-apple-darwin/release/Streaker \
+            target/x86_64-apple-darwin/release/Streaker
+
+      - name: Upload to release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: gh release upload "${{ needs.release.outputs.tag }}" target/dmg/*.dmg
+
+  package-windows:
+    needs: release
+    if: ${{ needs.release.outputs.created == 'true' }}
+    runs-on: windows-latest
+    permissions:
+      contents: write
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v6
+        with:
+          persist-credentials: false
+
+      - name: Install Rust
+        uses: dtolnay/rust-toolchain@stable
+
+      - name: Cache Rust
+        uses: Swatinem/rust-cache@v2
+
+      - name: Build
+        run: cargo build --release
+
+      - name: Build installer
+        shell: pwsh
+        run: scripts/build-installer.ps1 "${{ needs.release.outputs.version }}" target/installer target/release/Streaker.exe
+
+      - name: Upload to release
+        shell: bash
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          exe="Streaker-${{ needs.release.outputs.version }}-windows-x64.exe"
+          cp target/release/Streaker.exe "$exe"
+          gh release upload "${{ needs.release.outputs.tag }}" "$exe" target/installer/*.exe
+
+  package-linux:
+    needs: release
+    if: ${{ needs.release.outputs.created == 'true' }}
+    strategy:
+      matrix:
+        include:
+          - runner: ubuntu-22.04
+            arch: x86_64
+          - runner: ubuntu-22.04-arm
+            arch: aarch64
+    runs-on: ${{ matrix.runner }}
+    permissions:
+      contents: write
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v6
+        with:
+          persist-credentials: false
+
+      - name: Install Rust
+        uses: dtolnay/rust-toolchain@stable
+
+      - name: Cache Rust
+        uses: Swatinem/rust-cache@v2
+        with:
+          key: ${{ matrix.arch }}
+
+      - name: Install cargo-bundle
+        run: cargo install cargo-bundle --debug --locked --version 0.12.0
+
+      - name: Build deb
+        run: cargo bundle --release --format deb
+
+      - name: Upload to release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          base="Streaker-${{ needs.release.outputs.version }}-linux-${{ matrix.arch }}"
+          tar -czf "$base.tar.gz" -C target/release Streaker
+          cp target/release/bundle/deb/*.deb "$base.deb"
+          gh release upload "${{ needs.release.outputs.tag }}" "$base.tar.gz" "$base.deb"
+
+  publish:
+    needs: [release, package-macos, package-windows, package-linux]
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - name: Publish release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: gh release edit "${{ needs.release.outputs.tag }}" --repo "${{ github.repository }}" --draft=false --latest

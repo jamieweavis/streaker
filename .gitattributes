@@ -1,0 +1,4 @@
+*.html linguist-vendored
+*.sh linguist-vendored
+*.iss linguist-vendored
+*.ps1 linguist-vendored

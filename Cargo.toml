@@ -1,0 +1,68 @@
+[package]
+name = "streaker"
+version = "3.0.0"
+description = "Cross-platform GitHub contribution streak and statistic tracking menu bar application with reminder notification"
+homepage = "https://github.com/jamieweavis/streaker"
+repository = "https://github.com/jamieweavis/streaker"
+authors = ["Jamie Weavis"]
+license = "MIT"
+edition = "2024"
+rust-version = "1.88"
+# Not published to crates.io: releases are GitHub-only (see .github/workflows/ci.yml).
+publish = false
+build = "scripts/build.rs"
+
+# Capitalised so the app bundle executable and Windows exe are `Streaker` / `Streaker.exe`.
+[[bin]]
+name = "Streaker"
+path = "src/main.rs"
+
+[dependencies]
+anyhow = "1.0.104"
+auto-launch = "0.6.0"
+chrono = "0.4.45"
+directories = "6.0.0"
+egui = "0.36.2"
+egui-wgpu = { version = "0.36.2", features = ["winit"] }
+egui-winit = { version = "0.36.2", features = ["accesskit"] }
+image = { version = "0.25.10", default-features = false, features = ["png", "jpeg", "ico"] }
+log = "0.4.34"
+notify-rust = "4.18.2"
+open = "5.4.4"
+pollster = "1.0.1"
+scraper = { version = "0.27.0", default-features = false }
+serde = { version = "1.0.229", features = ["derive"] }
+serde_json = "1.0.153"
+simplelog = "0.12.2"
+# KSNI is a pure D-Bus StatusNotifierItem backend on Linux: no GTK main loop required.
+tray-icon = { version = "0.26.1", default-features = false, features = ["ksni"] }
+ureq = "3.4.2"
+winit = "0.30"
+
+[target.'cfg(target_os = "macos")'.dependencies]
+objc2 = "0.6.5"
+objc2-app-kit = "0.3.2"
+objc2-foundation = "0.3.2"
+
+[target.'cfg(windows)'.build-dependencies]
+winresource = "0.1.31"
+
+[lints.clippy]
+all = { level = "warn", priority = -1 }
+
+[profile.release]
+lto = "thin"
+strip = true
+
+# Packaging metadata for `cargo bundle` (https://github.com/burtonageo/cargo-bundle).
+# Paths are relative to the directory `cargo bundle` is run from: run it from the repo root.
+[package.metadata.bundle]
+name = "Streaker"
+identifier = "com.jamieweavis.streaker"
+icon = ["assets/app/icon.icns", "assets/app/icon.ico"]
+category = "public.app-category.developer-tools"
+short_description = "GitHub contribution streak tracking menu bar app"
+copyright = "Copyright © 2018-2026 Jamie Weavis (MIT License)"
+
+[package.metadata.bundle.osx]
+minimum_system_version = "11.0"

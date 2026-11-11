@@ -1,6 +1,0 @@
-nodeLinker: hoisted
-shamefullyHoist: true
-onlyBuiltDependencies:
-  - electron-winstaller
-  - fs-xattr
-  - macos-alias
