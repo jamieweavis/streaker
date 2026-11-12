@@ -7,11 +7,10 @@
 Cross-platform GitHub contribution streak and statistic tracking menu bar application with reminder notification
 
 [![Build](https://github.com/jamieweavis/streaker/actions/workflows/build.yml/badge.svg)](https://github.com/jamieweavis/streaker/actions/workflows/build.yml)
-[![Latest release](https://img.shields.io/github/v/release/jamieweavis/streaker?label=release&color=f97316)](https://github.com/jamieweavis/streaker/releases/latest)
-[![Downloads](https://img.shields.io/github/downloads/jamieweavis/streaker/total?color=f97316)](https://github.com/jamieweavis/streaker/releases)
+[![Downloads](https://img.shields.io/github/downloads/jamieweavis/streaker/total.svg)](https://github.com/jamieweavis/streaker/releases)
+[![Version](https://img.shields.io/github/release/jamieweavis/streaker.svg)](https://github.com/jamieweavis/streaker/releases)
 [![License: MIT](https://img.shields.io/badge/license-MIT-blue)](LICENSE)
 ![Platforms](https://img.shields.io/badge/platform-macOS%20%7C%20Windows%20%7C%20Linux-lightgrey)
-![Rust](https://img.shields.io/badge/rust-1.88%2B-orange)
 
 [**Download**](#download) · [Features](#features) · [Usage](#usage) · [Development](#development) · [Changelog](CHANGELOG.md)
 
