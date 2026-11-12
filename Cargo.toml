@@ -1,6 +1,6 @@
 [package]
 name = "streaker"
-version = "3.0.0"
+version = "3.0.1"
 description = "Cross-platform GitHub contribution streak and statistic tracking menu bar application with reminder notification"
 homepage = "https://github.com/jamieweavis/streaker"
 repository = "https://github.com/jamieweavis/streaker"
