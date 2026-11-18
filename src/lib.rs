@@ -11,6 +11,7 @@ mod platform;
 mod preferences;
 mod preferences_window;
 mod schedule;
+mod stats_cache;
 mod tray;
 mod update;
 
@@ -28,6 +29,7 @@ use winit::event_loop::EventLoop;
 use crate::app::{App, UserEvent};
 use crate::avatar::AvatarCache;
 use crate::preferences::PreferencesStore;
+use crate::stats_cache::StatsCache;
 
 /// The log file is truncated on startup once it grows beyond this.
 const MAX_LOG_BYTES: u64 = 1024 * 1024;
@@ -60,6 +62,7 @@ pub fn run() -> anyhow::Result<()> {
         event_loop.create_proxy(),
         PreferencesStore::new(dirs.config_dir().to_owned()),
         AvatarCache::new(dirs.cache_dir().to_owned()),
+        StatsCache::new(dirs.cache_dir().to_owned()),
     );
     event_loop.run_app(&mut app)?;
     log::info!("Exiting");

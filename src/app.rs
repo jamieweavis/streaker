@@ -10,12 +10,13 @@ use winit::window::WindowId;
 
 use crate::avatar::AvatarCache;
 use crate::command::Command;
-use crate::contribution::{FetchError, GitHubStats};
+use crate::contribution::{Contributions, FetchError, GitHubStats};
 use crate::icons::IconState;
 use crate::platform;
 use crate::preferences::{Preferences, PreferencesStore};
 use crate::preferences_window::{PreferencesWindow, WindowAction};
 use crate::schedule::{self, FetchSchedule, Reminder};
+use crate::stats_cache::{CachedContributions, StatsCache};
 use crate::tray::{Tray, TrayView};
 use crate::update::Release;
 
@@ -31,7 +32,7 @@ pub enum UserEvent {
     /// A native menu item was clicked.
     Menu(MenuId),
     /// A background stats fetch finished.
-    StatsFetched { username: String, result: Result<GitHubStats, FetchError> },
+    StatsFetched { username: String, result: Result<Contributions, FetchError> },
     /// A background avatar fetch for the preferences window finished.
     AvatarFetched { username: String, avatar: Option<egui::ColorImage> },
     /// A background check for a newer release finished.
@@ -51,9 +52,15 @@ pub struct App {
     store: PreferencesStore,
     preferences: Preferences,
 
+    /// The latest fetched contributions: from the cache until the first fetch succeeds, and kept
+    /// when a fetch fails.
+    contributions: Option<Contributions>,
+    stats_cache: StatsCache,
+    /// `contributions` as of today: see [`App::refresh_stats`].
     stats: Option<GitHubStats>,
     stats_fetched_at: Option<chrono::DateTime<chrono::Local>>,
-    fetch_error: Option<String>,
+    /// Why the latest fetch failed, if it did.
+    fetch_error: Option<FetchError>,
     fetch_in_flight: bool,
     refetch_when_done: bool,
     fetch_schedule: FetchSchedule,
@@ -78,15 +85,28 @@ pub struct App {
 }
 
 impl App {
-    pub fn new(proxy: EventLoopProxy<UserEvent>, store: PreferencesStore, avatar_cache: AvatarCache) -> Self {
+    pub fn new(
+        proxy: EventLoopProxy<UserEvent>,
+        store: PreferencesStore,
+        avatar_cache: AvatarCache,
+        stats_cache: StatsCache,
+    ) -> Self {
         let preferences = store.load();
         let avatar = avatar_cache.load(&preferences.username);
+        let cached = stats_cache.load(&preferences.username);
+        if let Some(cached) = &cached {
+            log::info!("Loaded contributions cached at {}", cached.fetched_at);
+        }
+        let stats_fetched_at = cached.as_ref().map(|cached| cached.fetched_at.with_timezone(&chrono::Local));
+        let contributions = cached.map(|cached| cached.contributions);
         Self {
             proxy,
             store,
             preferences,
-            stats: None,
-            stats_fetched_at: None,
+            stats: contributions.as_ref().map(Contributions::stats),
+            contributions,
+            stats_cache,
+            stats_fetched_at,
             fetch_error: None,
             fetch_in_flight: false,
             refetch_when_done: false,
@@ -144,6 +164,10 @@ impl App {
             self.fetch_schedule.fetch_now();
         }
 
+        // Keeps the notice's "updated ... ago" current while fetches are failing.
+        if self.refresh_stats() || self.fetch_error.is_some() {
+            self.update_tray();
+        }
         self.check_reminder(&now);
 
         if !self.fetch_in_flight && self.fetch_schedule.is_due(now.to_utc()) {
@@ -177,21 +201,31 @@ impl App {
         }
     }
 
+    /// Recalculates the stats for the current date, as the contributions they come from may have
+    /// been fetched on an earlier one. Returns whether they changed.
+    fn refresh_stats(&mut self) -> bool {
+        let stats = self.contributions.as_ref().map(Contributions::stats);
+        let changed = stats != self.stats;
+        self.stats = stats;
+        changed
+    }
+
     fn tray_view(&self) -> TrayView<'_> {
         let username = self.preferences.username.as_str();
-        let error =
-            if username.is_empty() { Some("Set your GitHub username") } else { self.fetch_error.as_deref() };
-        let icon = match (&self.stats, error) {
-            (_, Some(_)) => IconState::Error,
-            (Some(stats), None) => IconState::for_stats(stats),
-            (None, None) => IconState::Pending,
+        let has_username = !username.is_empty();
+        let fetch_error = self.fetch_error.as_ref().filter(|_| has_username);
+        let error = if has_username {
+            fetch_error.map(|e| e.message.as_str())
+        } else {
+            Some("Set your GitHub username")
         };
         TrayView {
             username,
             stats: self.stats.as_ref(),
-            icon,
+            icon: IconState::new(has_username, self.stats.as_ref()),
             theme: self.preferences.icon_theme,
             error,
+            notice: fetch_error.map(|e| fetch_notice(e, self.stats_fetched_at, chrono::Local::now())),
             update: self.update.as_ref().map(|release| release.version.as_str()),
         }
     }
@@ -218,29 +252,35 @@ impl App {
         let username = self.preferences.username.clone();
         let proxy = self.proxy.clone();
         std::thread::spawn(move || {
-            let result = crate::contribution::fetch_github_stats(&username).map_err(FetchError::from);
+            let result = crate::contribution::fetch_contributions(&username).map_err(FetchError::from);
             // Only fails if the event loop has exited.
             let _ = proxy.send_event(UserEvent::StatsFetched { username, result });
         });
     }
 
-    fn on_stats_fetched(&mut self, username: String, result: Result<GitHubStats, FetchError>) {
+    fn on_stats_fetched(&mut self, username: String, result: Result<Contributions, FetchError>) {
         self.fetch_in_flight = false;
 
         // Ignore results for a username that has since been changed.
         if username == self.preferences.username {
             match result {
-                Ok(stats) => {
-                    self.fetch_schedule.succeeded(chrono::Utc::now());
-                    log::debug!("Fetched contribution stats for {username}: {stats:?}");
-                    self.stats = Some(stats);
-                    self.stats_fetched_at = Some(chrono::Local::now());
+                Ok(contributions) => {
+                    let now = chrono::Utc::now();
+                    self.fetch_schedule.succeeded(now);
+                    let cached = CachedContributions { username, fetched_at: now, contributions };
+                    if let Err(e) = self.stats_cache.save(&cached) {
+                        log::error!("Failed to cache contributions: {e:#}");
+                    }
+                    self.contributions = Some(cached.contributions);
+                    self.refresh_stats();
+                    log::debug!("Fetched contribution stats for {}: {:?}", cached.username, self.stats);
+                    self.stats_fetched_at = Some(now.with_timezone(&chrono::Local));
                     self.fetch_error = None;
                 }
                 Err(e) => {
                     self.fetch_schedule.failed(chrono::Utc::now(), e.retry_after);
                     log::warn!("Failed to fetch contribution stats for {username}: {}", e.message);
-                    self.fetch_error = Some(e.message);
+                    self.fetch_error = Some(e);
                 }
             }
             self.update_tray();
@@ -308,6 +348,7 @@ impl App {
         }
 
         if self.preferences.username != previous.username {
+            self.contributions = None;
             self.stats = None;
             self.stats_fetched_at = None;
             self.fetch_error = None;
@@ -391,6 +432,34 @@ impl App {
     }
 }
 
+/// The menu's notice for a failed fetch: why it failed, and how old the stats being shown are.
+fn fetch_notice(
+    error: &FetchError,
+    fetched_at: Option<chrono::DateTime<chrono::Local>>,
+    now: chrono::DateTime<chrono::Local>,
+) -> String {
+    let reason = if error.no_connection { "No connection".to_owned() } else { capitalised(&error.message) };
+    match fetched_at {
+        Some(fetched_at) => format!("{reason}. Stats last updated {}", time_ago(now - fetched_at)),
+        None if error.no_connection => format!("{reason}. Reconnect to load stats"),
+        None => reason,
+    }
+}
+
+fn capitalised(text: &str) -> String {
+    let mut chars = text.chars();
+    chars.next().map_or_else(String::new, |first| first.to_uppercase().chain(chars).collect())
+}
+
+fn time_ago(elapsed: chrono::TimeDelta) -> String {
+    match (elapsed.num_minutes(), elapsed.num_hours(), elapsed.num_days()) {
+        (..1, _, _) => "just now".to_owned(),
+        (minutes, ..1, _) => format!("{minutes}m ago"),
+        (_, hours, ..1) => format!("{hours}h ago"),
+        (_, _, days) => format!("{days}d ago"),
+    }
+}
+
 impl ApplicationHandler<UserEvent> for App {
     fn new_events(&mut self, event_loop: &ActiveEventLoop, cause: StartCause) {
         if cause == StartCause::Init {
@@ -451,5 +520,44 @@ impl ApplicationHandler<UserEvent> for App {
             }
         }
         event_loop.set_control_flow(ControlFlow::WaitUntil(wake_at));
+    }
+}
+
+#[cfg(test)]
+mod tests {
+    use chrono::TimeDelta;
+
+    use super::*;
+
+    fn error(message: &str, no_connection: bool) -> FetchError {
+        FetchError { message: message.to_owned(), retry_after: None, no_connection }
+    }
+
+    #[test]
+    fn notice_says_why_and_how_old_the_stats_are() {
+        let now = chrono::Local::now();
+        let offline = error("failed to fetch contribution graph: io: timed out", true);
+        assert_eq!(
+            fetch_notice(&offline, Some(now - TimeDelta::hours(2)), now),
+            "No connection. Stats last updated 2h ago"
+        );
+        assert_eq!(fetch_notice(&offline, None, now), "No connection. Reconnect to load stats");
+
+        let rate_limited = error("rate limited by GitHub", false);
+        assert_eq!(
+            fetch_notice(&rate_limited, Some(now - TimeDelta::minutes(5)), now),
+            "Rate limited by GitHub. Stats last updated 5m ago"
+        );
+        let not_found = error("GitHub user \"nobody\" was not found", false);
+        assert_eq!(fetch_notice(&not_found, None, now), "GitHub user \"nobody\" was not found");
+    }
+
+    #[test]
+    fn formats_time_ago() {
+        assert_eq!(time_ago(TimeDelta::seconds(-5)), "just now");
+        assert_eq!(time_ago(TimeDelta::seconds(59)), "just now");
+        assert_eq!(time_ago(TimeDelta::minutes(59)), "59m ago");
+        assert_eq!(time_ago(TimeDelta::hours(23)), "23h ago");
+        assert_eq!(time_ago(TimeDelta::days(3)), "3d ago");
     }
 }

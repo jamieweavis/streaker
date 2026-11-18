@@ -11,6 +11,7 @@ use std::time::Duration;
 use anyhow::{Context as _, bail};
 use chrono::{NaiveDate, Utc};
 use scraper::{Html, Selector};
+use serde::{Deserialize, Serialize};
 
 /// Stats for the days on the graph, up to and including today. GitHub assigns contributions to
 /// days in UTC, so "today" is the current UTC date rather than the local one.
@@ -50,11 +51,27 @@ pub fn http_agent() -> &'static ureq::Agent {
     &AGENT
 }
 
-/// Fetches a user's contribution graph and calculates their stats. Blocks until done.
-pub fn fetch_github_stats(username: &str) -> anyhow::Result<GitHubStats> {
+/// The contribution count for each day on a user's graph. Kept rather than the stats calculated
+/// from it so the stats can follow the date: a streak held yesterday is at risk today.
+#[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
+#[serde(transparent)]
+pub struct Contributions(BTreeMap<NaiveDate, u32>);
+
+impl Contributions {
+    /// Stats as of the current UTC date.
+    pub fn stats(&self) -> GitHubStats {
+        self.stats_on(Utc::now().date_naive())
+    }
+
+    fn stats_on(&self, today: NaiveDate) -> GitHubStats {
+        calculate_stats(&daily_counts_until(&self.0, today))
+    }
+}
+
+/// Fetches a user's contribution graph. Blocks until done.
+pub fn fetch_contributions(username: &str) -> anyhow::Result<Contributions> {
     let html = fetch_graph(username)?;
-    let days = parse_daily_contributions(&html)?;
-    Ok(calculate_stats(&daily_counts_until(&days, Utc::now().date_naive())))
+    Ok(Contributions(parse_daily_contributions(&html)?))
 }
 
 /// Fetches the HTML of a user's contribution graph. Blocks until done.
@@ -105,12 +122,15 @@ fn retry_after<B>(response: &ureq::http::Response<B>) -> Option<Duration> {
 pub struct FetchError {
     pub message: String,
     pub retry_after: Option<Duration>,
+    /// GitHub couldn't be reached, as opposed to it answering with an error.
+    pub no_connection: bool,
 }
 
 impl From<anyhow::Error> for FetchError {
     fn from(e: anyhow::Error) -> Self {
         let retry_after = e.downcast_ref::<RateLimited>().and_then(|r| r.retry_after);
-        Self { message: format!("{e:#}"), retry_after }
+        let no_connection = e.chain().any(|cause| cause.is::<ureq::Error>());
+        Self { message: format!("{e:#}"), retry_after, no_connection }
     }
 }
 
@@ -328,18 +348,54 @@ mod tests {
         assert!(stats.is_streak_at_risk);
     }
 
+    /// Contributions kept from an earlier fetch give stats for whichever day they're asked on.
+    #[test]
+    fn contributions_follow_the_date() {
+        let day = |d| NaiveDate::from_ymd_opt(2025, 6, d).unwrap();
+        let contributions = Contributions(BTreeMap::from([(day(1), 2), (day(2), 3)]));
+
+        let fetched = contributions.stats_on(day(2));
+        assert_eq!((fetched.current_streak, fetched.todays_contributions), (2, 3));
+        assert!(!fetched.is_streak_at_risk);
+
+        let next_day = contributions.stats_on(day(3));
+        assert_eq!((next_day.current_streak, next_day.previous_streak), (0, 2));
+        assert!(next_day.is_streak_at_risk);
+
+        let later = contributions.stats_on(day(4));
+        assert_eq!((later.current_streak, later.previous_streak, later.best_streak), (0, 2, 2));
+        assert!(!later.is_streak_at_risk);
+    }
+
+    #[test]
+    fn contributions_round_trip_as_json() {
+        let day = NaiveDate::from_ymd_opt(2025, 6, 1).unwrap();
+        let contributions = Contributions(BTreeMap::from([(day, 4)]));
+        let json = serde_json::to_string(&contributions).unwrap();
+        assert_eq!(json, r#"{"2025-06-01":4}"#);
+        assert_eq!(serde_json::from_str::<Contributions>(&json).unwrap(), contributions);
+    }
+
     #[test]
     fn fetch_error_keeps_retry_after() {
         let error =
             FetchError::from(anyhow::Error::new(RateLimited { retry_after: Some(Duration::from_secs(90)) }));
         assert_eq!(error.retry_after, Some(Duration::from_secs(90)));
         assert_eq!(error.message, "rate limited by GitHub");
+        assert!(!error.no_connection);
         assert_eq!(FetchError::from(anyhow::anyhow!("offline")).retry_after, None);
     }
 
     #[test]
+    fn fetch_error_knows_when_github_was_unreachable() {
+        let unreachable = anyhow::Error::new(ureq::Error::HostNotFound).context("failed to fetch");
+        assert!(FetchError::from(unreachable).no_connection);
+        assert!(!FetchError::from(anyhow::anyhow!("GitHub returned HTTP 500")).no_connection);
+    }
+
+    #[test]
     fn rejects_invalid_username_without_requesting() {
-        assert!(fetch_github_stats("../evil").is_err());
+        assert!(fetch_contributions("../evil").is_err());
     }
 
     /// Fetches a live graph from github.com to catch GitHub changing its markup. Ignored by

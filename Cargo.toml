@@ -20,7 +20,7 @@ path = "src/main.rs"
 [dependencies]
 anyhow = "1.0.104"
 auto-launch = "0.6.0"
-chrono = "0.4.45"
+chrono = { version = "0.4.45", features = ["serde"] }
 directories = "6.0.0"
 egui = "0.36.2"
 egui-wgpu = { version = "0.36.2", features = ["winit"] }

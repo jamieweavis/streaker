@@ -13,11 +13,17 @@ pub enum IconState {
     Contributed,
     /// Contributed today and the current streak is the best streak.
     Streaking,
-    /// No username set, or the stats could not be fetched.
+    /// No username set.
     Error,
 }
 
 impl IconState {
+    /// The icon for the latest known stats, whether or not they could be refreshed: a failed
+    /// fetch is reported in the menu instead, so going offline doesn't hide today's progress.
+    pub fn new(has_username: bool, stats: Option<&GitHubStats>) -> Self {
+        if !has_username { IconState::Error } else { stats.map_or(IconState::Pending, IconState::for_stats) }
+    }
+
     pub fn for_stats(stats: &GitHubStats) -> Self {
         if stats.current_streak == 0 {
             IconState::Pending
@@ -136,5 +142,10 @@ mod tests {
         assert_eq!(IconState::for_stats(&stats(0, 5)), IconState::Pending);
         assert_eq!(IconState::for_stats(&stats(2, 5)), IconState::Contributed);
         assert_eq!(IconState::for_stats(&stats(5, 5)), IconState::Streaking);
+
+        assert_eq!(IconState::new(false, None), IconState::Error);
+        assert_eq!(IconState::new(false, Some(&stats(5, 5))), IconState::Error);
+        assert_eq!(IconState::new(true, None), IconState::Pending);
+        assert_eq!(IconState::new(true, Some(&stats(2, 5))), IconState::Contributed);
     }
 }

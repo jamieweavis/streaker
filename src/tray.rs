@@ -16,7 +16,10 @@ pub struct TrayView<'a> {
     pub stats: Option<&'a GitHubStats>,
     pub icon: IconState,
     pub theme: IconTheme,
+    /// Why there are no up-to-date stats, for the tooltip.
     pub error: Option<&'a str>,
+    /// Shown at the top of the menu while the latest fetch has failed.
+    pub notice: Option<String>,
     /// The version of a newer release, if one is available.
     pub update: Option<&'a str>,
 }
@@ -32,6 +35,10 @@ pub struct Tray {
     set_username: MenuItem,
     set_username_separator: PredefinedMenuItem,
     showing_set_username: Cell<bool>,
+    /// Shown at the top of the menu, with its separator, only while the latest fetch has failed.
+    notice: MenuItem,
+    notice_separator: PredefinedMenuItem,
+    showing_notice: Cell<bool>,
     /// Best, current and previous streak, then most, today's and total contributions.
     #[cfg(not(target_os = "macos"))]
     stats: [MenuItem; 6],
@@ -103,6 +110,9 @@ impl Tray {
             set_username,
             set_username_separator: separator(),
             showing_set_username: Cell::new(false),
+            notice: label(""),
+            notice_separator: separator(),
+            showing_notice: Cell::new(false),
             #[cfg(not(target_os = "macos"))]
             stats,
             reload,
@@ -118,18 +128,16 @@ impl Tray {
 
     pub fn update(&self, view: &TrayView) {
         let has_username = !view.username.is_empty();
-        if self.showing_set_username.replace(!has_username) == has_username {
-            let result = if has_username {
-                self.menu
-                    .remove(&self.set_username)
-                    .and_then(|()| self.menu.remove(&self.set_username_separator))
-            } else {
-                self.menu.prepend_items(&[&self.set_username, &self.set_username_separator])
-            };
-            if let Err(e) = result {
-                log::warn!("Failed to update the set username menu item: {e}");
-            }
+        self.show_at_top(
+            &self.showing_set_username,
+            !has_username,
+            &self.set_username,
+            &self.set_username_separator,
+        );
+        if let Some(notice) = &view.notice {
+            self.notice.set_text(notice);
         }
+        self.show_at_top(&self.showing_notice, view.notice.is_some(), &self.notice, &self.notice_separator);
         self.reload.set_enabled(has_username);
         self.open_profile.set_enabled(has_username);
         self.update_update_available(view.update);
@@ -164,6 +172,21 @@ impl Tray {
 
         if self.current_icon.replace(Some((view.theme, view.icon))) != Some((view.theme, view.icon)) {
             self.set_icon(view.theme, view.icon);
+        }
+    }
+
+    /// Shows or hides an item and its separator at the top of the menu.
+    fn show_at_top(&self, showing: &Cell<bool>, show: bool, item: &MenuItem, separator: &PredefinedMenuItem) {
+        if showing.replace(show) == show {
+            return;
+        }
+        let result = if show {
+            self.menu.prepend_items(&[item, separator])
+        } else {
+            self.menu.remove(item).and_then(|()| self.menu.remove(separator))
+        };
+        if let Err(e) = result {
+            log::warn!("Failed to update the menu's top item: {e}");
         }
     }
 
