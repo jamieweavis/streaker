@@ -7,6 +7,21 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [3.1.0](https://github.com/jamieweavis/streaker/compare/v3.0.0...v3.1.0) - 2026-11-18
+
+### Added
+
+- cache stats when offline
+
+### Fixed
+
+- *(assets)* update streaking tile icon
+
+### Other
+
+- update README badges
+- remove duplicate 2.3.3 entry from changelog
+
 ## [3.0.0](https://github.com/jamieweavis/streaker/compare/v2.6.4...v3.0.0) - 2026-11-11
 
 ### Changed
