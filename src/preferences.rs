@@ -25,7 +25,7 @@ impl Default for Preferences {
             launch_at_login: false,
             reminder_enabled: false,
             reminder_time: ReminderTime { hour: 20, minute: 0 },
-            icon_theme: IconTheme::Flame,
+            icon_theme: IconTheme::Symbol,
         }
     }
 }
@@ -33,16 +33,21 @@ impl Default for Preferences {
 #[derive(Debug, Clone, Copy, PartialEq, Eq, Serialize, Deserialize)]
 #[serde(rename_all = "lowercase")]
 pub enum IconTheme {
+    Symbol,
+    Inset,
     Flame,
     Tile,
     Octocat,
 }
 
 impl IconTheme {
-    pub const ALL: [IconTheme; 3] = [IconTheme::Flame, IconTheme::Tile, IconTheme::Octocat];
+    pub const ALL: [IconTheme; 5] =
+        [IconTheme::Symbol, IconTheme::Inset, IconTheme::Flame, IconTheme::Tile, IconTheme::Octocat];
 
     pub fn label(self) -> &'static str {
         match self {
+            IconTheme::Symbol => "Symbol",
+            IconTheme::Inset => "Inset",
             IconTheme::Flame => "Flame",
             IconTheme::Tile => "Tile",
             IconTheme::Octocat => "Octocat",

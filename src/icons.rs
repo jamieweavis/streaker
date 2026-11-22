@@ -74,6 +74,8 @@ macro_rules! theme_icons {
 
 fn encoded(theme: IconTheme, state: IconState) -> &'static [u8] {
     let icons: [&'static [u8]; 4] = match theme {
+        IconTheme::Symbol => theme_icons!("symbol"),
+        IconTheme::Inset => theme_icons!("inset"),
         IconTheme::Flame => theme_icons!("flame"),
         IconTheme::Tile => theme_icons!("tile"),
         IconTheme::Octocat => theme_icons!("octocat"),
@@ -112,7 +114,7 @@ mod tests {
     /// The Windows icons only decode on Windows builds, so check them on every platform in CI.
     #[test]
     fn windows_icons_decode() {
-        for theme in ["flame", "tile", "octocat"] {
+        for theme in ["symbol", "inset", "flame", "tile", "octocat"] {
             for state in ["pending", "contributed", "streaking", "error"] {
                 let path = format!("{}/assets/windows/{theme}/{state}.ico", env!("CARGO_MANIFEST_DIR"));
                 let bytes = std::fs::read(&path).unwrap();

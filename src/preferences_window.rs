@@ -28,7 +28,7 @@ use crate::command::EditAction;
 use crate::preferences::{IconTheme, Preferences};
 
 const TITLE: &str = "Streaker Preferences";
-const SIZE: LogicalSize<f64> = LogicalSize::new(300.0, 516.0);
+const SIZE: LogicalSize<f64> = LogicalSize::new(300.0, 604.0);
 /// Height of the custom title bar drawn where the hidden native one was, matching it.
 #[cfg(target_os = "macos")]
 const TITLE_BAR_HEIGHT: f32 = 28.0;

@@ -25,7 +25,7 @@ Cross-platform GitHub contribution streak and statistic tracking menu bar applic
 - **Streak at a glance**: a menu bar icon that changes as you contribute, so you know where you stand without opening a browser
 - **Contribution stats**: your best, current and previous streak, plus your most, today's and total contributions, one click away
 - **Streak reminders**: an optional daily notification at a time you choose, sent only if your streak is at risk
-- **Icon themes**: pick a **Flame**, **Tile** or **Octocat** menu bar icon
+- **Icon themes**: pick a **Symbol**, **Inset**, **Flame**, **Tile** or **Octocat** menu bar icon
 - **Launch at login**: set it once and forget about it
 - **No sign-in needed**: just your GitHub username, no tokens or OAuth
 - **Native and lightweight**: a single small Rust binary for macOS, Windows and Linux
