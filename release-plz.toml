@@ -5,3 +5,6 @@
 # Not published to crates.io: take the current version from git tags instead of the registry.
 git_only = true
 git_release_draft = true
+# The library is an internal implementation detail of the binary, and cargo-semver-checks builds
+# rustdoc on Linux with all features (including the macOS-only `screenshot`), which fails.
+semver_check = false
