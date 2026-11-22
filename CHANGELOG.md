@@ -7,6 +7,26 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [3.2.0](https://github.com/jamieweavis/streaker/compare/v3.1.0...v3.2.0) - 2026-11-22
+
+### Added
+
+- move icon theme picker into a dropdown in General
+- open native About panel with homepage link from tray
+- restyle update available menu item
+- add Symbol and Inset icon themes
+
+### Fixed
+
+- *(assets)* update streaking tile icons
+
+### Other
+
+- disable release-plz semver check
+- *(deps)* bump rustls from 0.23.45 to 0.23.46 ([#288](https://github.com/jamieweavis/streaker/pull/288))
+- update README screenshot for new preferences layout
+- add screenshot script and update README screenshot
+
 ## [3.1.0](https://github.com/jamieweavis/streaker/compare/v3.0.0...v3.1.0) - 2026-11-18
 
 ### Added
