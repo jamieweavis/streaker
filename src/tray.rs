@@ -44,8 +44,10 @@ pub struct Tray {
     stats: [MenuItem; 6],
     reload: MenuItem,
     open_profile: MenuItem,
-    /// Shown above Preferences, only while a newer release is available.
+    /// A separator and download item, shown above the Quit separator only while a newer release
+    /// is available.
     update_available: MenuItem,
+    update_separator: PredefinedMenuItem,
     showing_update_available: Cell<bool>,
     /// The native items behind `stats`, given attributed titles so their values line up.
     #[cfg(target_os = "macos")]
@@ -73,7 +75,7 @@ impl Tray {
         let stats: [MenuItem; 6] = std::array::from_fn(|_| label(""));
         let reload = item(Command::Reload, "Reload", false, Some("CmdOrCtrl+R"));
         let open_profile = item(Command::OpenProfile, "Open GitHub Profile...", false, Some("CmdOrCtrl+O"));
-        let update_available = item(Command::OpenLatestRelease, "Update Available...", true, None);
+        let update_available = item(Command::OpenLatestRelease, "Download...", true, None);
 
         let separator = PredefinedMenuItem::separator;
         let menu = Menu::new();
@@ -90,7 +92,6 @@ impl Tray {
             &separator(),
             &reload,
             &open_profile,
-            &separator(),
             &item(Command::OpenPreferences, "Preferences...", true, Some("CmdOrCtrl+,")),
             &item(Command::About, "About Streaker...", true, None),
             &separator(),
@@ -118,6 +119,7 @@ impl Tray {
             reload,
             open_profile,
             update_available,
+            update_separator: separator(),
             showing_update_available: Cell::new(false),
             #[cfg(target_os = "macos")]
             macos_stats,
@@ -197,18 +199,27 @@ impl Tray {
 
     fn update_update_available(&self, update: Option<&str>) {
         if let Some(version) = update {
-            self.update_available.set_text(format!("Update Available (v{version})..."));
+            let current = env!("CARGO_PKG_VERSION");
+            self.update_available.set_text(format!("Update available... (v{current} -> v{version})"));
         }
-        if self.showing_update_available.replace(update.is_some()) == update.is_some() {
-            return;
+        if self.showing_update_available.replace(update.is_some()) != update.is_some() {
+            self.show_update_section(update.is_some());
         }
-        let result = if update.is_some() {
-            // The Set GitHub username item shares Preferences' id, but always comes before it.
-            let preferences = Command::OpenPreferences.id();
-            let position = self.menu.items().iter().rposition(|item| *item.id() == preferences);
-            self.menu.insert(&self.update_available, position.unwrap_or(0))
+        // Setting the text replaces the native title, so re-apply the grey after every change.
+        #[cfg(target_os = "macos")]
+        if update.is_some() {
+            set_macos_secondary_title(&self.menu, &self.update_available);
+        }
+    }
+
+    fn show_update_section(&self, show: bool) {
+        let result = if show {
+            // Just after About, above the separator before Quit.
+            let about = Command::About.id();
+            let position = self.menu.items().iter().position(|item| *item.id() == about).map_or(0, |i| i + 1);
+            self.menu.insert_items(&[&self.update_separator, &self.update_available], position)
         } else {
-            self.menu.remove(&self.update_available)
+            self.menu.remove(&self.update_separator).and_then(|()| self.menu.remove(&self.update_available))
         };
         if let Err(e) = result {
             log::warn!("Failed to update the update available menu item: {e}");
@@ -327,6 +338,44 @@ fn style_macos_sections(
         }
     }
     stats
+}
+
+/// Draws `item`'s current title in the system's secondary (grey) label colour, keeping it
+/// clickable, unlike a disabled item.
+#[cfg(target_os = "macos")]
+fn set_macos_secondary_title(menu: &Menu, item: &MenuItem) {
+    use objc2::AnyThread;
+    use objc2::rc::Retained;
+    use objc2::runtime::AnyObject;
+    use objc2_app_kit::{NSColor, NSFont, NSFontAttributeName, NSForegroundColorAttributeName, NSMenu};
+    use objc2_foundation::{NSAttributedString, NSDictionary};
+    use tray_icon::menu::ContextMenu;
+
+    let Some(index) = menu.items().iter().position(|i| i.id() == item.id()) else { return };
+    // SAFETY: as in `attach_macos_menu`.
+    let Some(ns_menu) = (unsafe { Retained::retain(menu.ns_menu().cast::<NSMenu>()) }) else {
+        return;
+    };
+    let Some(ns_item) = ns_menu.itemAtIndex(index as isize) else { return };
+    // Attributed titles don't inherit the menu font, so set it explicitly.
+    let font = NSFont::menuFontOfSize(0.0);
+    let color = NSColor::secondaryLabelColor();
+    // SAFETY: the attribute keys are paired with values of the types AppKit expects.
+    let attributes = unsafe {
+        NSDictionary::<objc2_foundation::NSString, AnyObject>::from_slices(
+            &[NSFontAttributeName, NSForegroundColorAttributeName],
+            &[&*font as &AnyObject, &*color as &AnyObject],
+        )
+    };
+    // SAFETY: `attributes` holds valid attributed string attributes.
+    let title = unsafe {
+        NSAttributedString::initWithString_attributes(
+            NSAttributedString::alloc(),
+            &ns_item.title(),
+            Some(&attributes),
+        )
+    };
+    ns_item.setAttributedTitle(Some(&title));
 }
 
 /// Where stat values start, in points from the start of the title: three spaces after the
