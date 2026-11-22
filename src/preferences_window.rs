@@ -107,6 +107,9 @@ impl PreferencesWindow {
         for theme in [Theme::Light, Theme::Dark] {
             ctx.style_mut_of(theme, |style| apply_style(style, &Palette::of(theme)));
         }
+        // A blinking text cursor would be missing from some screenshots.
+        #[cfg(feature = "screenshot")]
+        ctx.all_styles_mut(|style| style.visuals.text_cursor.blink = false);
         let mut form = PreferencesForm::new(preferences.clone(), proxy.clone(), &ctx);
         if let (Some(key), Some(image)) = (form.avatar_key(), avatar) {
             form.insert_avatar(&ctx, key, Some(image.clone()));
@@ -147,6 +150,11 @@ impl PreferencesWindow {
         this.window.set_visible(true);
         this.focus();
         Ok(this)
+    }
+
+    #[cfg(feature = "screenshot")]
+    pub fn window(&self) -> &Window {
+        &self.window
     }
 
     pub fn window_id(&self) -> winit::window::WindowId {
@@ -803,6 +811,8 @@ impl PreferencesForm {
     fn icon_theme_picker(&mut self, ui: &mut Ui, palette: &Palette) {
         let elapsed = self.opened_at.elapsed();
         let icon_index = (elapsed.as_millis() / ICON_CYCLE.as_millis()) as usize % 3;
+        // The screenshot always shows the contributed icons, like its tray icon.
+        let icon_index = if cfg!(feature = "screenshot") { 1 } else { icon_index };
         let until_next = ICON_CYCLE.as_millis() - elapsed.as_millis() % ICON_CYCLE.as_millis();
         ui.ctx().request_repaint_after(Duration::from_millis(until_next as u64));
         card(palette).show(ui, |ui| {

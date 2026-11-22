@@ -39,6 +39,11 @@ tray-icon = { version = "0.26.1", default-features = false, features = ["ksni"] 
 ureq = "3.4.2"
 winit = "0.30"
 
+[features]
+# Poses the app for the README screenshot instead of running it normally (macOS only): see
+# scripts/screenshot.sh.
+screenshot = []
+
 [target.'cfg(target_os = "macos")'.dependencies]
 objc2 = "0.6.5"
 objc2-app-kit = "0.3.2"

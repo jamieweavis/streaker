@@ -126,6 +126,11 @@ impl Tray {
         Ok(tray)
     }
 
+    #[cfg(feature = "screenshot")]
+    pub fn icon(&self) -> &TrayIcon {
+        &self.icon
+    }
+
     pub fn update(&self, view: &TrayView) {
         let has_username = !view.username.is_empty();
         self.show_at_top(

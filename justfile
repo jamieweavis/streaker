@@ -64,6 +64,11 @@ open: bundle
 logs:
     tail -f "{{ log }}"
 
+# Take the README screenshot (hides other apps while it does)
+[macos]
+screenshot out="docs/screenshot.png":
+    scripts/screenshot.sh "{{ out }}"
+
 # Remove build artifacts
 clean:
     cargo clean

@@ -1,5 +1,8 @@
 //! Application state and the winit event loop handler.
 
+#[cfg(feature = "screenshot")]
+mod screenshot;
+
 use std::time::Instant;
 
 use tray_icon::menu::MenuId;
@@ -39,6 +42,9 @@ pub enum UserEvent {
     UpdateChecked(anyhow::Result<Option<Release>>),
     /// A screen reader or other assistive technology interacted with a window.
     AccessKit(egui_winit::accesskit_winit::Event),
+    /// The app has settled after launch and can be posed for the README screenshot.
+    #[cfg(feature = "screenshot")]
+    ScreenshotSettled,
 }
 
 impl From<egui_winit::accesskit_winit::Event> for UserEvent {
@@ -127,6 +133,9 @@ impl App {
 
     /// One-time setup once the event loop is running (required for tray icons and menus).
     fn start(&mut self, event_loop: &ActiveEventLoop) {
+        #[cfg(feature = "screenshot")]
+        self.load_screenshot_fixture();
+
         #[cfg(target_os = "macos")]
         match crate::app_menu::install_macos_menu() {
             Ok(menu) => self._app_menu = Some(menu),
@@ -142,11 +151,18 @@ impl App {
             }
         }
 
+        self.next_tick = schedule::next_minute(&chrono::Local::now());
+        // The screenshot shows fixed stats, so nothing is fetched or synced with the system.
+        #[cfg(feature = "screenshot")]
+        self.open_for_screenshot(event_loop);
+        if cfg!(feature = "screenshot") {
+            return;
+        }
+
         self.sync_launch_at_login();
 
         self.fetch_stats();
         self.check_for_update();
-        self.next_tick = schedule::next_minute(&chrono::Local::now());
 
         // Most likely a fresh install.
         if self.preferences.username.is_empty() {
@@ -361,7 +377,7 @@ impl App {
     /// keeps the login item pointing at this executable and migrates the legacy LaunchAgent.
     /// Skipped for debug builds so `cargo run` doesn't take over the login item.
     fn sync_launch_at_login(&mut self) {
-        if cfg!(debug_assertions) {
+        if cfg!(any(debug_assertions, feature = "screenshot")) {
             return;
         }
         match platform::sync_launch_at_login(self.preferences.launch_at_login) {
@@ -464,7 +480,7 @@ impl ApplicationHandler<UserEvent> for App {
     fn new_events(&mut self, event_loop: &ActiveEventLoop, cause: StartCause) {
         if cause == StartCause::Init {
             self.start(event_loop);
-        } else if Instant::now() >= self.next_tick {
+        } else if Instant::now() >= self.next_tick && !cfg!(feature = "screenshot") {
             self.tick();
         }
     }
@@ -491,6 +507,8 @@ impl ApplicationHandler<UserEvent> for App {
                     window.on_accesskit_event(event.window_event);
                 }
             }
+            #[cfg(feature = "screenshot")]
+            UserEvent::ScreenshotSettled => self.pose_for_screenshot(),
         }
     }
 

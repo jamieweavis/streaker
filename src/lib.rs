@@ -1,6 +1,9 @@
 //! Streaker: a menu bar app tracking GitHub contribution streaks. The `Streaker` binary just
 //! calls [`run`].
 
+#[cfg(all(feature = "screenshot", not(target_os = "macos")))]
+compile_error!("the `screenshot` feature is macOS only");
+
 mod app;
 mod app_menu;
 mod avatar;
