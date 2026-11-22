@@ -23,6 +23,7 @@ use crate::stats_cache::{CachedContributions, StatsCache};
 use crate::tray::{Tray, TrayView};
 use crate::update::Release;
 
+#[cfg(not(target_os = "macos"))]
 const HOMEPAGE: &str = env!("CARGO_PKG_HOMEPAGE");
 /// Ticks are a minute apart, so a longer gap between them means the computer was asleep.
 const WAKE_GAP: chrono::TimeDelta = chrono::TimeDelta::minutes(2);
@@ -436,6 +437,13 @@ impl App {
                     open_url(&release.url);
                 }
             }
+            // macOS has a native About panel; elsewhere, About opens the homepage.
+            #[cfg(target_os = "macos")]
+            Command::About => {
+                platform::activate_app();
+                crate::app_menu::show_macos_about_panel();
+            }
+            #[cfg(not(target_os = "macos"))]
             Command::About => open_url(HOMEPAGE),
             Command::Quit => event_loop.exit(),
             Command::CloseWindow => self.close_preferences(),

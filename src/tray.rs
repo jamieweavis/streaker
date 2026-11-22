@@ -93,7 +93,7 @@ impl Tray {
             &reload,
             &open_profile,
             &item(Command::OpenPreferences, "Preferences...", true, Some("CmdOrCtrl+,")),
-            &item(Command::About, "About Streaker...", true, None),
+            &item(Command::About, "About Streaker...", true, Some("CmdOrCtrl+I")),
             &separator(),
             &item(Command::Quit, "Quit Streaker", true, Some("CmdOrCtrl+Q")),
         ])?;
