@@ -28,7 +28,7 @@ use crate::command::EditAction;
 use crate::preferences::{IconTheme, Preferences};
 
 const TITLE: &str = "Streaker Preferences";
-const SIZE: LogicalSize<f64> = LogicalSize::new(300.0, 604.0);
+const SIZE: LogicalSize<f64> = LogicalSize::new(300.0, 428.0);
 /// Height of the custom title bar drawn where the hidden native one was, matching it.
 #[cfg(target_os = "macos")]
 const TITLE_BAR_HEIGHT: f32 = 28.0;
@@ -107,9 +107,6 @@ impl PreferencesWindow {
         for theme in [Theme::Light, Theme::Dark] {
             ctx.style_mut_of(theme, |style| apply_style(style, &Palette::of(theme)));
         }
-        // A blinking text cursor would be missing from some screenshots.
-        #[cfg(feature = "screenshot")]
-        ctx.all_styles_mut(|style| style.visuals.text_cursor.blink = false);
         let mut form = PreferencesForm::new(preferences.clone(), proxy.clone(), &ctx);
         if let (Some(key), Some(image)) = (form.avatar_key(), avatar) {
             form.insert_avatar(&ctx, key, Some(image.clone()));
@@ -470,8 +467,6 @@ enum FormAction {
 /// How long the username must stay unchanged before its avatar is fetched.
 const AVATAR_DEBOUNCE: Duration = Duration::from_millis(400);
 const AVATAR_SIZE: f32 = 34.0;
-/// How long each of a theme's icons shows before the next.
-const ICON_CYCLE: Duration = Duration::from_millis(1000);
 
 enum AvatarState {
     Loading,
@@ -491,8 +486,6 @@ struct PreferencesForm {
     username_edited_at: Option<Instant>,
     /// Each theme's icons, as returned by [`crate::icons::preview_images`].
     theme_icons: Vec<(IconTheme, [TextureHandle; 3])>,
-    /// When the window opened, to cycle the theme icons from the first.
-    opened_at: Instant,
     /// Whether focus is being moved with the keyboard, so Enter goes to the focused control.
     keyboard_focus: bool,
     /// Up arrow presses minus down arrow presses this frame, for the focused control.
@@ -521,12 +514,12 @@ impl PreferencesForm {
             .collect();
         Self {
             draft: preferences,
-            focus_username: true,
+            // The screenshot shows no focused field.
+            focus_username: !cfg!(feature = "screenshot"),
             proxy,
             avatars: HashMap::new(),
             username_edited_at: None,
             theme_icons,
-            opened_at: Instant::now(),
             keyboard_focus: false,
             arrow_steps: 0,
         }
@@ -628,8 +621,8 @@ impl PreferencesForm {
             self.general_card(ui, &palette);
             ui.add_space(14.0);
 
-            section_title(ui, &palette, "Menu Bar Icon");
-            self.icon_theme_picker(ui, &palette);
+            section_title(ui, &palette, "Reminder");
+            self.reminder_card(ui, &palette);
 
             ui.with_layout(Layout::bottom_up(Align::Min), |ui| {
                 // Cancel is added before Save so Tab reaches it first.
@@ -763,6 +756,13 @@ impl PreferencesForm {
                 toggle(ui, palette, &mut self.draft.launch_at_login, "Launch at login");
             });
             row_separator(ui, palette);
+            self.icon_theme_row(ui, palette);
+        });
+    }
+
+    fn reminder_card(&mut self, ui: &mut Ui, palette: &Palette) {
+        card(palette).show(ui, |ui| {
+            ui.spacing_mut().item_spacing.y = 0.0;
             setting_row(ui, palette, "Streak reminder", Some("Notify me if my streak is at risk"), |ui| {
                 toggle(ui, palette, &mut self.draft.reminder_enabled, "Streak reminder");
             });
@@ -808,68 +808,85 @@ impl PreferencesForm {
         });
     }
 
-    fn icon_theme_picker(&mut self, ui: &mut Ui, palette: &Palette) {
-        let elapsed = self.opened_at.elapsed();
-        let icon_index = (elapsed.as_millis() / ICON_CYCLE.as_millis()) as usize % 3;
-        // The screenshot always shows the contributed icons, like its tray icon.
-        let icon_index = if cfg!(feature = "screenshot") { 1 } else { icon_index };
-        let until_next = ICON_CYCLE.as_millis() - elapsed.as_millis() % ICON_CYCLE.as_millis();
-        ui.ctx().request_repaint_after(Duration::from_millis(until_next as u64));
-        card(palette).show(ui, |ui| {
-            ui.spacing_mut().item_spacing.y = 0.0;
-            for (i, (theme, textures)) in self.theme_icons.iter().enumerate() {
-                if i > 0 {
-                    row_separator(ui, palette);
-                }
-                let selected = self.draft.icon_theme == *theme;
-                let (rect, response) =
-                    ui.allocate_exact_size(vec2(ui.available_width(), 44.0), Sense::click());
-                if response.clicked() {
-                    self.draft.icon_theme = *theme;
-                }
-                focus_on_click(&response);
-                response.widget_info(|| {
-                    egui::WidgetInfo::selected(egui::WidgetType::RadioButton, true, selected, theme.label())
-                });
-                let response = response.on_hover_cursor(egui::CursorIcon::PointingHand);
-                if !ui.is_rect_visible(rect) {
-                    continue;
-                }
-
-                // The theme's icon, cycling through its variants together with the other rows.
-                let icon_size = 18.0;
-                let icon_rect = Rect::from_center_size(
-                    rect.left_center() + vec2(icon_size / 2.0, 0.0),
-                    Vec2::splat(icon_size),
-                );
-                egui::Image::new(egui::load::SizedTexture::from_handle(&textures[icon_index]))
+    fn icon_theme_row(&mut self, ui: &mut Ui, palette: &Palette) {
+        // All of a theme's icons side by side.
+        let icons = |theme: IconTheme| {
+            let (_, textures) =
+                self.theme_icons.iter().find(|(t, _)| *t == theme).expect("every theme has icons");
+            textures.each_ref().map(|texture| {
+                egui::Image::new(egui::load::SizedTexture::from_handle(texture))
                     .tint(palette.text)
-                    .paint_at(ui, icon_rect);
+                    .fit_to_exact_size(Vec2::splat(THEME_ICON_SIZE))
+            })
+        };
 
-                let painter = ui.painter();
-                painter.text(
-                    rect.left_center() + vec2(icon_size + 10.0, 0.0),
-                    Align2::LEFT_CENTER,
-                    theme.label(),
-                    TextStyle::Body.resolve(ui.style()),
-                    palette.text,
-                );
-
-                // A radio button on the right, filled with the accent when selected.
-                let radius = 9.0;
-                let radio_center = rect.right_center() - vec2(radius, 0.0);
-                let t = ui.ctx().animate_bool_responsive(response.id, selected);
-                painter.circle_stroke(radio_center, radius - 0.75, Stroke::new(1.5, palette.toggle_off));
-                painter.circle_filled(radio_center, radius, palette.accent.gamma_multiply(t));
-                painter.circle_filled(radio_center, 3.5 * t, Color32::WHITE);
-                if response.has_focus() {
-                    painter.circle_stroke(
-                        radio_center,
-                        radius + 3.0,
-                        Stroke::new(2.0, palette.accent.gamma_multiply(0.6)),
-                    );
-                }
+        setting_row(ui, palette, "Icon", None, |ui| {
+            let current = self.draft.icon_theme;
+            let chevron = Id::new("icon-theme-chevron");
+            let [a, b, c] = icons(current);
+            let button = egui::Button::new((
+                a,
+                b,
+                c,
+                current.label(),
+                Atom::grow(),
+                Atom::custom(chevron, vec2(8.0, 8.0)),
+            ))
+            .gap(THEME_ICON_GAP)
+            .min_size(vec2(THEME_PICKER_WIDTH, ui.spacing().interact_size.y))
+            .atom_ui(ui);
+            if let Some(rect) = button.rect(chevron) {
+                chevron_down(ui, rect, palette.weak_text);
             }
+            let response = button.response.on_hover_cursor(egui::CursorIcon::PointingHand);
+
+            let mut picked = None;
+            egui::Popup::menu(&response)
+                .align(egui::RectAlign::BOTTOM_END)
+                .align_alternatives(&[egui::RectAlign::TOP_END])
+                .width(THEME_PICKER_WIDTH)
+                .show(|ui| {
+                    ui.set_min_width(ui.available_width());
+                    // No gaps between options: the popup closes on any click, so a click in a
+                    // gap would close it without picking anything.
+                    ui.spacing_mut().item_spacing.y = 0.0;
+                    for theme in IconTheme::ALL {
+                        let [a, b, c] = icons(theme);
+                        let option = ui.add(
+                            egui::Button::selectable(current == theme, (a, b, c, theme.label()))
+                                .gap(THEME_ICON_GAP)
+                                .min_size(vec2(0.0, ui.spacing().interact_size.y)),
+                        );
+                        if option.clicked() {
+                            picked = Some(theme);
+                        }
+                    }
+                });
+            if let Some(theme) = picked {
+                self.draft.icon_theme = theme;
+                // Picking an option is a click outside the button, which takes its focus away.
+                response.request_focus();
+            }
+
+            focus_on_click(&response);
+            // The arrow keys step through the themes while focused, like the time pickers.
+            if response.has_focus() && self.arrow_steps != 0 {
+                let len = IconTheme::ALL.len() as i32;
+                let index = IconTheme::ALL.iter().position(|t| *t == current).unwrap_or(0) as i32;
+                // Up moves to the theme above in the list.
+                let index = (index - self.arrow_steps).rem_euclid(len) as usize;
+                self.draft.icon_theme = IconTheme::ALL[index];
+                ui.ctx().request_repaint();
+            }
+            let label = self.draft.icon_theme.label();
+            response.widget_info(|| {
+                egui::WidgetInfo::labeled(
+                    egui::WidgetType::ComboBox,
+                    ui.is_enabled(),
+                    format!("Icon {label}"),
+                )
+            });
+            focus_ring(ui, &response, palette.accent, 6);
         });
     }
 }
@@ -972,6 +989,19 @@ fn number_picker_width(ui: &Ui, range: std::ops::Range<u8>) -> f32 {
 }
 
 const POPUP_EXTRA_WIDTH: f32 = 16.0;
+/// Fits the longest theme name, so the button keeps its size as the theme changes.
+const THEME_PICKER_WIDTH: f32 = 172.0;
+const THEME_ICON_SIZE: f32 = 16.0;
+const THEME_ICON_GAP: f32 = 5.0;
+
+/// A small downward chevron, marking a button that opens a list.
+fn chevron_down(ui: &Ui, rect: Rect, color: Color32) {
+    let color = if ui.is_enabled() { color } else { color.gamma_multiply(0.5) };
+    let (center, w, h) = (rect.center(), 3.5, 1.75);
+    let stroke = Stroke::new(1.5, color);
+    ui.painter().line_segment([center + vec2(-w, -h), center + vec2(0.0, h)], stroke);
+    ui.painter().line_segment([center + vec2(0.0, h), center + vec2(w, -h)], stroke);
+}
 
 /// A button showing a zero-padded number that opens a list of `range` to pick from. Drawn by hand
 /// rather than with a `ComboBox` to centre the number, drop the arrow and open the list leftwards.
